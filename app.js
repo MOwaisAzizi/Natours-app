@@ -13,7 +13,6 @@ const app = express()
 //     })
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
-
 app.get('/api/v1/tours',(req,res)=>{
    res.status(200).json({
        status:'success',
@@ -22,6 +21,13 @@ app.get('/api/v1/tours',(req,res)=>{
         tours
     }
    })
+})
+
+app.use(express.json())
+
+app.post('/api/v1/tours', (req,res)=>{
+   console.log(req.body);
+   res.send('done')
 })
 
 const port = 3000
