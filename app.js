@@ -13,6 +13,7 @@ const app = express()
 //     })
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
+
 app.get('/api/v1/tours',(req,res)=>{
    res.status(200).json({
        status:'success',
@@ -22,7 +23,6 @@ app.get('/api/v1/tours',(req,res)=>{
     }
    })
 })
-
 //middle ware for posting
 app.use(express.json())
 app.post('/api/v1/tours', (req,res)=>{
@@ -31,7 +31,7 @@ app.post('/api/v1/tours', (req,res)=>{
    const newTour = Object.assign({id:newId},req.body)
    tours.push(newTour)
    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,JSON.stringify(tours), err =>{
-    res.json({
+    res.status(201).json({
         status:'success',
         data:{
             tours:newTour
