@@ -23,12 +23,23 @@ app.get('/api/v1/tours',(req,res)=>{
    })
 })
 
+//middle ware for posting
 app.use(express.json())
-
 app.post('/api/v1/tours', (req,res)=>{
    console.log(req.body);
-   res.send('done')
+   const newId = tours[tours.length - 1].id + 1
+   const newTour = Object.assign({id:newId},req.body)
+   tours.push(newTour)
+   fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,JSON.stringify(tours), err =>{
+    res.json({
+        status:'success',
+        data:{
+            tours:newTour
+        }
+    })
+   })
 })
+
 
 const port = 3000
 app.listen(port,()=>{
