@@ -21,8 +21,6 @@ app.use((req,res,next)=>{
 
 app.use((req, res, next) => {
     req.requestTime = new Date();
-    console.log('middleware 2');
-    
     next(); 
   });
 
@@ -110,7 +108,9 @@ const deleteTour = (req, res) => {
 // app.get('/api/v1/tours/:id',getTour)
 // app.patch('/api/v1/tours/:id',updateTour)
 // app.delete('/api/v1/tours/:id', deleteTour)
+
 ////OR
+//routs back the response and no middleware perfoms after them
 app.route('/api/v1/tours').get(getAllTours).post(postTour)
 app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
