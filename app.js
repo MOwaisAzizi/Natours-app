@@ -35,12 +35,25 @@ app.get('/api/v1/tours/:id',(req,res)=>{
             message:'Not Found',
         })
     }
-
     res.status(200).json({
         status:'success',
      data:{
          tour
      }
+    })
+ })
+
+ app.patch('/api/v1/tours/:id',(req,res)=>{
+    if(req.params.id > tours.length * 1){
+        return res.status(404).json({
+            status:'Failed',
+            message:'Not Found',
+        })
+    }
+
+    res.status(200).json({
+        status:'success',
+        message:'updateded'
     })
  })
 
