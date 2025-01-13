@@ -23,7 +23,28 @@ app.get('/api/v1/tours',(req,res)=>{
     }
    })
 })
-//middle ware for posting
+
+app.get('/api/v1/tours/:id',(req,res)=>{
+    //to change id to number
+    const id = req.params.id * 1
+    const tour = tours.find(el=>el.id === id)
+    // if(id > tours.length){
+      if(!tour){
+        return res.status(404).json({
+            status:'Failed',
+            message:'Not Found',
+        })
+    }
+
+    res.status(200).json({
+        status:'success',
+     data:{
+         tour
+     }
+    })
+ })
+
+//middle ware for posting to change the the json post to object and put it in req.body
 app.use(express.json())
 app.post('/api/v1/tours', (req,res)=>{
    console.log(req.body);
@@ -31,6 +52,7 @@ app.post('/api/v1/tours', (req,res)=>{
    const newTour = Object.assign({id:newId},req.body)
    tours.push(newTour)
    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,JSON.stringify(tours), err =>{
+    // to send a message to client that this object is posted successfully
     res.status(201).json({
         status:'success',
         data:{
