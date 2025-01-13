@@ -1,8 +1,7 @@
 const fs = require('fs')
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
-//middle ware for posting to change the the json post to object and put it in req.body
-app.use(express.json())
 
 // //get is http method for request and the data is the respose from server
 // app.get('/',(req,res)=>{
@@ -14,6 +13,16 @@ app.use(express.json())
 //        res.status(200).send('you can post here(post)')
 //     })
 
+
+
+//1-middleWare
+
+//middle ware for posting to change the the json post to object(from req.body)
+app.use(express.json())
+
+//according to docs it return a function and the arguments are req,res and next
+app.use(morgan('dev'))
+
 app.use((req,res,next)=>{
     console.log('Hello rom Middlewarfe');
     next()
@@ -24,8 +33,8 @@ app.use((req, res, next) => {
     next(); 
   });
 
+  //2-handle request functions
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
-
 const getAllTours = (req, res) => {
     console.log(req.requestTime);
     
@@ -102,7 +111,7 @@ const deleteTour = (req, res) => {
     })
 }
 
-
+// requsts
 // app.get('/api/v1/tours',getAllTours)
 // app.post('/api/v1/tours', postTour)
 // app.get('/api/v1/tours/:id',getTour)
@@ -114,6 +123,7 @@ const deleteTour = (req, res) => {
 app.route('/api/v1/tours').get(getAllTours).post(postTour)
 app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
+//start server
 const port = 3000
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
