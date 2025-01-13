@@ -1,6 +1,8 @@
 const fs = require('fs')
 const express = require('express')
 const app = express()
+//middle ware for posting to change the the json post to object and put it in req.body
+app.use(express.json())
 
 // //get is http method for request and the data is the respose from server
 // app.get('/',(req,res)=>{
@@ -12,85 +14,107 @@ const app = express()
 //        res.status(200).send('you can post here(post)')
 //     })
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
-
-app.get('/api/v1/tours',(req,res)=>{
-   res.status(200).json({
-       status:'success',
-       result:tours.lenght,
-    data:{
-        tours
-    }
-   })
+app.use((req,res,next)=>{
+    console.log('Hello rom Middlewarfe');
+    next()
 })
 
-app.get('/api/v1/tours/:id',(req,res)=>{
-    //to change id to number
-    const id = req.params.id * 1
-    const tour = tours.find(el=>el.id === id)
-    // if(id > tours.length){
-      if(!tour){
-        return res.status(404).json({
-            status:'Failed',
-            message:'Not Found',
-        })
-    }
-    res.status(200).json({
-        status:'success',
-     data:{
-         tour
-     }
-    })
- })
+app.use((req, res, next) => {
+    req.requestTime = new Date();
+    console.log('middleware 2');
+    
+    next(); 
+  });
 
- app.patch('/api/v1/tours/:id',(req,res)=>{
-    if(req.params.id > tours.length * 1){
-        return res.status(404).json({
-            status:'Failed',
-            message:'Not Found',
-        })
-    }
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
+
+const getAllTours = (req, res) => {
+    console.log(req.requestTime);
+    
     res.status(200).json({
-        status:'success',
-        data:{
-            tour:'update right here'
+        status: 'success',
+        result: tours.lenght,
+        time: req.requestTime,
+        data: {
+            tours
         }
     })
- })
+}
 
- app.delete('/api/v1/tours/:id',(req,res)=>{
-    if(req.params.id > tours.length * 1){
+const postTour = (req, res) => {
+    console.log(req.body);
+    const newId = tours[tours.length - 1].id + 1
+    const newTour = Object.assign({ id: newId }, req.body)
+    tours.push(newTour)
+    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), err => {
+        // to send a message to client that this object is posted successfully
+        res.status(201).json({
+            status: 'success',
+            data: {
+                tours: newTour
+            }
+        })
+    })
+}
+
+const getTour = (req, res) => {
+    //to change id to number
+    const id = req.params.id * 1
+    const tour = tours.find(el => el.id === id)
+    // if(id > tours.length){
+    if (!tour) {
         return res.status(404).json({
-            status:'Failed',
-            message:'Not Found',
+            status: 'Failed',
+            message: 'Not Found',
+        })
+    }
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour
+        }
+    })
+}
+
+const updateTour = (req, res) => {
+    if (req.params.id > tours.length * 1) {
+        return res.status(404).json({
+            status: 'Failed',
+            message: 'Not Found',
+        })
+    }
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour: 'update right here'
+        }
+    })
+}
+
+const deleteTour = (req, res) => {
+    if (req.params.id > tours.length * 1) {
+        return res.status(404).json({
+            status: 'Failed',
+            message: 'Not Found',
         })
     }
     res.status(204).json({
-        status:'success',
-        data:null
+        status: 'success',
+        data: null
     })
- })
+}
 
-//middle ware for posting to change the the json post to object and put it in req.body
-app.use(express.json())
-app.post('/api/v1/tours', (req,res)=>{
-   console.log(req.body);
-   const newId = tours[tours.length - 1].id + 1
-   const newTour = Object.assign({id:newId},req.body)
-   tours.push(newTour)
-   fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,JSON.stringify(tours), err =>{
-    // to send a message to client that this object is posted successfully
-    res.status(201).json({
-        status:'success',
-        data:{
-            tours:newTour
-        }
-    })
-   })
-})
 
+// app.get('/api/v1/tours',getAllTours)
+// app.post('/api/v1/tours', postTour)
+// app.get('/api/v1/tours/:id',getTour)
+// app.patch('/api/v1/tours/:id',updateTour)
+// app.delete('/api/v1/tours/:id', deleteTour)
+////OR
+app.route('/api/v1/tours').get(getAllTours).post(postTour)
+app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
 const port = 3000
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 })
