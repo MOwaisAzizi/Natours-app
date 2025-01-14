@@ -9,6 +9,7 @@
   "author": "Owais Azizi",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.19.2",
     "morgan": "^1.10.0"
   }
