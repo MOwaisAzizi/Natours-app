@@ -18,7 +18,6 @@ exports.createTour = (req, res) => {
     const newTour = Object.assign({ id: newId }, req.body)
     tours.push(newTour)
     fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), err => {
-        // to send a message to client that this object is posted successfully
         res.status(201).json({
             status: 'success',
             data: {
@@ -29,10 +28,8 @@ exports.createTour = (req, res) => {
 }
 
 exports.getTour = (req, res) => {
-    //to change id to number, params(/id)
     const id = req.params.id * 1
     const tour = tours.find(el => el.id === id)
-    // if(id > tours.length){
     if (!tour) {
         return res.status(404).json({
             status: 'Failed',
