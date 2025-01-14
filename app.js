@@ -29,13 +29,14 @@ app.use((req,res,next)=>{
     next()
 })
 
-app.use((req, res, next) => {
+app.use((req,res,next)=>{
     req.requestTime = new Date();
-0    next(); 
+    next();
   });
 
   //2-handle request functions
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
+
 const getAllTours = (req, res) => {
     console.log(req.requestTime);
     
@@ -49,7 +50,7 @@ const getAllTours = (req, res) => {
     })
 }
 
-const postTour = (req, res) => {
+const createTour = (req, res) => {
     console.log(req.body);
     const newId = tours[tours.length - 1].id + 1
     const newTour = Object.assign({ id: newId }, req.body)
@@ -66,7 +67,7 @@ const postTour = (req, res) => {
 }
 
 const getTour = (req, res) => {
-    //to change id to number
+    //to change id to number, params(/id)
     const id = req.params.id * 1
     const tour = tours.find(el => el.id === id)
     // if(id > tours.length){
@@ -112,17 +113,66 @@ const deleteTour = (req, res) => {
     })
 }
 
+// User Methods section
+const getAllUsers = ((req, res)=>{
+    res.status(500).json({
+        message:'Error',
+        status:'Not created yet',
+    })
+})
+const createUser = ((req, res)=>{
+    res.status(500).json({
+        message:'Error',
+        status:'Not created yet',
+    })
+})
+const getUser = ((req, res)=>{
+    res.status(500).json({
+        message:'Error',
+        status:'Not created yet',
+    })
+})
+const updateUser = ((req, res)=>{
+    res.status(500).json({
+        message:'Error',
+        status:'Not created yet',
+    })
+})
+const deleteUser = ((req, res)=>{
+    res.status(500).json({
+        message:'Error',
+        status:'Not created yet',
+    })
+})
+
 // requsts
 // app.get('/api/v1/tours',getAllTours)
-// app.post('/api/v1/tours', postTour)
+// app.post('/api/v1/tours', createTour)
 // app.get('/api/v1/tours/:id',getTour)
 // app.patch('/api/v1/tours/:id',updateTour)
 // app.delete('/api/v1/tours/:id', deleteTour)
 
 ////OR
 //routs back the response and no middleware perfoms after them
-app.route('/api/v1/tours').get(getAllTours).post(postTour)
-app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
+// app.route('/api/v1/tours').get(getAllTours).post(createTour)
+// app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
+
+// app.route('/api/v1/users').get(getAllUsers).post(createUser)
+// app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
+
+//mounting routers
+//to create a new router for each resources
+const tourRouter = express.Router()
+const userRouter = express.Router()
+
+tourRouter.route('/').get(getAllTours).post(createTour)
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
+
+userRouter.route('').get(getAllUsers).post(createUser)
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
+
+app.use('/api/v1/tours',tourRouter)
+app.use('/api/v1/users',userRouter)
 
 //start server
 const port = 3000
