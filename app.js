@@ -1,5 +1,6 @@
 const fs = require('fs')
 const express = require('express')
+// HTTP request logger middleware for node.js
 const morgan = require('morgan')
 const app = express()
 
@@ -30,7 +31,7 @@ app.use((req,res,next)=>{
 
 app.use((req, res, next) => {
     req.requestTime = new Date();
-    next(); 
+0    next(); 
   });
 
   //2-handle request functions
