@@ -21,7 +21,5 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 
-const x = 20
-console.log(20);
-
 module.exports = app
+
