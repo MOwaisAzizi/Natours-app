@@ -3,7 +3,6 @@ const morgan = require('morgan')
 const app = express()
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
-
 //this is for just shoing the morgan whin the app is runing
 if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
@@ -21,5 +20,8 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
+
+const x = 20
+console.log(20);
 
 module.exports = app
