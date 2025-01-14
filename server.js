@@ -1,11 +1,15 @@
+const dotenv = require('dotenv')
+dotenv.config({path:'./config.env'})
 const app = require('./app')
 
-//express environment
-console.log(app.get('env'));
-//node uses many envirnment
-console.log(process.env);
+//reading environment varibles
+console.log(process.env.NODE_ENV);
 
-const port = 3000
+//express environment
+// console.log(app.get('env'));
+//node uses many envirnment
+
+const port = process.env.PORT || 3000
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 })
