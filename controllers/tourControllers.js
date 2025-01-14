@@ -13,6 +13,20 @@ exports.checkID = ((req, res, next, val) => {
     next()
 })
 
+//validation of data middlware
+exports.checkBody = ((req, res, next) => {
+    const {name, price} = req.body
+    console.log(name, price);
+    
+    if (!name || !price) {
+        return res.status(404).json({
+            status: 'Failed',
+            message: 'Not Found',
+        })
+    }
+    next()
+})
+
 exports.getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
