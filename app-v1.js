@@ -24,22 +24,22 @@ app.use(express.json())
 //according to docs it return a function and the arguments are req,res and next
 app.use(morgan('dev'))
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     console.log('Hello rom Middlewarfe');
     next()
 })
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     req.requestTime = new Date();
     next();
-  });
+});
 
-  //2-handle request functions
+//2-handle request functions
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
 
 const getAllTours = (req, res) => {
     console.log(req.requestTime);
-    
+
     res.status(200).json({
         status: 'success',
         result: tours.lenght,
@@ -114,34 +114,34 @@ const deleteTour = (req, res) => {
 }
 
 // User Methods section
-const getAllUsers = ((req, res)=>{
+const getAllUsers = ((req, res) => {
     res.status(500).json({
-        message:'Error',
-        status:'Not created yet',
+        message: 'Error',
+        status: 'Not created yet',
     })
 })
-const createUser = ((req, res)=>{
+const createUser = ((req, res) => {
     res.status(500).json({
-        message:'Error',
-        status:'Not created yet',
+        message: 'Error',
+        status: 'Not created yet',
     })
 })
-const getUser = ((req, res)=>{
+const getUser = ((req, res) => {
     res.status(500).json({
-        message:'Error',
-        status:'Not created yet',
+        message: 'Error',
+        status: 'Not created yet',
     })
 })
-const updateUser = ((req, res)=>{
+const updateUser = ((req, res) => {
     res.status(500).json({
-        message:'Error',
-        status:'Not created yet',
+        message: 'Error',
+        status: 'Not created yet',
     })
 })
-const deleteUser = ((req, res)=>{
+const deleteUser = ((req, res) => {
     res.status(500).json({
-        message:'Error',
-        status:'Not created yet',
+        message: 'Error',
+        status: 'Not created yet',
     })
 })
 
@@ -172,8 +172,8 @@ userRouter.route('').get(getAllUsers).post(createUser)
 userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
 //this is a middleware, for each req all above middleware run but for these tow in every req the selected midlware run
-app.use('/api/v1/tours',tourRouter)
-app.use('/api/v1/users',userRouter)
+app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/users', userRouter);
 
 //start server
 const port = 3000
