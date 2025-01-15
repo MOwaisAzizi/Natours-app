@@ -2,8 +2,8 @@ const fs = require('fs')
 const express = require('express')
 // HTTP request logger middleware for node.js
 const morgan = require('morgan')
-const app = express()
 
+const app = express()
 // //get is http method for request and the data is the respose from server
 // app.get('/',(req,res)=>{
 // //    res.status(200).send('Hello from Server!')
