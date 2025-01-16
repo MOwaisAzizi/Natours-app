@@ -15,12 +15,15 @@ mongoose.connect(DB,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useFindAndModify:true,
-}).then(()=>console.log('successfully connected'))
+}).then(()=>console.log('successfully connected')).catch(err=>{
+    console.log('errr ❌😂',err);
+})
 
 const tourSchema = new mongoose.Schema({
     name:{
         type:String,
-        require: [true,'A tour must have a name']
+        require: [true,'A tour must have a name'],
+        unique:true
     },
     rating:{
         type: Number,
@@ -32,10 +35,10 @@ const tourSchema = new mongoose.Schema({
     }
 })
 
-const Tour = mongoose.model('Tour',{tourSchema})
-const testTour = new Tour({
-    name:'Forest in the see',
-    rating:5.2,
+const Tour = mongoose.model('Tour', tourSchema);
+
+    const testTour = new Tour({
+    name:'Forest in the mountin',
     price:500
 })
 
@@ -47,5 +50,5 @@ testTour.save().then(doc=>{
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+    console.log(`App listening port ${port}`);
 })
