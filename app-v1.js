@@ -16,10 +16,8 @@ const app = express()
 
 
 //1-middleWare
-
 //middle ware for posting to change the the json post to object(from req.body)
 app.use(express.json())
-
 //according to docs it return a function and the arguments are req,res and next
 app.use(morgan('dev'))
 
