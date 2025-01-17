@@ -4,7 +4,7 @@ const { getAllTours, createTour, getTour, updateTour, deleteTour, checkID, check
 
 const router = express.Router()
 router.param('id', checkID)
-//change two middleware functions in post
+//change two middleware functions in post(check body)
 router.route('/').get(getAllTours).post(checkBody, createTour)
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
