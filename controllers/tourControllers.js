@@ -19,24 +19,6 @@ try{
 }
 }
 
-exports.createTour = async (req, res) => {
-try{
-    // const Tour = new Tour({})
-    // Tour.sava()     save is the prototye object of the dindone class
-   const newTour = await Tour.create(req.body)
-   res.status(201).json({
-    status:'success',
-    data : {
-        newTour
-    }
-   })
-}catch(err){
-    res.status(400).json({
-        status:'failed',
-        message:'invalid Data!'
-    })
-}
-}
 
 exports.getTour = async(req, res) => {
     try{
@@ -56,6 +38,25 @@ exports.getTour = async(req, res) => {
         })
     }
 }
+
+exports.createTour = async (req, res) => {
+    try{
+        // const Tour = new Tour({})
+        // Tour.sava()     save is the prototye object of the dindone class
+       const tour = await Tour.create(req.body)
+       res.status(201).json({
+        status:'success',
+        data : {
+            tour
+        }
+       })
+    }catch(err){
+        res.status(400).json({
+            status:'failed',
+            message:'invalid Data!'
+        })
+    }
+    }
 
 exports.updateTour = async (req, res) => {
     try {
@@ -81,13 +82,13 @@ exports.updateTour = async (req, res) => {
 
 exports.deleteTour = async(req, res) => {
     try {
-        const tour = await Tour.findByIdAndDelete(req.params.id);
+
+        //commonlly we do not return someting
+     await Tour.findByIdAndDelete(req.params.id);
 
         res.status(204).json({
             status: 'success',
-            data: {
-              tour
-            }
+            data:null
         });
     } catch (err) {
         res.status(404).json({
