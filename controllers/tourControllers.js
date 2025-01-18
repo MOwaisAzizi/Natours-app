@@ -1,17 +1,5 @@
 const Tour = require('../models/tourModel')
 
-//validation of data middlware
-exports.checkBody = ((req, res, next) => {
-    const {name, price} = req.body    
-    if (!name || !price) {
-        return res.status(404).json({
-            status: 'Failed',
-            message: 'Not Found',
-        })
-    }
-    next()
-})
-
 exports.getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
@@ -25,6 +13,8 @@ exports.getAllTours = (req, res) => {
 
 exports.createTour = async (req, res) => {
 try{
+    console.log(req.body);
+    
         // const Tour = new Tour({})
     // Tour.sava().then
    const newTour = await Tour.create(req.body)
