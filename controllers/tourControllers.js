@@ -14,16 +14,15 @@ try{
 }catch(err){
     res.status(404).json({
         status:'failed',
-        message:'invalid Data!'
+        message:'Not found!'
     })
 }
 }
 
 exports.createTour = async (req, res) => {
 try{
-    
     // const Tour = new Tour({})
-    // Tour.sava().then
+    // Tour.sava()     save is the prototye object of the dindone class
    const newTour = await Tour.create(req.body)
    res.status(201).json({
     status:'success',
@@ -42,7 +41,8 @@ try{
 exports.getTour = async(req, res) => {
     try{
         const tour = await Tour.findById(req.params.id)
-        // const tour = await Tour.findOnd({_id:req.parmas.id})
+        // const tour = await Tour.findOne({_id:req.parmas.id})
+        //tour.save 
         res.status(200).json({
             status: 'success',
             data: {
@@ -57,19 +57,42 @@ exports.getTour = async(req, res) => {
     }
 }
 
-exports.updateTour = (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        data: {
-            tour: 'update right here'
-        }
-    })
-}
+exports.updateTour = async (req, res) => {
+    try {
+        const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
 
-exports.deleteTour = (req, res) => {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                tour
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'failed',
+            message:  'Invalid Data!'
+        });
+    }
+};
 
-    res.status(204).json({
-        status: 'success',
-        data: null
-    })
+
+exports.deleteTour = async(req, res) => {
+    try {
+        const tour = await Tour.findByIdAndDelete(req.params.id);
+
+        res.status(204).json({
+            status: 'success',
+            data: {
+              tour
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'failed',
+            message: 'not found!'
+        });
+    }
 }
