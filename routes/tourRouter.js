@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllTours, createTour, getTour, updateTour, deleteTour, checkBody } = require('../controllers/tourControllers')
+const { getAllTours, createTour, getTour, updateTour, deleteTour } = require('../controllers/tourControllers')
 
 const router = express.Router()
 // router.param('id', checkID)
