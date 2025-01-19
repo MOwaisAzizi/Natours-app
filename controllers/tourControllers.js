@@ -8,10 +8,12 @@ try{
     const excludedField = ['sort','page','field','limit']
      excludedField.forEach(el=>delete queryOBJ[el])
      
-    // const tours = await Tour.find(req.query)
+     //we are doing this for chaining the prototype methods of find(by using directly await it is imposible becouse it compack with document using first method)
     const query =  Tour.find(queryOBJ)
     // const query = Tour.find().where('duration').equals(5).where('dificuly').equals('easy')
      const tours =  await query
+
+     //SEND RESPOSE
     res.status(200).json({
         status: 'success',
         result: tours.lenght,
