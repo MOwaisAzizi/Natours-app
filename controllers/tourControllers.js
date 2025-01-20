@@ -21,15 +21,15 @@ try{
      console.log(JSON.parse(queryStr));
      
      //we are doing this for chaining the prototype methods of find(by using directly await it is imposible becouse it compack with document using first method)
-     let query = Tour.find(JSON.parse(queryStr))
+     const query = Tour.find(JSON.parse(queryStr))
 
      //3-sorting
-     console.log(req.query.sort);
-     if(req.query.sort){
-        const sortBy = req.query.sort.split(',').join(' ')
-        console.log(sortBy);
-        query = query.sort(sortBy)
-     }
+    //  console.log(req.query.sort);
+    //  if(req.query.sort){
+    //     const sortBy = req.query.sort.split(',').join(' ')
+    //     console.log(sortBy);
+    //     query = query.sort(sortBy)
+    //  }
 
      const tours =  await query
 
