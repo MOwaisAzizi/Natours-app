@@ -7,7 +7,6 @@ try{
 
     //1-BUILD QUERY
     const queryOBJ = {...req.query}
-    console.log(queryOBJ);
 
     //2A-filtering
     //we extract these queries form our filtering for better working with it
@@ -16,20 +15,27 @@ try{
      
     //2B-advence Filtering
      let queryStr = JSON.stringify(queryOBJ)
-     queryStr = queryStr.replace(/\b(gte,gt,lt,lte)\b/g, match=>`$${match}`)
-     console.log(queryStr);
-     console.log(JSON.parse(queryStr));
+     //to add a doller sighn to our query in order to use it in mongoose
+     queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match=>`$${match}`)
+    //  console.log(JSON.parse(queryStr));
      
      //we are doing this for chaining the prototype methods of find(by using directly await it is imposible becouse it compack with document using first method)
-     const query = Tour.find(JSON.parse(queryStr))
+     let query = Tour.find(JSON.parse(queryStr))
 
      //3-sorting
-    //  console.log(req.query.sort);
     //  if(req.query.sort){
     //     const sortBy = req.query.sort.split(',').join(' ')
     //     console.log(sortBy);
     //     query = query.sort(sortBy)
+    //  }else{
+    //     query = query.sort('-createdAt')
     //  }
+
+     //4-fields
+     if(req.query.fields){
+        const fields = req.query.fields.split(',').join(' ')
+        query = query.select(fields)
+     }
 
      const tours =  await query
 
