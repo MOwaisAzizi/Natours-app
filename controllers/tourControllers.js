@@ -2,6 +2,8 @@ const Tour = require('../models/tourModel')
 
 exports.getAllTours = async(req, res) => {
 try{
+    // const query = Tour.find().where('duration').equals(5).where('dificuly').equals('easy')
+    // const tours = Tour.find({duration:20})
     //BUILD QUERY
     const queryOBJ = {...req.query}
     //we extract these queries form our filtering for better working with it
@@ -10,7 +12,6 @@ try{
      
      //we are doing this for chaining the prototype methods of find(by using directly await it is imposible becouse it compack with document using first method)
     const query =  Tour.find(queryOBJ)
-    // const query = Tour.find().where('duration').equals(5).where('dificuly').equals('easy')
      const tours =  await query
 
      //SEND RESPOSE
