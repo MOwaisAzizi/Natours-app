@@ -3,15 +3,21 @@ const Tour = require('../models/tourModel')
 exports.getAllTours = async(req, res) => {
 try{
     // const query = Tour.find().where('duration').equals(5).where('dificuly').equals('easy')
-    // const tours = Tour.find({duration:20})
+    // const tours = Tour.find({duration:20})  //  const tours = Tour.find(req.query)
     //BUILD QUERY
     const queryOBJ = {...req.query}
+    console.log(queryOBJ);
     //we extract these queries form our filtering for better working with it
     const excludedField = ['sort','page','field','limit']
      excludedField.forEach(el=>delete queryOBJ[el])
      
+    //advence Filtering
+     let queryStr = JSON.stringify(queryOBJ)
+     queryStr = queryStr.replace(/\b(gte,gt,lt,lte)\b/g, match=>`$${match}`)
+     console.log(queryStr);
+     
      //we are doing this for chaining the prototype methods of find(by using directly await it is imposible becouse it compack with document using first method)
-    const query =  Tour.find(queryOBJ)
+     const query =  Tour.find(queryStr)
      const tours =  await query
 
      //SEND RESPOSE

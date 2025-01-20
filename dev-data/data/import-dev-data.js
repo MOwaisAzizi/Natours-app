@@ -38,6 +38,7 @@ const deleteData = async()=>{
     }
     process.exit()
 }
+
 console.log(process.argv);
 console.log('Hellooooo💰❌❌');
 if(process.argv[2] === '--import'){
