@@ -117,8 +117,9 @@ exports.getTourStats = async (req, res) => {
             },
             {
                 $group: {
+                    //group all in one
                     // _id: null,
-                    //for grouping the aggregates
+                    //for grouping the documents documents one ore more
                     _id: '$difficulty',
                     numTour: { $sum: 1 },
                     numRatings: { $sum: '$ratingsQuantity' },
@@ -156,15 +157,6 @@ exports.getTourStats = async (req, res) => {
 exports.getMonthlyPlan = async (req, res) => {
     try {
         const year = req.params.year * 1
-        //   "2021-06-19T05:30:00.000Z",
-        //   "2021-07-20T05:30:00.000Z",
-        //   "2021-08-18T05:30:00.000Z"
-        // "2021-04-25T05:30:00.000Z",
-        // "2021-07-20T05:30:00.000Z",
-        // "2021-10-05T05:30:00.000Z"
-        // "2021-03-11T05:30:00.000Z",
-        // "2021-05-02T05:30:00.000Z",
-        // "2021-06-09T05:30:00.000Z"
         const plan = await Tour.aggregate([
             {
                 $unwind: '$startDates'
@@ -179,8 +171,9 @@ exports.getMonthlyPlan = async (req, res) => {
             },
             {
                 $group: {
-                    //for grouping with the same id
+                    //for grouping with the same id and add operation to them
                     _id: { $month: '$startDates' },
+                    //sum of those collected collections are how much, ++
                     numTourStart: { $sum: 1 },
                     tour: { $push: '$name' }
                 }
@@ -189,8 +182,9 @@ exports.getMonthlyPlan = async (req, res) => {
                 $addFields: { month: '$_id' }
             },
             {
+                //for deleting field
                 $project: {
-                    id: 0
+                    _id: 0
                 }
             }, {
                 $sort: { numTourStart: -1 }
