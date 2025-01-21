@@ -26,11 +26,19 @@ class APIFeatures {
     }
 
     sort(){
-        
+        if (this.queryObject.sort) {
+            const sortBy = this.queryObject.sort.split(',').join(' ')
+            this.query = this.query.sort(sortBy)
+        } else {
+            this.query = this.query.sort('-createdAt')
+        }
     }
 
     limitFields(){
-        
+        if (this.queryObject.fields) {
+            const fields = req.query.fields.split(',').join(' ')
+            this.query = this.query.select(fields)
+        }
     }
 
     paginate(){
@@ -42,7 +50,8 @@ exports.getAllTours = async (req, res) => {
     try {
  
         
-        const features = new APIFeatures(Tour.find(),queryStr)
+        const features = new APIFeatures(Tour.find(),req.query).filter().sort().limitFields().paginate()
+        const tours = features.query
         
         // const excludedField = ['sort', 'page', 'fields', 'limit']
         // excludedField.forEach(el => delete queryOBJ[el])
@@ -52,12 +61,12 @@ exports.getAllTours = async (req, res) => {
         // let query = Tour.find(JSON.parse(queryStr))
 
         //3-sorting
-        if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ')
-            query = query.sort(sortBy)
-        } else {
-            query = query.sort('-createdAt')
-        }
+        // if (req.query.sort) {
+        //     const sortBy = req.query.sort.split(',').join(' ')
+        //     query = query.sort(sortBy)
+        // } else {
+        //     query = query.sort('-createdAt')
+        // }
 
         //4-fields
         if (req.query.fields) {
