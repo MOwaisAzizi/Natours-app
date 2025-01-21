@@ -15,10 +15,10 @@ class APIFeatures {
 
     //we return this from it becouse of chaining of object(without return it is not return any thing)
     filter(){
-        const queryOBJ = {...this.queryObject}
+        const queryObj = {...this.queryObject}
         const excludedField = ['sort', 'page', 'fields', 'limit']
-        excludedField.forEach(el => delete this.queryOBJ[el])
-         let queryStr = JSON.stringify(this.queryOBJ)
+        excludedField.forEach(el => delete this.queryObj[el])
+         let queryStr = JSON.stringify(this.queryObj)
         //to add a doller sighn to our query in order to use it in mongoose
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
         this.query = this.query.find(JSON.parse(queryStr))
@@ -37,7 +37,7 @@ class APIFeatures {
 
     limitFields(){
         if (this.queryObject.fields) {
-            const fields = req.query.fields.split(',').join(' ')
+            const fields =this.queryObject.fields.split(',').join(' ')
             this.query = this.query.select(fields)
         }
         return this
