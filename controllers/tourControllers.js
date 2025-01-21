@@ -151,3 +151,16 @@ exports.getTourStats = async (req,res) => {
     }
     
 }
+
+export const getMonthlyPlan = async (req,res) => {
+    try{
+      const year = 30
+
+    }
+    catch(err){
+        res.status(500).json({ 
+            status: 'failed',
+            message: err 
+        });
+    }
+}

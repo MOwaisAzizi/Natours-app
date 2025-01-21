@@ -1,12 +1,13 @@
 const express = require('express')
-const { getAllTours, createTour, getTour, updateTour, deleteTour,aliesTopTours,getTourStats } = require('../controllers/tourControllers')
+const { getAllTours, createTour, getTour, updateTour, deleteTour,aliesTopTours,getTourStats,getMonthlyPlan } = require('../controllers/tourControllers')
 
 const router = express.Router()
 // router.param('id', checkID)
 //change two middleware functions in post(check body)
 // router.route('/').get(getAllTours).post(checkBody, createTour)
-router.route('/tour-stats').get(getTourStats)
 router.route('/top-5-cheap').get(aliesTopTours,getAllTours)
+router.route('/tour-stats').get(getTourStats)
+router.route('/monthly-plan/:year').get(getMonthlyPlan)
 router.route('/').get(getAllTours).post(createTour)
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
