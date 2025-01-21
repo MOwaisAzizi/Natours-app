@@ -10,7 +10,7 @@ exports.aliesTopTours = (req, res, next) => {
 
 exports.getAllTours = async (req, res) => {
     try {
-        const Feature = new APIFeatures(Tour.find(),req.query).filter().sort().limitFields().paginate()
+        const Feature = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate()
         const tours = await Feature.query
 
         //SEND RESPOSE
@@ -109,18 +109,18 @@ exports.deleteTour = async (req, res) => {
     }
 }
 
-exports.getTourStats = async (req,res) => {
+exports.getTourStats = async (req, res) => {
     try {
         const stats = await Tour.aggregate([
-            { 
-                $match: { ratingsAverage: { $gte: 4 } } 
+            {
+                $match: { ratingsAverage: { $gte: 4 } }
             },
-            { 
-                $group: { 
+            {
+                $group: {
                     // _id: null,
                     //for grouping the aggregates
                     _id: '$difficulty',
-                    numTour: {$sum:1},
+                    numTour: { $sum: 1 },
                     numRatings: { $sum: '$ratingsQuantity' },
                     aveRating: { $avg: '$ratingsAverage' },
                     avePrice: { $avg: '$price' },
@@ -130,7 +130,7 @@ exports.getTourStats = async (req,res) => {
             },
             {
                 //assending sort
-               $sort:{avePrice:1}
+                $sort: { avePrice: 1 }
             },
             // {
             //    $match:{
@@ -145,57 +145,69 @@ exports.getTourStats = async (req,res) => {
             }
         });
     } catch (err) {
-        res.status(500).json({ 
+        res.status(500).json({
             status: 'failed',
-            message: err 
+            message: err
         });
     }
-    
+
 }
 
-exports.getMonthlyPlan = async (req,res) => {
-    try{
-      const year = req.params.year * 1
-    //   "2021-06-19T05:30:00.000Z",
-    //   "2021-07-20T05:30:00.000Z",
-    //   "2021-08-18T05:30:00.000Z"
-    // "2021-04-25T05:30:00.000Z",
-    // "2021-07-20T05:30:00.000Z",
-    // "2021-10-05T05:30:00.000Z"
-    // "2021-03-11T05:30:00.000Z",
-    // "2021-05-02T05:30:00.000Z",
-    // "2021-06-09T05:30:00.000Z"
-      const plan = await Tour.aggregate([
-        {
-         $unwind:'$startDates'   
-        },
-        {$match:{
-            startDates:{
-                $gte:new Date(`${year}-01-1`),
-                $lte:new Date(`${year}-12-31`)
+exports.getMonthlyPlan = async (req, res) => {
+    try {
+        const year = req.params.year * 1
+        //   "2021-06-19T05:30:00.000Z",
+        //   "2021-07-20T05:30:00.000Z",
+        //   "2021-08-18T05:30:00.000Z"
+        // "2021-04-25T05:30:00.000Z",
+        // "2021-07-20T05:30:00.000Z",
+        // "2021-10-05T05:30:00.000Z"
+        // "2021-03-11T05:30:00.000Z",
+        // "2021-05-02T05:30:00.000Z",
+        // "2021-06-09T05:30:00.000Z"
+        const plan = await Tour.aggregate([
+            {
+                $unwind: '$startDates'
+            },
+            {
+                $match: {
+                    startDates: {
+                        $gte: new Date(`${year}-01-1`),
+                        $lte: new Date(`${year}-12-31`)
+                    }
+                }
+            },
+            {
+                $group: {
+                    //for grouping with the same id
+                    _id: { $month: '$startDates' },
+                    numTourStart: { $sum: 1 },
+                    tour: { $push: '$name' }
+                }
+            },
+            {
+                $addFields: { month: '$_id' }
+            },
+            {
+                $project: {
+                    id: 0
+                }
+            }, {
+                $sort: { numTourStart: -1 }
             }
-        }
-        },
-        {
-         $group:{
-            //for grouping with the same id
-            _id:{$month:'$startDates'},
-            numTourStart: {$sum:1},
-            tour:{$push:'$name'}
-         }
-        }
-      ])
-      res.status(200).json({
-        status: 'success',
-        data: {
-            plan
-        }
-    });
+
+        ])
+        res.status(200).json({
+            status: 'success',
+            data: {
+                plan
+            }
+        });
     }
-    catch(err){
-        res.status(500).json({ 
+    catch (err) {
+        res.status(500).json({
             status: 'failed',
-            message: err 
+            message: err
         });
     }
 }
