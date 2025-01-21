@@ -42,12 +42,12 @@ exports.getAllTours = async (req, res) => {
             const fields = req.query.fields.split(',').join(' ')
             query = query.select(fields)
         }
-
+        
+        //5-page pagination
         const page = (req.query.page * 1) || 1;
         const limit = (req.query.limit * 1) || 100;
         const skip = (page - 1) * limit;
         query = query.skip(skip).limit(limit);
-
 
         if (req.query.page) {
             const numTours = await Tour.countDocuments();
