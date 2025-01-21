@@ -155,10 +155,34 @@ exports.getTourStats = async (req,res) => {
 
 exports.getMonthlyPlan = async (req,res) => {
     try{
-      const year = req.params.year*1
+      const year = req.params.year * 1
+    //   "2021-06-19T05:30:00.000Z",
+    //   "2021-07-20T05:30:00.000Z",
+    //   "2021-08-18T05:30:00.000Z"
+    // "2021-04-25T05:30:00.000Z",
+    // "2021-07-20T05:30:00.000Z",
+    // "2021-10-05T05:30:00.000Z"
+    // "2021-03-11T05:30:00.000Z",
+    // "2021-05-02T05:30:00.000Z",
+    // "2021-06-09T05:30:00.000Z"
       const plan = await Tour.aggregate([
         {
          $unwind:'$startDates'   
+        },
+        {$match:{
+            startDates:{
+                $gte:new Date(`${year}-01-1`),
+                $lte:new Date(`${year}-12-31`)
+            }
+        }
+        },
+        {
+         $group:{
+            //for grouping with the same id
+            _id:{$month:'$startDates'},
+            numTourStart: {$sum:1},
+            tour:{$push:'$name'}
+         }
         }
       ])
       res.status(200).json({
