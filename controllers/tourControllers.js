@@ -32,6 +32,7 @@ class APIFeatures {
         } else {
             this.query = this.query.sort('-createdAt')
         }
+        return this
     }
 
     limitFields(){
@@ -39,53 +40,23 @@ class APIFeatures {
             const fields = req.query.fields.split(',').join(' ')
             this.query = this.query.select(fields)
         }
+        return this
     }
 
     paginate(){
-        
+        const page = (this.queryObject.page * 1) || 1;
+        const limit = (this.queryObject.limit * 1) || 100;
+        const skip = (page - 1) * limit;
+        this.query = this.query.skip(skip).limit(limit);
+       return this
     }
 }
 
 exports.getAllTours = async (req, res) => {
     try {
- 
-        
-        const features = new APIFeatures(Tour.find(),req.query).filter().sort().limitFields().paginate()
-        const tours = features.query
-        
-        // const excludedField = ['sort', 'page', 'fields', 'limit']
-        // excludedField.forEach(el => delete queryOBJ[el])
-        //  let queryStr = JSON.stringify(queryOBJ)
-        // //to add a doller sighn to our query in order to use it in mongoose
-        // queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
-        // let query = Tour.find(JSON.parse(queryStr))
-
-        //3-sorting
-        // if (req.query.sort) {
-        //     const sortBy = req.query.sort.split(',').join(' ')
-        //     query = query.sort(sortBy)
-        // } else {
-        //     query = query.sort('-createdAt')
-        // }
-
-        //4-fields
-        if (req.query.fields) {
-            const fields = req.query.fields.split(',').join(' ')
-            query = query.select(fields)
-        }
-
-        //5-page pagination
-        const page = (req.query.page * 1) || 1;
-        const limit = (req.query.limit * 1) || 100;
-        const skip = (page - 1) * limit;
-        query = query.skip(skip).limit(limit);
-
-        if (req.query.page) {
-            const numTours = await Tour.countDocuments();
-            if (skip >= numTours) throw new Error('This page does not exist');
-        }
-
-        const tours = await query
+        const Feature = new APIFeatures(Tour.find(),req.query).filter().sort().limitFields().paginate()
+        console.log(Feature);
+        const tours = Feature.query
 
         //SEND RESPOSE
         res.status(200).json({
