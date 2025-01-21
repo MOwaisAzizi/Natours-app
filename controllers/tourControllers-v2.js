@@ -7,49 +7,27 @@ exports.aliesTopTours = (req, res, next) => {
     next()
 }
 
-class APIFeatures {
-    constructor(query,queryObject){
-        this.query = query
-        this.queryObject = queryObject
-    }
-
-    //we return this from it becouse of chaining of object(without return it is not return any thing)
-    filter(){
-        const queryOBJ = {...this.queryObject}
-        const excludedField = ['sort', 'page', 'fields', 'limit']
-        excludedField.forEach(el => delete this.queryOBJ[el])
-         let queryStr = JSON.stringify(this.queryOBJ)
-        //to add a doller sighn to our query in order to use it in mongoose
-        queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
-        this.query = this.query.find(JSON.parse(queryStr))
-        return this
-    }
-
-    sort(){
-        
-    }
-
-    limitFields(){
-        
-    }
-
-    paginate(){
-        
-    }
-}
-
 exports.getAllTours = async (req, res) => {
     try {
- 
-        
-        const features = new APIFeatures(Tour.find(),queryStr)
-        
-        // const excludedField = ['sort', 'page', 'fields', 'limit']
-        // excludedField.forEach(el => delete queryOBJ[el])
-        //  let queryStr = JSON.stringify(queryOBJ)
-        // //to add a doller sighn to our query in order to use it in mongoose
-        // queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
-        // let query = Tour.find(JSON.parse(queryStr))
+        // const query = Tour.find().where('duration').equals(5).where('dificuly').equals('easy')
+        // const tours = Tour.find({duration:20})  //  const tours = Tour.find(req.query)
+
+        //1-BUILD QUERY
+        const queryOBJ = { ...req.query }
+
+        //2A-filtering
+        //we extract these queries form our filtering for better working with it
+        const excludedField = ['sort', 'page', 'fields', 'limit']
+        excludedField.forEach(el => delete queryOBJ[el])
+
+        //2B-advence Filtering
+        let queryStr = JSON.stringify(queryOBJ)
+        //to add a doller sighn to our query in order to use it in mongoose
+        queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
+        //  console.log(JSON.parse(queryStr));
+
+        //we are doing this for chaining the prototype methods of find(by using directly await it is imposible becouse it compack with document using first method)
+        let query = Tour.find(JSON.parse(queryStr))
 
         //3-sorting
         if (req.query.sort) {
@@ -64,7 +42,7 @@ exports.getAllTours = async (req, res) => {
             const fields = req.query.fields.split(',').join(' ')
             query = query.select(fields)
         }
-
+        
         //5-page pagination
         const page = (req.query.page * 1) || 1;
         const limit = (req.query.limit * 1) || 100;
