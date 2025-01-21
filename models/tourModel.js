@@ -19,11 +19,11 @@ const tourSchema = new mongoose.Schema({
         type: Number,
         require: [true, 'A tour must have a groupSize'],
     },
-    ratingAverage: {
+    ratingsAverage: {
         type: Number,
         default: 0
     },
-    ratingQuantity: {
+    ratingsQuantity: {
         type: Number,
         default: 4.5
     },
