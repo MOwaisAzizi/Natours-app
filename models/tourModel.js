@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { default: slugify } = require('slugify')
 
 const tourSchema = new mongoose.Schema(
     //object difinition
@@ -9,6 +10,7 @@ const tourSchema = new mongoose.Schema(
         unique: true,
         trim: true
     },
+    slug:String,
     duration: {
         type: Number,
         require: [true, 'A tour must have a duration'],
@@ -67,10 +69,18 @@ tourSchema.virtual('durationsWeek').get(function () {
     return this.duration / 7
 })
 
-//DOCUMENT middeware pre run before sava() and create() methods
-tourSchema.pre('save',function(){
-    //this points to current working document
-    console.log(this);
+//DOCUMENT middeware: run before or after sava() and create() methods
+tourSchema.pre('save',function(next){
+    //this, points to current working document
+    console.log('this will run before save');
+    this.slug = slugify(this.name,{lower:true})
+    next()
+})
+
+tourSchema.post('save',function(doc,next){
+   console.log('this will run after save');
+   console.log(doc);
+   next()
 })
 
 const Tour = mongoose.model('Tour', tourSchema);
