@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const tourSchema = new mongoose.Schema(
-    //object structure
+    //object difinition
     {
     name: {
         type: String,
@@ -56,7 +56,7 @@ const tourSchema = new mongoose.Schema(
     summary: String,
     startDates: [Date]
 },
-//object options
+//object for options
 {
     toJSON:{virtuals: true},
     toObject:{virtuals: true}
