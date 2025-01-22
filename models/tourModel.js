@@ -90,16 +90,16 @@ tourSchema.virtual('durationsWeek').get(function () {
 //Query middleware:run before queries like find and this points to query object and access to query methods
 ///^find:means that every query that starts with find(we do this becuse of applying to single find tour too),pre:before,post:after/
 //tourSchema.pre('findOne'
-tourSchema.pre(/^find/,function(next){
-    this.find({secretTour:{$ne:false}})
+tourSchema.pre(/^find/, function(next) {
+    //bring all in the find method in controller but process this query after finding your result
+    this.find({ secretTour: { $ne: true } });
     this.start = Date.now()
-    next()
-})
+    next();
+});
 
-tourSchema.post(/^find/,function(next){
-    console.log(`the operation took ${Date.now() - this.start} miliSecands`);
-    next()
-})
+// tourSchema.post(/^find/, function() {
+//     console.log(`The operation took ${Date.now() - this.start} milliseconds`);
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour
