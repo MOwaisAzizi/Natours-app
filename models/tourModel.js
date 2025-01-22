@@ -63,10 +63,15 @@ const tourSchema = new mongoose.Schema(
 }
 )
 
-const Tour = mongoose.model('Tour', tourSchema);
-
 tourSchema.virtual('durationsWeek').get(function () {
-     return this.duration / 7
+    return this.duration / 7
 })
 
+//DOCUMENT middeware pre run before sava() and create() methods
+tourSchema.pre('save',function(){
+    //this points to current working document
+    console.log(this);
+})
+
+const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour
