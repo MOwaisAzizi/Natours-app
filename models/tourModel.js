@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
-const tourSchema = new mongoose.Schema({
+const tourSchema = new mongoose.Schema(
+    //object options
+    {
     name: {
         type: String,
         require: [true, 'A tour must have a name'],
@@ -53,8 +55,18 @@ const tourSchema = new mongoose.Schema({
     },
     summary: String,
     startDates: [Date]
-})
+},
+{
+    //object options
+    toJSON:true,
+    toObject:true
+}
+)
 
 const Tour = mongoose.model('Tour', tourSchema);
+
+tourSchema.vertaul('durationsWeek').get(function (params) {
+     return this.duration / 7
+})
 
 module.exports = Tour
