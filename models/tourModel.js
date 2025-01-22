@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const tourSchema = new mongoose.Schema(
-    //object options
+    //object structure
     {
     name: {
         type: String,
@@ -56,8 +56,8 @@ const tourSchema = new mongoose.Schema(
     summary: String,
     startDates: [Date]
 },
+//object options
 {
-    //object options
     toJSON:true,
     toObject:true
 }
@@ -65,7 +65,7 @@ const tourSchema = new mongoose.Schema(
 
 const Tour = mongoose.model('Tour', tourSchema);
 
-tourSchema.vertaul('durationsWeek').get(function (params) {
+tourSchema.vertaul('durationsWeek').get(function () {
      return this.duration / 7
 })
 
