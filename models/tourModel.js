@@ -11,6 +11,10 @@ const tourSchema = new mongoose.Schema(
         trim: true
     },
     slug:String,
+    secretTour:{
+        type:String,
+        default:false
+    },
     duration: {
         type: Number,
         require: [true, 'A tour must have a duration'],
@@ -85,8 +89,15 @@ tourSchema.pre('save',function(next){
 
 //Query middleware:run before queries like find and this points to query object and access to query methods
 ///^find:means that every query that starts with find(we do this becuse of applying to single find tour too)/
-tourSchema.find('find',function(next){
-    console.log(this);
+tourSchema.find(/^find/,function(next){
+    this.find({secretTour:{$ne:true}})
+    this.start = Date.now()
+    next()
+})
+
+tourSchema.find(/^find/,function(next){
+    console.log(`the operation took ${Date.now() - this.start} miliSecands`);
+    next()
 })
 
 const Tour = mongoose.model('Tour', tourSchema);
