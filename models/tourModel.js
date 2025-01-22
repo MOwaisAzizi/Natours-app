@@ -113,8 +113,15 @@ tourSchema.pre('aggregate', function(next) {
 tourSchema.post('aggregate', function(next) {
     console.log('This is finidh');
     console.log(`the time took ${Date.now() - this.start} mili`);
-    next()
+    //do not use next in post
+    // next()
 });
+
+tourSchema.post('aggregate', function() {
+    console.log('This is finish');
+    console.log(`The time took ${Date.now() - this._start} ms`);
+});
+
 
 
 const Tour = mongoose.model('Tour', tourSchema);
