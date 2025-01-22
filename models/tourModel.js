@@ -74,12 +74,12 @@ tourSchema.virtual('durationsWeek').get(function () {
 })
 
 //DOCUMENT middeware: run before or after sava() and create() methods
-tourSchema.pre('save',function(next){
-    //this, points to current working document
-    console.log('this will run before save');
-    this.slug = slugify(this.name,{lower:true})
-    next()
-})
+// tourSchema.pre('save',function(next){
+//     //this, points to current working document
+//     console.log('this will run before save');
+//     this.slug = slugify(this.name,{lower:true})
+//     next()
+// })
 
 // tourSchema.post('save',function(doc,next){
 //    console.log('this will run after save');
@@ -88,14 +88,15 @@ tourSchema.pre('save',function(next){
 // })
 
 //Query middleware:run before queries like find and this points to query object and access to query methods
-///^find:means that every query that starts with find(we do this becuse of applying to single find tour too)/
-tourSchema.find(/^find/,function(next){
-    this.find({secretTour:{$ne:true}})
+///^find:means that every query that starts with find(we do this becuse of applying to single find tour too),pre:before,post:after/
+//tourSchema.pre('findOne'
+tourSchema.pre(/^find/,function(next){
+    this.find({secretTour:{$ne:false}})
     this.start = Date.now()
     next()
 })
 
-tourSchema.find(/^find/,function(next){
+tourSchema.post(/^find/,function(next){
     console.log(`the operation took ${Date.now() - this.start} miliSecands`);
     next()
 })
