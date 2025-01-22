@@ -11,10 +11,6 @@ const tourSchema = new mongoose.Schema(
         trim: true
     },
     slug:String,
-    secretTour:{
-        type:String,
-        default:false
-    },
     duration: {
         type: Number,
         require: [true, 'A tour must have a duration'],
@@ -60,7 +56,11 @@ const tourSchema = new mongoose.Schema(
         select: false
     },
     summary: String,
-    startDates: [Date]
+    startDates: [Date],
+    secretTour:{
+        type:Boolean,
+        default:false
+    }
 },
 //object for options
 {
@@ -89,7 +89,7 @@ tourSchema.virtual('durationsWeek').get(function () {
 
 //Query middleware:run before queries like find and this points to query object and access to query methods
 ///^find:means that every query that starts with find(we do this becuse of applying to single find tour too),pre:before,post:after/
-//tourSchema.pre('findOne'
+//we can use tourSchema.pre('findOne') for single find
 tourSchema.pre(/^find/, function(next) {
     //bring all in the find method in controller but process this query after finding your result
     this.find({ secretTour: { $ne: true } });
@@ -100,6 +100,22 @@ tourSchema.pre(/^find/, function(next) {
 // tourSchema.post(/^find/, function() {
 //     console.log(`The operation took ${Date.now() - this.start} milliseconds`);
 // });
+
+//3-Agregate middleware: becuse when filtering the secret tour in find method the aggregate request alse filter it we use this
+tourSchema.pre('aggregate', function(next) {
+    console.log('This is aggregate');
+    // Add a $match stage to filter out secret tours
+    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+    this.start = Date.now();
+    next()
+});
+
+tourSchema.post('aggregate', function(next) {
+    console.log('This is finidh');
+    console.log(`the time took ${Date.now() - this.start} mili`);
+    next()
+});
+
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour
