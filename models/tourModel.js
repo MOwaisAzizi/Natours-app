@@ -77,10 +77,16 @@ tourSchema.pre('save',function(next){
     next()
 })
 
-tourSchema.post('save',function(doc,next){
-   console.log('this will run after save');
-   console.log(doc);
-   next()
+// tourSchema.post('save',function(doc,next){
+//    console.log('this will run after save');
+//    console.log(doc);
+//    next()
+// })
+
+//Query middleware:run before queries like find and this points to query object and access to query methods
+///^find:means that every query that starts with find(we do this becuse of applying to single find tour too)/
+tourSchema.find('find',function(next){
+    console.log(this);
 })
 
 const Tour = mongoose.model('Tour', tourSchema);
