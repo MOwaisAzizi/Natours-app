@@ -158,21 +158,21 @@ const deleteUser = ((req, res) => {
 
 //mounting routers
 //to create a new router for each resources
-const tourRouter = express.Router()
-const userRouter = express.Router()
+// const tourRouter = express.Router()
+// const userRouter = express.Router()
 
-tourRouter.route('/').get(getAllTours).post(createTour)
-tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
+// tourRouter.route('/').get(getAllTours).post(createTour)
+// tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
-userRouter.route('').get(getAllUsers).post(createUser)
-userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
+// userRouter.route('').get(getAllUsers).post(createUser)
+// userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
-//this is a middleware, for each req all above middleware run but for these tow in every req the selected midlware run
-app.use('/api/v1/tours', tourRouter)
-app.use('/api/v1/users', userRouter);
+// //this is a middleware, for each req all above middleware run but for these tow in every req the selected midlware run
+// app.use('/api/v1/tours', tourRouter)
+// app.use('/api/v1/users', userRouter);
 
-//start server
-const port = 3000
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-})
+// //start server
+// const port = 3000
+// app.listen(port, () => {
+//     console.log(`App listening on port ${port}`);
+// })
