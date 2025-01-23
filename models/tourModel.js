@@ -121,13 +121,6 @@ tourSchema.pre('aggregate', function(next) {
     next()
 });
 
-tourSchema.post('aggregate', function(next) {
-    console.log('This is finidh');
-    console.log(`the time took ${Date.now() - this.start} mili`);
-    //do not use next in post
-    // next()
-});
-
 tourSchema.post('aggregate', function() {
     console.log('This is finish');
     console.log(`The time took ${Date.now() - this._start} ms`);
