@@ -52,7 +52,7 @@ const tourSchema = new mongoose.Schema(
        validate:{
         validator: function(val){
             //this points to current document on new creation document not update
-            return this.price > val
+            return val < this.price
         },
         message:'Discount ({VALUE}) must be less then price'
        }
