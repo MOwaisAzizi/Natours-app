@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 app.use((req, res, next) => {
-    console.log('Hello rom Middleware');
+    console.log('Hello from Middleware');
     next()
 })
 
@@ -174,5 +174,5 @@ const deleteUser = ((req, res) => {
 // //start server
 // const port = 3000
 // app.listen(port, () => {
-//     console.log(`App listening on port ${port}`);
+//     console.log(`App is listening on port ${port}`);
 // })
