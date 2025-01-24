@@ -83,7 +83,7 @@ const tourSchema = new mongoose.Schema(
         default:false
     }
 },
-//object for options
+//objects for options
 {
     toJSON:{virtuals: true},
     toObject:{virtuals: true}
