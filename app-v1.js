@@ -86,13 +86,13 @@ const updateTour = (req, res) => {
     if (req.params.id > tours.length * 1) {
         return res.status(404).json({
             status: 'Failed',
-            message: 'Not Found',
+            message: 'Not Found updated tour',
         })
     }
     res.status(200).json({
         status: 'success',
         data: {
-            tour: 'update right here'
+            tour: 'updated right'
         }
     })
 }
@@ -101,7 +101,7 @@ const deleteTour = (req, res) => {
     if (req.params.id > tours.length * 1) {
         return res.status(404).json({
             status: 'Failed',
-            message: 'Not Found',
+            message: 'Not Found deleted tour',
         })
     }
     res.status(204).json({
