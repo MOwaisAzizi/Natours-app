@@ -4,7 +4,7 @@ const express = require('express')
 const morgan = require('morgan')
 
 const app = express()
-// //get is http method for request and the data is the respose from server
+
 // app.get('/',(req,res)=>{
 // //    res.status(200).send('Hello from Server!')
 //    res.status(200).json({message:'Hello from server(get)',app:'natrouse'})
