@@ -6,18 +6,18 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "cross-env NODE_ENV=production nodemon server.js",
-    "start:ndb": "ndb server.js"
+    "debug": "ndb server.js"
   },
   "author": "Owais Azizi",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^4.19.2",
+    "dotenv": "^16.4.7", 
     "mongoose": "^5.13.23",
     "morgan": "^1.10.0",
     "slugify": "^1.6.6"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
