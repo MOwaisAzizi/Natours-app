@@ -4,8 +4,8 @@ const app = express()
 const morgan = require('morgan')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
-const appError = require('./utiles/appError')
-const errorController = require('./controllers/errorController')
+const AppError = require('./utiles/appError')
+const globalErrorHandler = require('./controllers/errorController')
 
 //this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing
 if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
@@ -17,10 +17,10 @@ app.use('/api/v1/users', userRouter)
 //whin we write a middleware that has four arguments that means that is an error handling middlwware not regular one
  
 app.all('*',(req,res,next)=>{
-   next(appError(`message:not fount ${req.originalUrl} in this sever!`,404))
+   next(new AppError(`not fount ${req.originalUrl} path in this sever!`,404))
   })
 
-app.use(errorController)
+app.use(globalErrorHandler)
 
 
 // whin no url match to top routes this middlware will run and send back a message for all wrong urls
