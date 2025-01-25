@@ -11,9 +11,11 @@
   "author": "Owais Azizi",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.7", 
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "mongoose": "^5.13.23",
     "morgan": "^1.10.0",
+    "ndb": "^1.1.5",
     "slugify": "^1.6.6"
   },
   "devDependencies": {
