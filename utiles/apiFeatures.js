@@ -13,6 +13,7 @@ class APIFeatures {
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
         this.query = this.query.find(JSON.parse(queryStr))
         //we return this from it becouse of chaining of object(without return it is not return any thing)
+        //this return intire object
         return this
     }
 

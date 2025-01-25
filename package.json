@@ -4,7 +4,9 @@
   "description": "Learning node, express and mongoDB",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "start:prod": "cross-env NODE_ENV=production nodemon server.js",
+    "start:ndb": "ndb server.js"
   },
   "author": "Owais Azizi",
   "license": "ISC",
