@@ -9,6 +9,7 @@ mongoose.connect(DB,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useFindAndModify:true,
+    useUnifiedTopology:true
 }).then(()=>console.log('successfully connected')).catch(err=>{
     console.log('errr ❌😂',err);
 })

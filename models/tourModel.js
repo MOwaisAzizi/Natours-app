@@ -161,9 +161,7 @@ const tourSchema = new mongoose.Schema(
     {
         toJSON: { virtuals: true },
         toObject: { virtuals: true }
-    }
-);
-
+    },
     //objects for options
     {
         toJSON: { virtuals: true },
