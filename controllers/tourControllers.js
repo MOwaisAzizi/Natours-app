@@ -38,15 +38,24 @@ exports.getTour = catchAsync (async (req, res,next) => {
 })
 
 
-exports.createTour =  catchAsync (async(req, res, next) => {
-        const tour = await Tour.create(req.body)
+exports.createTour =  async(req, res, next) => {
+    try{
+
+    
+    const tour = await Tour.create(req.body)
+        console.log(req.body);
         res.status(201).json({
             status: 'success',
             data: {
                 tour
             }
         })
-})
+    }catch(err){
+        console.log(err);
+        console.log('Error ❌❌❌');
+        
+    }
+}
 
 exports.updateTour =  catchAsync (async  (req, res,next) => {
         const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
@@ -95,11 +104,6 @@ exports.getTourStats = catchAsync (async (req, res) => {
                 //assending sort
                 $sort: { avePrice: 1 }
             },
-            // {
-            //    $match:{
-            //     _id:{$ne:'easy'}
-            //    }
-            // }
         ]);
         res.status(200).json({
             status: 'success',
