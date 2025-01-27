@@ -13,7 +13,6 @@ exports.getAllTours = async (req, res) => {
         const Feature = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate()
         const tours = await Feature.query
 
-        //SEND RESPOSE
         res.status(200).json({
             status: 'success',
             // result:Tour.countDocuments(),

@@ -28,7 +28,7 @@ app.listen(port, () => {
 // testTour.save().then(doc=>{
 //     console.log(doc);
 // }).catch(err=>{
-//     console.log('ERROR😂',err);
+//     console.log('ERROR',err);
 // })
 
 //reading environment varibles,//node uses many envirnment
@@ -36,4 +36,3 @@ app.listen(port, () => {
 
 //express environment
 // console.log(app.get('env'));
-//some
