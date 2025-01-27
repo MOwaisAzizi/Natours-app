@@ -7,6 +7,8 @@ exports.aliesTopTours = (req, res, next) => {
     next()
 }
 
+//first version
+
 exports.getAllTours = async (req, res) => {
     try {
         // const query = Tour.find().where('duration').equals(5).where('dificuly').equals('easy')
