@@ -5,7 +5,6 @@ const morgan = require('morgan')
 
 const app = express()
 
-//fist version
 // app.get('/',(req,res)=>{
 // //    res.status(200).send('Hello from Server!')
 //    res.status(200).json({message:'Hello from server(get)',app:'natrouse'})
