@@ -6,7 +6,9 @@ const handleCastErrorDB = (err)=>{
 }
 
 const hanldeDuplicateFieldsDB = (err)=>{
-   const message = `invalid ${err.path}: ${err.value}`
+   const value = err.mserr.match(/(["'])(\\?.)*?\1/)
+   console.log(value);
+   const message = `Duplicate feild : x. please use another value`
    return new AppError(message,400)
 }
 
@@ -50,8 +52,9 @@ module.exports = ((err,req,res,next)=>{
       else if(process.env.NODE_ENV === 'production'){
        let error = {...err}
        //for in inputing wrong id route for geting nice data in production
-       if(error.name==='CastError') error = handleCastErrorDB(error)
-         if(error.code==='number...') error = hanldeDuplicateFieldsDB(error)
+       //reassign the error to sendError(we want to short the message becouse it has so messay key value)
+         if(error.name==='CastError') error = handleCastErrorDB(error)
+         if(error.code===11000) error = hanldeDuplicateFieldsDB(error)
 
        sendErrorProd(err,res)
       }
