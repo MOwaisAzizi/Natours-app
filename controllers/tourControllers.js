@@ -30,6 +30,7 @@ exports.getTour = catchAsync (async (req, res,next) => {
         const tour = await Tour.findById(req.params.id)
         // const tour = await Tour.findOne({_id:req.parmas.id})
          
+        //this is an extra error from catch in catchAsycn that we write the controlble error handling
         if(!tour){
             return next(new AppError('could not found data in that id',404))
         }
