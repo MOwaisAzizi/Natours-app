@@ -1,5 +1,11 @@
-const sendErrorDev  = (err,res)=>{
+const AppError = require("../utiles/appError");
 
+const handleCastErrorDB = (err)=>{
+   const message = `invalid ${err.path}: ${err.value}`
+   return new AppError(message,400)
+}
+
+const sendErrorDev  = (err,res)=>{
    //errors from operations like tacking wrong routs id or so on
   if(err.isOperational){
    res.status(err.statusCode).json({
@@ -37,6 +43,9 @@ module.exports = ((err,req,res,next)=>{
       sendErrorDev(err,res)
    }
       else if(process.env.NODE_ENV === 'production'){
+       let error = {...err}
+       //for in inputing wrong id route for geting data in production
+       if(error.name==='CastError') error = handleCastErrorDB(error)
       sendErrorProd(err,res)
       }
 })
