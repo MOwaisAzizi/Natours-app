@@ -6,10 +6,12 @@ const handleCastErrorDB = (err)=>{
 }
 
 const hanldeDuplicateFieldsDB = (err)=>{
-   const value = err.mserr.match(/(["'])(\\?.)*?\1/)
+   // const value = err.mserr.match(/(["'])(\\?.)*?\1/)
+   const value = err.keyValue.name
    console.log(value);
-   const message = `Duplicate feild : x. please use another value`
+   const message = `Duplicate feild : ${value}. please use another value`
    return new AppError(message,400)
+   
 }
 
 const sendErrorDev  = (err,res)=>{
@@ -34,7 +36,7 @@ const sendErrorDev  = (err,res)=>{
 const sendErrorProd = (err,res)=>{
    res.status(err.statusCode).json({
       status:err.status,
-      message:err.message,
+      message:err,
    })
 }
 
@@ -56,12 +58,11 @@ module.exports = ((err,req,res,next)=>{
        
        //for in inputing wrong id route for geting nice data in production
        //reassign the error to sendError(we want to short the message becouse it has so messay key value)
-         // if(error.name==='CastError') error = handleCastErrorDB(error)
-         // if(error.code===11000) error = hanldeDuplicateFieldsDB(error)
-
-    
-
-       sendErrorProd(err,res)
+         if(error.name==='CastError') error = handleCastErrorDB(error)
+         if(error.code===11000) error = hanldeDuplicateFieldsDB(error)
+       console.log(error);
+       
+       sendErrorProd(error,res)
       }
 })
 

@@ -1,7 +1,7 @@
 const Tour = require('../models/tourModel')
 const AppError = require('../utiles/appError')
 const APIFeatures = require('./../utiles/apiFeatures')
-const catchAsync = require('./../utiles/catchAsync')
+// const catchAsync = require('./../utiles/catchAsync')
 
 exports.aliesTopTours = (req, res, next) => {
     req.query.limit = '5'
@@ -9,6 +9,12 @@ exports.aliesTopTours = (req, res, next) => {
     req.query.fields = 'price,name,difficulty,ratingAverage,summary'
     next()
 }
+
+const catchAsync = fn => {
+        //this return is for preventing calling the function in the begganing but call it whin routing
+        return (req,res,next) =>{
+        fn(req,res,next).catch(next) //err=>next(err)
+    }}
 
 exports.getAllTours = catchAsync (async(req, res,next) => {
         const Feature = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate()

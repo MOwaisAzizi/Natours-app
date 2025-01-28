@@ -3,20 +3,20 @@ const express = require('express')
 // HTTP request logger middleware for node.js
 const morgan = require('morgan')
 
-const app = express()
 
 // app.get('/',(req,res)=>{
-// //    res.status(200).send('Hello from Server!')
-//    res.status(200).json({message:'Hello from server(get)',app:'natrouse'})
-// })
-
-// app.post('/',(req,res)=>{
-//        res.status(200).send('you can post here(post)')
-//     })
-
-
-//1-middleWare
-//middle ware for posting to change the the json post to object(from req.body)
+    // //    res.status(200).send('Hello from Server!')
+    //    res.status(200).json({message:'Hello from server(get)',app:'natrouse'})
+    // })
+    
+    // app.post('/',(req,res)=>{
+        //        res.status(200).send('you can post here(post)')
+        //     })
+        
+        
+        //1-middleWare
+        //middle ware for posting to change the the json post to object(from req.body)
+const app = express()
 app.use(express.json())
 //according to docs it return a function and the arguments are req,res and next
 app.use(morgan('dev'))
