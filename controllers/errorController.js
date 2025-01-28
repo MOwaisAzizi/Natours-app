@@ -51,12 +51,18 @@ module.exports = ((err,req,res,next)=>{
    }
       else if(process.env.NODE_ENV === 'production'){
        let error = {...err}
+       console.log('production environment');
+      //  console.log(error);
+       
        //for in inputing wrong id route for geting nice data in production
        //reassign the error to sendError(we want to short the message becouse it has so messay key value)
-         if(error.name==='CastError') error = handleCastErrorDB(error)
-         if(error.code===11000) error = hanldeDuplicateFieldsDB(error)
+         // if(error.name==='CastError') error = handleCastErrorDB(error)
+         // if(error.code===11000) error = hanldeDuplicateFieldsDB(error)
+
+    
 
        sendErrorProd(err,res)
       }
 })
+
 
