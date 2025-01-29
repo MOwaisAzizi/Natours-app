@@ -32,7 +32,7 @@ process.on('unhandledRejection',err=>{
     console.log('unhandledRejection: server is shoting down...');
    //close the server
     server.close(()=>{
-        // 1 for rejection 0 is for success
+        // 1 for rejection 0 is for success we usaually use 1
         //shut down the applicatio
         process.exit(1)
     })
