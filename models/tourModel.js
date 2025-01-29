@@ -21,7 +21,7 @@ const { default: slugify } = require('slugify')
 //         difficulty: {
 //             type: String,
 //             // required: [true, 'A tour must have a difficulty'],
-//             //validators
+//             //buld in validators
 //             enum: {
 //                 values: ['difficult', 'meduim', 'easy'],
 //                 message: 'Difficulty must be either: difficulty, meduim, easy'
