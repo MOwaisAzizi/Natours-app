@@ -1,7 +1,15 @@
+const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 
+//uncaughtException:every sync regection or bugs that is not handled anywhare is run here
+//it is top becouse is syncrounouse and cant controll if it were in bottom
+process.on('uncaughtException',err=>{
+    console.log(err.name,err.message);
+    console.log('uncaughtException: server is shoting down...');
+    process.exit(1)
+})
+
 dotenv.config({path:'./config.env'})
-const mongoose = require('mongoose')
 const app = require('./app')
 
 const DB = process.env.DAtABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
@@ -18,10 +26,10 @@ const server = app.listen(port, () => {
     console.log(`App listening port ${port}`);
 })
 
-//every unhandlerd asyc rejection or error(like DB problem with connection) will come to this middleware
+//unhandledRejection: every unhandlerd asyc rejection or error(like DB problem with connection) will come to this middleware
 process.on('unhandledRejection',err=>{
     console.log(err.name,err.message);
-    console.log('thare is a broblem. server is shoting down...');
+    console.log('unhandledRejection: server is shoting down...');
    //close the server
     server.close(()=>{
         // 1 for rejection 0 is for success
@@ -29,6 +37,8 @@ process.on('unhandledRejection',err=>{
         process.exit(1)
     })
 })
+
+
 
 
 //     const testTour = new Tour({
