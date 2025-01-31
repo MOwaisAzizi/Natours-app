@@ -9,5 +9,4 @@
       Error.captureStackTrace(this,this.constructor)
     }
   }
-
   module.exports = AppError
