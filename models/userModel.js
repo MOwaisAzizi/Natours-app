@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
     passwordConfirm:{
         type:String,
         required:[true,'A confirm your password'],
-
         //works on create and save
         validate:{
             validator:function(val){
@@ -33,9 +32,10 @@ const userSchema = new mongoose.Schema({
     },
 })
 
-userSchema.pre('sava',async function(next){
+userSchema.pre('save',async function(next){
+    
     //if the password not changed 
-    if(this.isModified('password')) return next()
+    if(!this.isModified('password')) return next()
 
     //change password in hash(still is out password but assign it to crypt)
     this.password = await bcrypt.hash(this.password,12)
