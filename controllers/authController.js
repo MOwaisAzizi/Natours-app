@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const catchAsycn = require('../utiles/catchAsync')
-const appError = require('../utiles/appError')
+const AppError = require('../utiles/appError')
 
 
-exports.signup = catchAsycn (async(req,res,next)=>{
+exports.signup = catchAsycn (async (req,res,next)=>{
     //  const newUser = await User.create(req.body)
      const newUser = await User.create({
         name:'ali',
-        email:'ali@gamil.com',
+        email:'alihh@gamil.com',
         password:'fjfjfjfj',
         passwordConfirm:'fjfjfjfj',
      })
@@ -26,9 +26,12 @@ const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET,{
 })
 
 exports.login = function(req,res,next){
+    console.log('performing login');
+    
     //check if email or password exist
- if(!email || password){
-    return next(appError('please provide email and password!') )
+    const {email,password} = req.body
+ if(!email || !password){
+    return next(new AppError('please provide email and password!',400) )
  }
 
  //check if email and password correct
