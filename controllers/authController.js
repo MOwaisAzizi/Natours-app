@@ -4,7 +4,7 @@ const catchAsycn = require('../utiles/catchAsync')
 const AppError = require('../utiles/appError')
 
 const sighToken = id =>{
-   jwt.sign({id:id}, process.env.JWT_SECRET,{
+   return jwt.sign({id:id}, process.env.JWT_SECRET,{
       expiresIn:process.env.JWT_EXPIRES_IN
   })}
 
@@ -37,11 +37,11 @@ exports.login = catchAsycn(async(req,res,next)=>{
  }
 
  //check if email and password correct
- //+passord to bring also the paword that we denide to bring it before
+ //+passord to bring also the paword that we denide to bring it before , email:email=email
    const user = await User.findOne({email}).select('+password')   
-    const correct = await User.correctPassword(password,user.password)
-
-    if(!user || !correct){
+   
+   //correct password is a User Schema Method that we made
+    if(!user || !await user.correctPassword(password,user.password)){
      return next(new AppError('incorrect email or password',401))
     }
 
