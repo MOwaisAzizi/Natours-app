@@ -37,8 +37,12 @@ exports.login = catchAsycn(async(req,res,next)=>{
  //check if email and password correct
  //+passord to bring also the paword that we denide to bring it before
    const user = await User.findOne({email}).select('+password')   
-   console.log(user);
-   
+    const correct = User.passwordCorrect(password,user.password)
+
+    if(!user && correct){
+     next(new AppError('incorrect email or password',401))
+    }
+
  //if every thing is ok do this
  const token = ''
  res.status(200).json({

@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
     },
 })
 
+
 userSchema.pre('save',async function(next){
     
     //if the password not changed 
@@ -42,9 +43,13 @@ userSchema.pre('save',async function(next){
     //change password in hash(still is out password but assign it to crypt)
     this.password = await bcrypt.hash(this.password,12)
     this.passwordConfirm = undefined
-
     next()
 })
+
+userSchema.methods.passwordCorrect = async function(condidatePassword,userPassword){
+    //compare bcripted user password with changing user password to bcript and compare
+    return await bcrypt.compare(condidatePassword,userPassword)
+}
 
 const User = mongoose.model('User', userSchema)
 module.exports = User;
