@@ -8,7 +8,7 @@ exports.signup = catchAsycn (async (req,res,next)=>{
     //  const newUser = await User.create(req.body)
      const newUser = await User.create({
         name:'ali',
-        email:'alihh@gamil.com',
+        email:'alihhhh@gamil.com',
         password:'fjfjfjfj',
         passwordConfirm:'fjfjfjfj',
      })
@@ -25,7 +25,7 @@ const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET,{
      })
 })
 
-exports.login = function(req,res,next){
+exports.login = catchAsycn(async(req,res,next)=>{
     console.log('performing login');
     
     //check if email or password exist
@@ -35,6 +35,9 @@ exports.login = function(req,res,next){
  }
 
  //check if email and password correct
+ //+passord to bring also the paword that we denide to bring it before
+   const user = await User.findOne({email}).select('+password')   
+   console.log(user);
    
  //if every thing is ok do this
  const token = ''
@@ -42,4 +45,4 @@ exports.login = function(req,res,next){
     status:'success',
     token,
  })
-}
+})
