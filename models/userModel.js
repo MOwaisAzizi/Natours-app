@@ -46,7 +46,7 @@ userSchema.pre('save',async function(next){
     next()
 })
 
-userSchema.methods.passwordCorrect = async function(condidatePassword,userPassword){
+userSchema.methods.correctPassword = async function(condidatePassword,userPassword){
     //compare bcripted user password with changing user password to bcript and compare
     return await bcrypt.compare(condidatePassword,userPassword)
 }

@@ -3,19 +3,22 @@ const User = require('../models/userModel')
 const catchAsycn = require('../utiles/catchAsync')
 const AppError = require('../utiles/appError')
 
+const sighToken = id =>{
+   jwt.sign({id:id}, process.env.JWT_SECRET,{
+      expiresIn:process.env.JWT_EXPIRES_IN
+  })}
 
 exports.signup = catchAsycn (async (req,res,next)=>{
-    //  const newUser = await User.create(req.body)
-     const newUser = await User.create({
-        name:'ali',
-        email:'alihhhh@gamil.com',
-        password:'fjfjfjfj',
-        passwordConfirm:'fjfjfjfj',
-     })
+     const newUser = await User.create(req.body)
+   //   const newUser = await User.create({
+   //      name:'ali',
+   //      email:'alihhhh@gamil.com',
+   //      password:'fjfjfjfj',
+   //      passwordConfirm:'fjfjfjfj',
+   //   })
 
-const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET,{
-    expiresIn:process.env.JWT_EXPIRES_IN
-})
+const token = sighToken(newUser._id)
+
      res.status(201).json({
         status:'success',
         token,
@@ -25,11 +28,10 @@ const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET,{
      })
 })
 
-exports.login = catchAsycn(async(req,res,next)=>{
-    console.log('performing login');
-    
+exports.login = catchAsycn(async(req,res,next)=>{    
     //check if email or password exist
     const {email,password} = req.body
+
  if(!email || !password){
     return next(new AppError('please provide email and password!',400) )
  }
@@ -37,14 +39,14 @@ exports.login = catchAsycn(async(req,res,next)=>{
  //check if email and password correct
  //+passord to bring also the paword that we denide to bring it before
    const user = await User.findOne({email}).select('+password')   
-    const correct = User.passwordCorrect(password,user.password)
+    const correct = await User.correctPassword(password,user.password)
 
-    if(!user && correct){
-     next(new AppError('incorrect email or password',401))
+    if(!user || !correct){
+     return next(new AppError('incorrect email or password',401))
     }
 
  //if every thing is ok do this
- const token = ''
+ const token = sighToken(user._id)
  res.status(200).json({
     status:'success',
     token,
