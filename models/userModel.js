@@ -56,7 +56,7 @@ userSchema.methods.correctPassword = async function(condidatePassword,userPasswo
 userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
     const changeTimestemp = this.passwordChangedAt.getTime()/1000
     if(this.passwordChangedAt){
-        console.log(changeTimestemp,JWTTimesTemp);
+        //this means time of password changed in the future date
         return JWTTimesTemp < changeTimestemp
     }
 
