@@ -71,7 +71,11 @@ exports.protect = catchAsycn(async(req,res,next)=>{
   console.log(decoded);
   
    //Check if the user exists
-
+   const fresher = User.findOne(decoded.id)
+   if(!fresher){
+      return next(new AppError('user does not exist anymore',401))
+   }
+   
    // Check if user changed password
    next()
 })
