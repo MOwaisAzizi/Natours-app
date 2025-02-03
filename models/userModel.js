@@ -53,12 +53,14 @@ userSchema.methods.correctPassword = async function(condidatePassword,userPasswo
 }
 
 //in every document we access this methods
-userSchema.methods.changePasswordAfter = async function(JWTTimesTemp){
-    console.log('👋🔥🔥');
-    
+userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
+    const changeTimestemp = this.passwordChangedAt.getTime()/1000
     if(this.passwordChangedAt){
-        console.log(this.passwordChangedAt,JWTTimesTemp);
+        console.log(changeTimestemp,JWTTimesTemp);
+        return JWTTimesTemp > changeTimestemp
     }
+
+    //this means password not changed
     return false
 }
 

@@ -80,5 +80,6 @@ exports.protect = catchAsycn(async(req,res,next)=>{
 
    // Check if user changed password
    fresher.changePasswordAfter(decoded.iat)
+   
    next()
 })
