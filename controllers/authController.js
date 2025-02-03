@@ -66,11 +66,9 @@ exports.protect = catchAsycn(async(req,res,next)=>{
   // Verification token
   //becuse it return a promise we use build in promisify node funciton
   const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
-  console.log(decoded);
   
    //Check if the user exists
    const currentUser = await User.findOne({_id:decoded.id})
-   console.log(currentUser);
    
    if(!currentUser){
       return next(new AppError('the user belong to this token does not exist anymore',401))

@@ -54,6 +54,7 @@ userSchema.methods.correctPassword = async function(condidatePassword,userPasswo
 
 //in every document we access this methods
 userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
+    //change milisedond the second
     const changeTimestemp = this.passwordChangedAt.getTime()/1000
     if(this.passwordChangedAt){
         //this means time of password changed in the future date
