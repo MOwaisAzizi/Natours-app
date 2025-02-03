@@ -3,7 +3,6 @@ const catchAsync = require('../utiles/catchAsync')
 
 exports.getAllUsers = catchAsync(async(req, res,next) => {
         const users = await User.find()
-        console.log('🔥🔥🔥🔥🔥');
         
         res.status(200).json({
             status: 'success',

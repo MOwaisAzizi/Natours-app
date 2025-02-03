@@ -1,3 +1,4 @@
+const {promisify} = require('util')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const catchAsycn = require('../utiles/catchAsync')
@@ -65,7 +66,10 @@ exports.protect = catchAsycn(async(req,res,next)=>{
       return next(new AppError('You are not logged in! please login to access!',401))
      }
   // Verification token
-
+  //becuse it return a promise we use build in promisify node funciton
+  const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
+  console.log(decoded);
+  
    //Check if the user exists
 
    // Check if user changed password
