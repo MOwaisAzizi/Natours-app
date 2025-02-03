@@ -52,3 +52,14 @@ exports.login = catchAsycn(async(req,res,next)=>{
     token,
  })
 })
+
+exports.protect = catchAsycn(async(req,res,next)=>{
+   //Geting token and check if its there
+
+  // Verification token
+
+   //Check if the user exists
+
+   // Check if user changed password
+   next()
+})
