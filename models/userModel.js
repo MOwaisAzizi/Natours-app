@@ -57,7 +57,7 @@ userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
     const changeTimestemp = this.passwordChangedAt.getTime()/1000
     if(this.passwordChangedAt){
         console.log(changeTimestemp,JWTTimesTemp);
-        return JWTTimesTemp > changeTimestemp
+        return JWTTimesTemp < changeTimestemp
     }
 
     //this means password not changed
