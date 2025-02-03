@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    passwordChangedAt:Date
 })
 
 
@@ -51,6 +52,15 @@ userSchema.methods.correctPassword = async function(condidatePassword,userPasswo
     return await bcrypt.compare(condidatePassword,userPassword)
 }
 
+//in every document we access this methods
+userSchema.methods.changePasswordAfter = async function(JWTTimesTemp){
+    console.log('👋🔥🔥');
+    
+    if(this.passwordChangedAt){
+        console.log(this.passwordChangedAt,JWTTimesTemp);
+    }
+    return false
+}
 
 
 const User = mongoose.model('User', userSchema)
