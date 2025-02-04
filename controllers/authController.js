@@ -94,3 +94,15 @@ exports.restrictTo = (...roles)=>{
       next()
    }
 }
+
+exports.forgotPasswor = catchAsycn( async(req,res,next)=>{
+   //find user base on email
+ const user = await User.findOne({email:req.body.email})
+ if(!user){
+   return next(new AppError('thare is no user with that email!',401))
+ }
+
+ //generate random token
+
+ //send token to user
+})

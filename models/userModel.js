@@ -37,7 +37,9 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    passwordChangedAt:Date
+    passwordChangedAt:Date,
+    passwordResetToken:String,
+    passwordResetExpires:Date
 })
 
 
@@ -69,6 +71,8 @@ userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
     return false
 }
 
-
+userSchema.methods.createPasswordResetToken = function(){
+    
+}
 const User = mongoose.model('User', userSchema)
 module.exports = User;
