@@ -83,3 +83,10 @@ exports.protect = catchAsycn(async(req,res,next)=>{
    req.user = currentUser
    next()
 })
+
+//for passing inputs in middleware we use this trick:wrap it into a fucntion
+exports.restrictTo = (...roles)=>{
+   return (req,res,next)=>{
+     next()
+   }
+}
