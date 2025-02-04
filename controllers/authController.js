@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const catchAsycn = require('../utiles/catchAsync')
 const AppError = require('../utiles/appError')
+const sendEmail = require('../utiles/email')
 
 const sighToken = id =>{
    return jwt.sign({id:id}, process.env.JWT_SECRET,{
@@ -107,7 +108,18 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
   const resetToken = user.createPasswordResetToken()
   await user.save({validateBeforeSave:false})
  //send token to user
- 
+ const resultURL = `${req.protocol}:// ${req.get('host')}/api/v1/users/resetPassword/${resetToken}`
 
- next()
+ const message = `forgot your password> Submit a PATCH request with your new password and passwordCOnfirm to : ${resultURL}.\nif you didn't forget your password,please ignore this email`
+
+await sendEmail({
+   email:user.email,
+   subject:'your password reset token (valid for 10 min)',
+   message
+}) 
+
+res.status(200).json({
+   status:'success',
+   message: 'Token sent to email'
+})
 })
