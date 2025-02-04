@@ -73,9 +73,13 @@ userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
 }
 
 userSchema.methods.createPasswordResetToken = function(){
-    console.log('🤣🤣🤣');
+    //send toten to email
     const resetToken = crypto.randomBytes(32).toString('hex')
-    console.log(resetToken);
+    
+    //store encripted version in database
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+    //ten munute after it expires sended token
+    this.passwordResetExpires = Date.now() + 10 * 60 * 100
     return resetToken
 }
 
