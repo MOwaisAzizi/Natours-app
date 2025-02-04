@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 
+require('dotenv').config();
+
 //uncaughtException:every sync regection or bugs that is not handled anywhare is run here
 //it is top becouse is syncrounouse and cant controll if it were in bottom
 process.on('uncaughtException',err=>{

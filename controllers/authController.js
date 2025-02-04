@@ -97,7 +97,6 @@ exports.restrictTo = (...roles)=>{
 }
 
 exports.forgotPassword = catchAsycn(async(req,res,next)=>{
-   
    //find user base on email
    const user = await User.findOne({email:req.body.email})
    if(!user){
@@ -138,6 +137,7 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
      500
    );
 }
+
 })
 
 exports.resetPassword = (req,res,next)=>{}
