@@ -99,27 +99,33 @@ exports.restrictTo = (...roles)=>{
 exports.forgotPassword = catchAsycn(async(req,res,next)=>{
    
    //find user base on email
- const user = await User.findOne({email:req.body.email})
- if(!user){
-   return next(new AppError('thare is no user with that email!',401))
- }
-
- //generate random token
-  const resetToken = user.createPasswordResetToken()
-  await user.save({validateBeforeSave:false})
- //send token to user
- const resultURL = `${req.protocol}:// ${req.get('host')}/api/v1/users/resetPassword/${resetToken}`
-
- const message = `forgot your password> Submit a PATCH request with your new password and passwordCOnfirm to : ${resultURL}.\nif you didn't forget your password,please ignore this email`
-
-await sendEmail({
-   email:user.email,
-   subject:'your password reset token (valid for 10 min)',
-   message
-}) 
-
-res.status(200).json({
-   status:'success',
-   message: 'Token sent to email'
-})
+   const user = await User.findOne({email:req.body.email})
+   if(!user){
+      return next(new AppError('thare is no user with that email!',401))
+   }
+   
+   //generate random token
+   const resetToken = user.createPasswordResetToken()
+   await user.save({validateBeforeSave:false})
+   //send token to user
+   const resultURL = `${req.protocol}:// ${req.get('host')}/api/v1/users/resetPassword/${resetToken}`
+   
+   const message = `forgot your password> Submit a PATCH request with your new password and passwordCOnfirm to : ${resultURL}.\nif you didn't forget your password,please ignore this email`
+   
+   try{
+  await sendEmail({
+     email:user.email,
+     subject:'your password reset token (valid for 10 min)',
+     message
+  }) 
+  
+  res.status(200).json({
+     status:'success',
+     message: 'Token sent to email'
+  })
+}catch(err){
+ user.passwordResetToken = undefined
+ user.passwordResetExpires = undefined
+ user.save({validateBeforeSave:false})
+}
 })
