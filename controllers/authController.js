@@ -95,7 +95,9 @@ exports.restrictTo = (...roles)=>{
    }
 }
 
-exports.forgotPasswor = catchAsycn( async(req,res,next)=>{
+exports.forgotPassword = catchAsycn( async(req,res,next)=>{
+   console.log('🔥🔥🔥🙏');
+   
    //find user base on email
  const user = await User.findOne({email:req.body.email})
  if(!user){
@@ -103,6 +105,8 @@ exports.forgotPasswor = catchAsycn( async(req,res,next)=>{
  }
 
  //generate random token
-
+  const resetToken = await user.createPasswordResetToken()
  //send token to user
+
+ next()
 })
