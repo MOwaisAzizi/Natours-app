@@ -87,6 +87,10 @@ exports.protect = catchAsycn(async(req,res,next)=>{
 //for passing inputs in middleware we use this trick:wrap it into a fucntion
 exports.restrictTo = (...roles)=>{
    return (req,res,next)=>{
-     next()
+      //user created in protect middlware 
+      if(!roles.includes(req.user.role)){
+         return next(new AppError('You do not permision to delete a tour!',403))
+      }
+      next()
    }
 }

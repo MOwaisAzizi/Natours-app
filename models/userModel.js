@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         default:'user',
-        enum:['user','lead-guid','admin']
+        enum:['user','guide','lead-guide','admin']
     },
     password:{
         type:String,
@@ -60,12 +60,11 @@ userSchema.methods.correctPassword = async function(condidatePassword,userPasswo
 //in every document we access this methods
 userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
     //change milisedond the second
-    const changeTimestemp = this.passwordChangedAt.getTime()/1000
+    const changeTimestemp = parseInt(this.passwordChangedAt.getTime()/1000,10)
     if(this.passwordChangedAt){
         //this means time of password changed in the future date
         return JWTTimesTemp < changeTimestemp
     }
-
     //this means password not changed
     return false
 }
