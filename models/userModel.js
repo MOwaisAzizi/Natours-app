@@ -54,12 +54,12 @@ userSchema.pre('save',async function(next){
     next()
 })
 
-// userSchema.pre('save',function(req,res,next){
-//     if(this.isModified('password') || this.isNew) return next()
+userSchema.pre('save',function(req,res,next){
+    if(!this.isModified('password') || this.isNew) return next()
 
-//     this.passwordChangedAt = Date.now() - 1000
-//     next()
-// })
+    this.passwordChangedAt = Date.now()-1000
+    next()
+})
 
 userSchema.methods.correctPassword = async function(condidatePassword,userPassword){
     //compare bcripted user password with changing user password to bcript and compare
@@ -79,13 +79,19 @@ userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
 }
 
 userSchema.methods.createPasswordResetToken = function(){
-    //send toten to email
-    const resetToken = crypto.randomBytes(32).toString('hex')
-    //store encripted version in database
-    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
-    //ten munute after it expires sended token
-    this.passwordResetExpires = Date.now() + 10 * 60 * 1000
-    return resetToken
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    this.passwordResetToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+  
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+    console.log('hashed i🤣n modle');
+    console.log(resetToken);
+    console.log(this.passwordResetExpires);
+    
+    return resetToken;
 }
 
 const User = mongoose.model('User', userSchema)
