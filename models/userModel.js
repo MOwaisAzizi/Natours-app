@@ -54,17 +54,21 @@ userSchema.pre('save',async function(next){
     next()
 })
 
-userSchema.pre('save',function(req,res,next){
-    if(!this.isModified('password') || this.isNew) return next()
+userSchema.pre('save', function(next) {
+    if (!this.isModified('password') || this.isNew) return next();
+  
+    console.log('here is creating at🤑👍🏿🙏🙂');
+    
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+  });
 
-    this.passwordChangedAt = Date.now()-1000
-    next()
-})
-
-userSchema.methods.correctPassword = async function(condidatePassword,userPassword){
-    //compare bcripted user password with changing user password to bcript and compare
-    return await bcrypt.compare(condidatePassword,userPassword)
-}
+  userSchema.methods.correctPassword = async function(
+    candidatePassword,
+    userPassword
+  ) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+  };
 
 //in every document we access this methods
 userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
