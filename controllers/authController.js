@@ -58,6 +58,7 @@ exports.login = catchAsycn(async(req,res,next)=>{
 exports.protect = catchAsycn(async(req,res,next)=>{
    //Geting token and check if its there
    console.log('protecting🔥');
+   console.log(req.headers.authorization);
    
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
@@ -183,7 +184,7 @@ exports.updatePassword = catchAsycn(async (req, res, next) => {
   console.log(user);
   
   // 2) Check if POSTed current password is correct
-  if (!await user.correctPassword(await req.body.passwordCurrent, user.password)) {
+  if (!await user.correctPassword( req.body.passwordCurrent, user.password)) {
     return next(new AppError('Your current password is wrong.', 401));
   }
   
