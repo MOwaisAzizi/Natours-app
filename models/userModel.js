@@ -47,7 +47,6 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save',async function(next){
     //if the password not changed 
     if(!this.isModified('password')) return next()
-
     //change password in hash(still is out password but assign it to crypt)
     this.password = await bcrypt.hash(this.password,12)
     this.passwordConfirm = undefined
@@ -55,11 +54,10 @@ userSchema.pre('save',async function(next){
 })
 
 userSchema.pre('save', function(next) {
-    if (!this.isModified('password') || this.isNew) return next();
-  
-    console.log('here is creating at🤑👍🏿🙏🙂');
-    
-    this.passwordChangedAt = Date.now() - 1000;
+    // if (!this.isModified('password') || this.isNew) return next();
+   console.log('👋👋👋');
+   
+    this.passwordChangedAt = Date.now()-1000;
     next();
   });
 
@@ -67,6 +65,8 @@ userSchema.pre('save', function(next) {
     candidatePassword,
     userPassword
   ) {
+   console.log('starting of compareing password🔥🔥');
+
     return await bcrypt.compare(candidatePassword, userPassword);
   };
 

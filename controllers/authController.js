@@ -14,12 +14,12 @@ const signToken = id =>{
   const createSendToken = (user,statusCode,res)=>{
     const token = signToken(user._id)
     res.status(statusCode).json({
-       status:'success',
-       token,
-       data:{
+      status: 'success',
+      token,
+      data: {
         user
-       }
-    })
+      }
+    });
   }
 
 exports.signup = catchAsycn (async (req,res,next)=>{
@@ -28,7 +28,6 @@ exports.signup = catchAsycn (async (req,res,next)=>{
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      passwordChangedAt: req.body.passwordChangedAt
     });
     createSendToken(newUser,201,res)
 })
@@ -58,6 +57,8 @@ exports.login = catchAsycn(async(req,res,next)=>{
 
 exports.protect = catchAsycn(async(req,res,next)=>{
    //Geting token and check if its there
+   console.log('protecting🔥');
+   
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
       token = req.headers.authorization.split(' ')[1]
@@ -83,6 +84,8 @@ exports.protect = catchAsycn(async(req,res,next)=>{
 
    //access to protected rout
    req.user = currentUser
+   console.log('protecting end...🔥');
+
    next()
 })
 
@@ -174,19 +177,23 @@ exports.resetPassword = catchAsycn(async(req,res,next)=>{
 
 exports.updatePassword = catchAsycn(async (req, res, next) => {
   // 1) Get user from collection
-  const user = await User.findById(req.user.id).select('+password');
+  console.log('🥉🥉🥉');
 
+  const user = await User.findById(req.user.id).select('+password');
+  console.log(user);
+  
   // 2) Check if POSTed current password is correct
-  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+  if (!await user.correctPassword(await req.body.passwordCurrent, user.password)) {
     return next(new AppError('Your current password is wrong.', 401));
   }
-
+  
   // 3) If so, update password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
   // User.findByIdAndUpdate will NOT work as intended!
-
+  
   // 4) Log user in, send JWT
+  console.log('end of udpate🤣');
   createSendToken(user, 200, res);
 });
