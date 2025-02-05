@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     },
     passwordConfirm:{
         type:String,
-        required:[true,'A confirm your password'],
+        required:[true,'please confirm your password(not confirm feild yet)'],
         //works on create and save
         validate:{
             validator:function(val){
@@ -45,7 +45,6 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.pre('save',async function(next){
-    
     //if the password not changed 
     if(!this.isModified('password')) return next()
 
@@ -54,6 +53,13 @@ userSchema.pre('save',async function(next){
     this.passwordConfirm = undefined
     next()
 })
+
+// userSchema.pre('save',function(req,res,next){
+//     if(this.isModified('password') || this.isNew) return next()
+
+//     this.passwordChangedAt = Date.now() - 1000
+//     next()
+// })
 
 userSchema.methods.correctPassword = async function(condidatePassword,userPassword){
     //compare bcripted user password with changing user password to bcript and compare
@@ -78,7 +84,7 @@ userSchema.methods.createPasswordResetToken = function(){
     //store encripted version in database
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
     //ten munute after it expires sended token
-    this.passwordResetExpires = Date.now() + 10 * 60 * 100
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000
     return resetToken
 }
 

@@ -12,13 +12,12 @@ const signToken = id =>{
   })}
 
 exports.signup = catchAsycn (async (req,res,next)=>{
-     const newUser = await User.create(req.body)
-   //   const newUser = await User.create({
-   //      name:'ali',
-   //      email:'alihhhh@gamil.com',
-   //      password:'fjfjfjfj',
-   //      passwordConfirm:'fjfjfjfj',
-   //   })
+   const newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      passwordConfirm: req.body.passwordConfirm
+    });
 
 const token = signToken(newUser._id)
 
@@ -141,30 +140,32 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
 
 })
 
-exports.resetPassword = (req,res,next)=>{
+exports.resetPassword = catchAsycn(async(req,res,next)=>{
    console.log('🔥🔥🔥');
    
    //1-get user base on the token
    //change token to cripto to comare it with token in database
    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
-   const user = User.findOne({passwordResetToken:hashedToken,passwordResetExpires:{$gt:Date.now()}})
-
+   const user = await User.findOne({passwordResetToken:hashedToken,passwordResetExpires:{$gt:Date.now()}})
+   console.log(req.body);
+   
    //2-if token has not expired, and thare is user, set the new password
      if(!user){
       return next(new AppError('Token invalid or expired!',400))
      }
      user.password = req.body.password
-     user.confirmPassword = req.body.confirmPassword
+     user.passwordConfirm = req.body.passwordConfirm
      user.passwordResetToken = undefined
      user.passwordResetExpires = undefined
+     await user.save()
    //3-update changePasswordAt property for the user
 
    //4- log the user in, send jwt
    const token = signToken(user._id)
    res.status(200).json({
       status: 'success',
-      message: 'Token sent to email!',
+      message: 'your password changed!',
       token
     });
-}
+})
  
