@@ -85,9 +85,6 @@ userSchema.methods.createPasswordResetToken = function(){
       .digest('hex');
   
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-    console.log('hashed i🤣n modle');
-    console.log(resetToken);
-    console.log(this.passwordResetExpires);
     
     return resetToken;
 }

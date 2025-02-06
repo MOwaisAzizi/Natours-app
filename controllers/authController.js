@@ -106,10 +106,7 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  const resetURL = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
+  const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
   const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
   try {
@@ -139,18 +136,11 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
 
 exports.resetPassword = catchAsycn(async(req,res,next)=>{
   // 1) Get user based on the token
-  const hashedToken = crypto
-    .createHash('sha256')
-    .update(req.params.token)
-    .digest('hex');
-    console.log('hashed in auth');
+  const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
     
-    console.log(hashedToken);
-    
-
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    // passwordResetExpires: { $gt: Date.now()}
+    passwordResetExpires: { $gt: Date.now()}
   });
 
   // 2) If token has not expired, and there is user, set the new password
@@ -169,12 +159,11 @@ exports.resetPassword = catchAsycn(async(req,res,next)=>{
 })
  
 
+//someone who already loged in!
 exports.updatePassword = catchAsycn(async (req, res, next) => {
   // 1) Get user from collection
-  console.log('🥉🥉🥉');
 
   const user = await User.findById(req.user.id).select('+password');
-  console.log(user);
   
   // 2) Check if POSTed current password is correct
   if (!await user.correctPassword( req.body.passwordCurrent, user.password)) {
@@ -188,6 +177,5 @@ exports.updatePassword = catchAsycn(async (req, res, next) => {
   // User.findByIdAndUpdate will NOT work as intended!
   
   // 4) Log user in, send JWT
-  console.log('end of udpate🤣');
   createSendToken(user, 200, res);
 });
