@@ -4,7 +4,6 @@ const { signup,login,forgotPassword,resetPassword, updatePassword,protect } = re
 
 //using express class
 const router = express.Router()
-
 router.post('/signup',signup)
 router.post('/login',login)
 

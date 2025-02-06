@@ -52,13 +52,10 @@ exports.login = catchAsycn(async(req,res,next)=>{
 
  //if every thing is ok do this
  createSendToken(user,200,res)
-
 })
 
 exports.protect = catchAsycn(async(req,res,next)=>{
    //Geting token and check if its there
-   console.log('protecting🔥');
-   console.log(req.headers.authorization);
    
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
@@ -73,7 +70,6 @@ exports.protect = catchAsycn(async(req,res,next)=>{
   
    //Check if the user exists
    const currentUser = await User.findOne({_id:decoded.id})
-   
    if(!currentUser){
       return next(new AppError('the user belong to this token does not exist anymore',401))
    }
@@ -82,11 +78,8 @@ exports.protect = catchAsycn(async(req,res,next)=>{
    if(currentUser.changePasswordAfter(decoded.iat)){
       return next(new AppError('user recently changed password! please login!'))
    }
-
    //access to protected rout
    req.user = currentUser
-   console.log('protecting end...🔥');
-
    next()
 })
 
