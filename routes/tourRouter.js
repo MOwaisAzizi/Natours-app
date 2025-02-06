@@ -6,7 +6,7 @@ const router = express.Router()
 // router.param('id', checkID)
 //change two middleware functions in post(check body)
 // router.route('/').get(getAllTours).post(checkBody, createTour)
-//we  can use the catchAsycn funtions here in order to send errors in global error handler
+//we can use the catchAsycn funtions here in order to send errors in global error handler
 router.route('/top-5-cheap').get(aliesTopTours,getAllTours)
 router.route('/tour-stats').get(getTourStats)
 router.route('/monthly-plan/:year').get(getMonthlyPlan)
