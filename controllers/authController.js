@@ -78,6 +78,7 @@ exports.protect = catchAsycn(async(req,res,next)=>{
    if(currentUser.changePasswordAfter(decoded.iat)){
       return next(new AppError('user recently changed password! please login!'))
    }
+   
    //access to protected rout
    req.user = currentUser
    next()

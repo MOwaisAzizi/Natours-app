@@ -54,7 +54,7 @@ userSchema.pre('save',async function(next){
 })
 
 userSchema.pre('save', function(next) {
-    // if (!this.isModified('password') || this.isNew) return next();
+    if (!this.isModified('password') || this.isNew) return next();
     this.passwordChangedAt = Date.now()-1000;
     next();
   });
@@ -67,8 +67,8 @@ userSchema.pre('save', function(next) {
 //in every document we access this methods
 userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
     //change milisedond the second
-    const changeTimestemp = parseInt(this.passwordChangedAt.getTime()/1000,10)
     if(this.passwordChangedAt){
+        const changeTimestemp = parseInt(this.passwordChangedAt.getTime()/1000,10)
         //this means time of password changed in the future date
         return JWTTimesTemp < changeTimestemp
     }
