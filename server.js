@@ -5,7 +5,7 @@ require('dotenv').config();
 
 //uncaughtException:every sync regection or bugs that is not handled anywhare is run here
 //it is top becouse is syncrounouse and cant controll if it were in bottom
-process.on('uncaughtException',err=>{
+process.on('uncaughtException',err =>{
     console.log(err.name,err.message);
     console.log('uncaughtException: server is shoting down...');
     process.exit(1)
@@ -14,13 +14,13 @@ process.on('uncaughtException',err=>{
 dotenv.config({path:'./config.env'})
 const app = require('./app')
 
-const DB = process.env.DAtABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
+const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
 mongoose.connect(DB,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useFindAndModify:true,
     useUnifiedTopology:true
-}).then(()=>console.log('successfully connected'))
+}).then(()=>console.log('successfully connected!'))
 
 
 const port = process.env.PORT || 3000
@@ -29,7 +29,7 @@ const server = app.listen(port, () => {
 })
 
 //unhandledRejection: every unhandlerd asyc rejection or error(like DB problem with connection) will come to this middleware
-process.on('unhandledRejection',err=>{
+process.on('unhandledRejection',err =>{
     console.log(err.name,err.message);
     console.log('unhandledRejection: server is shoting down...');
    //close the server

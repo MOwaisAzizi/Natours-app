@@ -17,7 +17,6 @@ app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 
 //whin we write a middleware that has four arguments that means that is an error handling middlwware not regular one
- 
 app.all('*',(req,res,next)=>{
    next(new AppError(`not fount ${req.originalUrl} path in this sever!`,404))
   })
