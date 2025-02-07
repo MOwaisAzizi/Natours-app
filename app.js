@@ -12,7 +12,7 @@ app.use(express.json())
 //this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing
 if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
-//after execution this middleware end the responing
+//after execution this middleware end the responing to client
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 
