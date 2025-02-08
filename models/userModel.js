@@ -83,16 +83,20 @@ userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
 
 userSchema.methods.createPasswordResetToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');
-
     this.passwordResetToken = crypto
       .createHash('sha256')
       .update(resetToken)
       .digest('hex');
   
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-    
     return resetToken;
 }
+
+//before geting users , bring user that is not inactive
+userSchema.pre(/^find/,function(next){
+    this.find({active:{$ne:false}})
+    next()
+})
 
 const User = mongoose.model('User', userSchema)
 module.exports = User;
