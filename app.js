@@ -7,14 +7,18 @@ const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
+const helmet = require('helmet')
 
 //our global Middlwares
 
-app.use(express.json())
+//set security http header
+app.use(helmet())
+
+//development logging 
 //this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing
 if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
-
-  //show the resutl in header of postman
+  
+  //limit requests form same api
   const limitRater = rateLimit({
     max:100,
     windowMs:60 * 60 * 1000,
@@ -22,7 +26,15 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
   })
   //api means every links that starts with api run this middlware
   app.use('/api',limitRater)
+  
+  //body parser, reading data from body into req.body
+  //10kb means not allwod data form body more then 10kb
+  app.use(express.json({limit:'10kb'}))
 
+  //reading static files
+ app.use(express.static(`${__dirname}/public`))
+
+  //route middlware
 //after execution this middleware end the responing to client
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
