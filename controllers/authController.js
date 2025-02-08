@@ -15,7 +15,7 @@ const signToken = id =>{
     const token = signToken(user._id)
     
     const cookieOptions = {
-      expires: new Date(Date.now() + process.env.JWT_COOKOIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+      expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
       //can not be accessed and modified  by browser(resived it store it and send it back)
       httpOnly:true
      }
@@ -25,6 +25,8 @@ const signToken = id =>{
     //name of cookie is uniq var
      res.cookie('jwt',token,cookieOptions)
 
+    //to prevent showing password in res but not save it in database
+     user.password = undefined
 
     res.status(statusCode).json({
       status: 'success',
