@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const mongoSantization = require('express-mongo-sanitize')
 const xss = require('xss-clean')
+const hpp = require('hpp')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const AppError = require('./utiles/appError')
@@ -40,8 +41,11 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
  //data sinitaion against ssl(prevent to name a stirng a bad html code and store bad data in database)
  app.use(xss())
 
-
-
+//preventing parmamters polution(whin we writing mult parms value like sort=price&sort=age)
+//in some cases it needs to be muiltivalue(like defeculty=easy&defeculty=miduim)
+app.use(hpp({
+  whiteList : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
+}))
 
   //reading static files
  app.use(express.static(`${__dirname}/public`))
