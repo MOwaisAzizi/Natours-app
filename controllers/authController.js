@@ -20,7 +20,7 @@ const signToken = id =>{
       httpOnly:true
      }
       //cookie will send only in encripted connection(https)
-      if(process.env.NODE_ENV === 'prod') res.cookie.secure = true
+      if(process.env.NODE_ENV === 'production') res.cookie.secure = true
 
     //name of cookie is uniq var
      res.cookie('jwt',token,cookieOptions)

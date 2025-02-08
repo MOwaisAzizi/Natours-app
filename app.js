@@ -2,15 +2,26 @@ const express = require('express')
 
 const app = express()
 const morgan = require('morgan')
+const rateLimit = require('express-rate-limit')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
 
+//our global Middlwares
 
 app.use(express.json())
 //this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing
 if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
+
+  //show the resutl in header of postman
+  const limitRater = rateLimit({
+    max:100,
+    windowMs:60 * 60 * 1000,
+    message:'To many request of this IP. please try agin in an hour!'
+  })
+  //api means every links that starts with api run this middlware
+  app.use('/api',limitRater)
 
 //after execution this middleware end the responing to client
 app.use('/api/v1/tours', tourRouter)
