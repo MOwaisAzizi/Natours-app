@@ -14,6 +14,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -22,7 +23,8 @@
     "ndb": "^1.1.5",
     "nodemailer": "^6.10.0",
     "slugify": "^1.6.6",
-    "validator": "^13.12.0"
+    "validator": "^13.12.0",
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

@@ -2,15 +2,18 @@ const express = require('express')
 
 const app = express()
 const morgan = require('morgan')
+const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
+const mongoSantization = require('express-mongo-sanitize')
+const xss = require('xss-clean')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
-const helmet = require('helmet')
 
 //our global Middlwares
 
+//////SECURITY MIDDLWARES(pakages)
 //set security http header
 app.use(helmet())
 
@@ -30,6 +33,15 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
   //body parser, reading data from body into req.body
   //10kb means not allwod data form body more then 10kb
   app.use(express.json({limit:'10kb'}))
+
+ // data sanitiazation against nosql query injection.(email:$gt:'': it is working to provide email to true)
+  app.use(mongoSantization())
+
+ //data sinitaion against ssl(prevent to name a stirng a bad html code and store bad data in database)
+ app.use(xss())
+
+
+
 
   //reading static files
  app.use(express.static(`${__dirname}/public`))
