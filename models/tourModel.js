@@ -132,9 +132,10 @@ tourSchema.pre('save', function (next) {
 //    next()
 // })
 
-tourSchema.pre('save', function (next) {
+tourSchema.pre('save', async function (next) {
+  // return an array of promise
   const guidesPromise = this.guides.map(async id => await User.findById(id))
-  Promise.all(guidesPromise)
+  this.guides = await Promise.all(guidesPromise)
   next()
 })
 
