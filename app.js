@@ -44,7 +44,7 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 //preventing parmamters polution(whin we writing mult parms value like sort=price&sort=age)
 //in some cases it needs to be muiltivalue(like defeculty=easy&defeculty=miduim)
 app.use(hpp({
-  whiteList : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
+  whitelist : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
 }))
 
   //reading static files

@@ -76,7 +76,33 @@ const tourSchema = new mongoose.Schema(
       secretTour: {
         type: Boolean,
         default: false
-      }
+      },
+      //startin embeding model for locations
+       startLocation:{
+        //GieLocation
+        //sub or nested schema type options
+        type:{
+          type : String,
+          default:'Point',
+          enum:['Point']
+        },
+        coordinates:[Number],
+        address:String,
+        description:String
+      },
+      Locations:[
+        {
+          type:{
+            type : String,
+            default:'Point',
+            enum:['Point']
+          },
+          coordinates:[Number],
+          address:String,
+          description:String,
+          day:Number
+        }
+      ]
     },
     {
       toJSON: { virtuals: true },
@@ -90,7 +116,7 @@ const tourSchema = new mongoose.Schema(
 
 //DOCUMENT middeware: run before or after sava() and create() methods
 tourSchema.pre('save', function (next) {
-    //this, points to current working document
+    //this,'Point to current working document
     // this.slug = slugify(this.name,{lower:true})
     next()
 })
