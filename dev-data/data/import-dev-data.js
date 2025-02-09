@@ -12,7 +12,7 @@ mongoose.connect(DB,{
     useFindAndModify:true,
 }).then(()=>console.log('successfully connected'))
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`,'utf-8'))
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`,'utf-8'))
 
 //import the data to Database
 const importData = async()=>{
@@ -40,7 +40,6 @@ const deleteData = async()=>{
 }
 
 console.log(process.argv);
-console.log('Hellooooo💰❌❌');
 if(process.argv[2] === '--import'){
     importData()
 }else if(process.argv[2] === '--delete'){

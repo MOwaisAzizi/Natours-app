@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { default: slugify } = require('slugify')
+const User = require('./userModel')
 
 const tourSchema = new mongoose.Schema(
     {
@@ -77,9 +78,9 @@ const tourSchema = new mongoose.Schema(
         type: Boolean,
         default: false
       },
-      //startin embeding model for locations
+      //embeded object(not a document):this object is not a reguler objec schema options but an object to recognize as GoeSpicia object
        startLocation:{
-        //GieLocation
+        //GeoJSON(type and Coordinates) describing a certain poits in earth
         //sub or nested schema type options
         type:{
           type : String,
@@ -90,6 +91,7 @@ const tourSchema = new mongoose.Schema(
         address:String,
         description:String
       },
+ //in order to create documents and embed them into another document we need an array
       Locations:[
         {
           type:{
@@ -102,8 +104,10 @@ const tourSchema = new mongoose.Schema(
           description:String,
           day:Number
         }
-      ]
+      ],
+      guides:Array
     },
+
     {
       toJSON: { virtuals: true },
       toObject: { virtuals: true }
@@ -127,6 +131,12 @@ tourSchema.pre('save', function (next) {
 //    console.log(doc);
 //    next()
 // })
+
+tourSchema.pre('save', function (next) {
+  const guidesPromise = this.guides.map(async id => await User.findById(id))
+  Promise.all(guidesPromise)
+  next()
+})
 
 //Query middleware:run before queries like find and this points to query object and access to query methods
 ///^find:means that every query that starts with find(we do this becuse of applying to single find tour too),pre:before,post:after/
