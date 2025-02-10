@@ -80,7 +80,7 @@ const tourSchema = new mongoose.Schema(
       },
       //embeded object(not a document):this object is not a reguler objec schema options but an object to recognize as GoeSpicia object
        startLocation:{
-        //GeoJSON(type and Coordinates) describing a certain poits in earth
+        //GeoJSON(type and Coordinates) describing a certain point in the earth
         //sub or nested schema type options
         type:{
           type : String,
