@@ -9,6 +9,7 @@ const xss = require('xss-clean')
 const hpp = require('hpp')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
+const reviewRouter = require('./routes/reviewRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
 
@@ -54,6 +55,7 @@ app.use(hpp({
 //after execution this middleware end the responing to client
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/reviews', reviewRouter)
 
 //whin we write a middleware that has four arguments that means that is an error handling middlwware not regular one
 app.all('*',(req,res,next)=>{
