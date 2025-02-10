@@ -1,20 +1,32 @@
 const mongoose = require('mongoose')
 
-const rewiewSchema = new mongoose.Schema({
-    reweiw: String,
-    rating:{
-        type:String,
-        default:0
+const reviewSchema = new mongoose.Schema({
+    reweiw:{
+        type: String,
+        required:[true,'A review can not be empty']
     },
-    createdAt:Date,
+    rating:{
+        type: Number,
+        max:5,
+        min:1
+    },
+    createdAt:{
+        type : Date,
+        default:Date.now()
+    },
 
-    refTour:[{
+    tour:[{
         type:mongoose.Schema.ObjectId,
-        ref:'tours'
+        ref:'tours',
+        required:[true,'A review must belong to a tour']
     }],
-    refUser:[{
+    user:[{
         type:mongoose.Schema.ObjectId,
-        ref:'users'
+        ref:'users',
+        required:[true,'A review must belong to a user']
     }]
 
 })
+
+const Review = mongoose.model('Review', reviewSchema);
+module.exports = Review
