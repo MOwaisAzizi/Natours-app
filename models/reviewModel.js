@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const reviewSchema = new mongoose.Schema({
-    reweiw:{
+    review:{
         type: String,
         required:[true,'A review can not be empty']
     },
@@ -17,16 +17,29 @@ const reviewSchema = new mongoose.Schema({
 
     tour:[{
         type:mongoose.Schema.ObjectId,
-        ref:'tours',
+        ref:'Tour',
         required:[true,'A review must belong to a tour']
     }],
     user:[{
         type:mongoose.Schema.ObjectId,
-        ref:'users',
+        ref:'User',
         required:[true,'A review must belong to a user']
     }]
 
 })
+
+reviewSchema.pre(/^find/,function(next){
+    this.populate({
+          path:'tour',
+          select:'name'
+    }).populate({
+        path:'user',
+        select:'name photo'
+    })
+    next()
+})
+
+
 
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review
