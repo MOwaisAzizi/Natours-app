@@ -135,6 +135,7 @@ const tourSchema = new mongoose.Schema(
   //   next()
   // })
 
+  //fill the references ids to actual data in that tour
   tourSchema.pre(/^find/,function(){
     //populate the the users in the quides of tours
     this.populate({
