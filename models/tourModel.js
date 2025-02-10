@@ -117,7 +117,7 @@ const tourSchema = new mongoose.Schema(
        ]
        
     },
-
+    //whin ever we have a filds got from another fields show them in result but not store in database
     {
       toJSON: { virtuals: true },
       toObject: { virtuals: true }
@@ -136,6 +136,7 @@ const tourSchema = new mongoose.Schema(
   // })
 
   tourSchema.pre(/^find/,function(){
+    //populate the the users in the quides of tours
     this.populate({
       path:'guides',
       select:'-_v -changePasswordAt'
