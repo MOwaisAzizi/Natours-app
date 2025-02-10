@@ -135,6 +135,13 @@ const tourSchema = new mongoose.Schema(
   //   next()
   // })
 
+  tourSchema.pre(/^find/,function(){
+    this.populate({
+      path:'guides',
+      select:'-_v -changePasswordAt'
+    })
+  })
+
 tourSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
     this.start = Date.now();
