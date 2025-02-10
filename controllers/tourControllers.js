@@ -27,7 +27,7 @@ exports.getAllTours = catchAsync (async(req, res,next) => {
 
 
 exports.getTour = catchAsync (async (req, res,next) => {
-        const tour = await Tour.findById(req.params.id)
+        const tour = await Tour.findById(req.params.id).populate('reviews')
         // const tour = await Tour.findOne({_id:req.parmas.id})
          
         //this is an extra error from catch in catchAsycn that we write the controlble error handling

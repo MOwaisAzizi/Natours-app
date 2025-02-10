@@ -15,28 +15,39 @@ const reviewSchema = new mongoose.Schema({
         default:Date.now()
     },
 
-    tour:[{
+    tour:{
         type:mongoose.Schema.ObjectId,
         ref:'Tour',
         required:[true,'A review must belong to a tour']
-    }],
-    user:[{
+    },
+    user:{
         type:mongoose.Schema.ObjectId,
         ref:'User',
         required:[true,'A review must belong to a user']
-    }]
+    }
 
-})
+},
+{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
+)
 
+//in database just store the id but here we got the id informaiton and show it user
 reviewSchema.pre(/^find/,function(next){
-    this.populate({
-          path:'tour',
-          select:'name'
-    }).populate({
-        path:'user',
-        select:'name photo'
-    })
-    next()
+    // this.populate({
+    //       path:'tour',
+    //       select:'name'
+    // }).populate({
+    //     path:'user',
+    //     select:'name photo'
+    // })
+    // next()
+  this.populate({
+      path:'user',
+      select:'name photo'
+  })
+  next()
 })
 
 

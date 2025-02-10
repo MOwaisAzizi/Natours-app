@@ -114,7 +114,8 @@ const tourSchema = new mongoose.Schema(
           type:mongoose.Schema.ObjectId,
           ref:'User'
          }
-       ]
+       ],
+   
        
     },
     //whin ever we have a filds got from another fields show them in result but not store in database
@@ -127,7 +128,14 @@ const tourSchema = new mongoose.Schema(
   tourSchema.virtual('durationWeeks').get(function() {
     return this.duration / 7;
   });
- 
+  
+  //for virtual population and referencing the review
+  tourSchema.virtual('reviews',{
+   ref:'Review',
+   foreignField:'tour',
+   localField:'_id'
+  })
+
   //for the way of embeding users in tour
   // tourSchema.pre('save',async function(next){
     // const guidePromise = this.guides.map(async id=> User.findById(id))
