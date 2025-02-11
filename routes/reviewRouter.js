@@ -7,6 +7,7 @@ const router = express.Router({mergeParams: true})
 
 //Post: tour/:kdfkde3/reviews
 //get: tour/:kdfkde3/reviews
+
 router.route('/').get(getAllReview).post(protect,restrictTo('user'),createReview)
 
 module.exports = router

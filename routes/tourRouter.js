@@ -11,10 +11,13 @@ const router = express.Router()
 // router.route('/').get(getAllTours).post(checkBody, createTour)
 //we can use the catchAsycn funtions here in order to send errors in global error handler
 
+//Post: tour/:kdfkde3/reviews
+//get: tour/:kdfkde3/reviews
 //nested routes:for geting userid and tour id automaticall instead of writing it in body
 //the problem with this way is that we have reveiw rout in tour router(not good)
 // router.route('/:tourId/reviews').post(protect,restrictTo('user'),createReview)
 
+//whin we redirect the route to another rout we say that execute one the the routs in reviewrouter depentding of request
 router.use('/:tourId/reviews',reviewRouter)
 
 router.route('/top-5-cheap').get(aliesTopTours,getAllTours)
