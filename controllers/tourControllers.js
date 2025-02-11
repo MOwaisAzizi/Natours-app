@@ -27,6 +27,7 @@ exports.getAllTours = catchAsync (async(req, res,next) => {
 
 
 exports.getTour = catchAsync (async (req, res,next) => {
+    // reviews:for vitual property in tour modal to bring of formation 
         const tour = await Tour.findById(req.params.id).populate('reviews')
         // const tour = await Tour.findOne({_id:req.parmas.id})
          

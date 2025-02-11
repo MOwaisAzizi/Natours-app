@@ -145,7 +145,7 @@ const tourSchema = new mongoose.Schema(
 
   //fill the references ids to actual data in that tour
   tourSchema.pre(/^find/,function(){
-    //populate the the users in the quides of tours
+    //populate(bring the data of data) the the users in the quides of tours
     this.populate({
       path:'guides',
       select:'-_v -changePasswordAt'

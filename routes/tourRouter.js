@@ -1,6 +1,7 @@
 const express = require('express')
 const { getAllTours, createTour, getTour, updateTour, deleteTour,aliesTopTours,getTourStats,getMonthlyPlan } = require('../controllers/tourControllers')
 const {protect,restrictTo} = require('../controllers/authController')
+const {createReview} = require('../controllers/reviewController')
 
 const router = express.Router()
 // router.param('id', checkID)
@@ -13,5 +14,8 @@ router.route('/monthly-plan/:year').get(getMonthlyPlan)
 
 router.route('/').get(protect,getAllTours).post(createTour)
 router.route('/:id').get(getTour).patch(updateTour).delete(protect,restrictTo('admin','lead-guide'),deleteTour)
+
+//nested routes:for geting userid and tour id automaticall instead of writing it in body
+router.route('/:tourId/reviews').post(protect,restrictTo('user'),createReview)
 
 module.exports = router
