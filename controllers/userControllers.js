@@ -1,6 +1,8 @@
 const User = require('../models/userModel')
 const AppError = require('../utiles/appError')
 const catchAsync = require('../utiles/catchAsync')
+const factory = require('./factoryController.js')
+
 
 const fitlerObj = (obj,...allowedFields)=>{
     const newObj = {}
@@ -73,9 +75,4 @@ exports.updateUser = ((req, res) => {
         status: 'Not created yet',
     })
 })
-exports.deleteUser = ((req, res) => {
-    res.status(500).json({
-        message: 'Error',
-        status: 'Not created yet',
-    })
-})
+exports.deleteUser = factory.deleteOne(User)

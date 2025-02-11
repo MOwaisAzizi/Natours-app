@@ -38,12 +38,15 @@ const signToken = id =>{
   }
 
 exports.signup = catchAsycn (async (req,res,next)=>{
-   const newUser = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-    });
+   const newUser = await User.create(
+    // {
+  //     name: req.body.name,
+  //     email: req.body.email,
+  //     password: req.body.password,
+  //     passwordConfirm: req.body.passwordConfirm,
+    // }
+    req.body
+  );
     createSendToken(newUser,201,res)
 })
 

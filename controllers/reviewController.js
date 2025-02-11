@@ -1,9 +1,10 @@
 const Review = require('../models/reviewModel')
 const catchAsync = require('../utiles/catchAsync')
+const factory = require('./factoryController.js')
 
 exports.getAllReview = catchAsync( async (req, res,next)=>{
     let filter = {}
-    if(req.body.tourId) filter = {tour:req.params.tourId}
+    if(req.params.tourId) filter = {tour:req.params.tourId}
 
     const reviews = await Review.find(filter)
 
@@ -29,3 +30,5 @@ exports.createReview = catchAsync( async (req,res,next)=>{
         }
     })
 })
+
+exports.deleteReview = factory.deleteOne(Review)
