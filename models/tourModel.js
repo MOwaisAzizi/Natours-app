@@ -129,7 +129,7 @@ const tourSchema = new mongoose.Schema(
     return this.duration / 7;
   });
   
-  //for virtual population and referencing the review
+  //for virtual population and referencing the review(for magage to access the childs like review that took information of spacific tour)
   tourSchema.virtual('reviews',{
    ref:'Review',
    foreignField:'tour',
