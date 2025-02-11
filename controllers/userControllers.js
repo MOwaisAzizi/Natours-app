@@ -69,11 +69,6 @@ exports.getUser = ((req, res) => {
         status: 'Not created yet',
     })
 })
-exports.updateUser = ((req, res) => {
-    res.status(500).json({
-        message: 'Error',
-        status: 'Not created yet',
-    })
-})
 
+exports.updateUser = factory.updateOne(User)
 exports.deleteUser = factory.deleteOne(User)
