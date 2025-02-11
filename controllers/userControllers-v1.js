@@ -75,5 +75,4 @@ exports.updateUser = ((req, res) => {
         status: 'Not created yet',
     })
 })
-
 exports.deleteUser = factory.deleteOne(User)
