@@ -15,7 +15,6 @@ const fitlerObj = (obj,...allowedFields)=>{
 }
 
 
-
     exports.updateMe = catchAsync( async(req,res,next)=>{
         //1-prevent user from updating password and confirmPassword
         if(req.body.password || req.body.passwordConfirm){
@@ -53,6 +52,10 @@ exports.createUser = ((req, res) => {
     })
 })
 
+exports.getMe = catchAsync(async(req,res,next)=>{
+    req.params.id = req.user.id
+    next()
+})
 
 //do not update password with this
 exports.updateUser = factory.updateOne(User)
