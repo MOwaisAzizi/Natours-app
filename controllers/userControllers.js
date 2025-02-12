@@ -14,17 +14,7 @@ const fitlerObj = (obj,...allowedFields)=>{
     return newObj
 }
 
-exports.getAllUsers = catchAsync(async(req, res,next) => {
-        const users = await User.find()
-        
-        res.status(200).json({
-            status: 'success',
-            result: users.length,
-            data: {
-                users
-            }
-        })
-    })
+
 
     exports.updateMe = catchAsync( async(req,res,next)=>{
         //1-prevent user from updating password and confirmPassword
@@ -59,7 +49,7 @@ exports.getAllUsers = catchAsync(async(req, res,next) => {
 exports.createUser = ((req, res) => {
     res.status(500).json({
         message: 'Error',
-        status: 'Not created yet',
+        status: 'Can not create one. please sign up',
     })
 })
 
@@ -68,3 +58,4 @@ exports.createUser = ((req, res) => {
 exports.updateUser = factory.updateOne(User)
 exports.deleteUser = factory.deleteOne(User)
 exports.getUser = factory.getOne(User)
+exports.getAllUsers = factory.getAll(User)
