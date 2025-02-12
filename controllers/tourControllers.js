@@ -26,8 +26,8 @@ exports.getAllTours = catchAsync (async(req, res,next) => {
         })
 })
 
-
-exports.getTour = factory.getOne(Tour)
+// for populateing send to factory
+exports.getTour = factory.getOne(Tour,{path:'reviews'})
 exports.updateTour = factory.updateOne(Tour)
 exports.deleteTour = factory.deleteOne(Tour)
 exports.createTour = factory.createOne(Tour)

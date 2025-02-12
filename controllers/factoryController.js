@@ -1,4 +1,5 @@
 const { populate } = require("../models/reviewModel");
+const APIFeatures = require("../utiles/apiFeatures");
 const AppError = require("../utiles/appError");
 const catchAsync = require("../utiles/catchAsync");
 
@@ -39,13 +40,13 @@ exports.createOne = Model => catchAsync (async(req, res) => {
     res.status(201).json({
         status: 'success',
         data: {
-            tour:doc
+            data:doc
         }
     })
 })
 
 exports.getOne = (Model, populateOptions) => catchAsync (async (req, res,next) => {
-    //populate came from tour getTour
+      //populate came from tour getTour
       let query = Model.findById(req.params.id)
       if(populateOptions) query = query.populate(populateOptions)
       const doc = await query
@@ -57,7 +58,22 @@ exports.getOne = (Model, populateOptions) => catchAsync (async (req, res,next) =
         res.status(200).json({
             status: 'success',
             data: {
-                doc
+                data:doc
             }
         })
+})
+
+const getAll = Model =>  catchAsync (async(req, res,next) => {
+    const Feature = new APIFeatures(Model.find(), req.query).filter().sort().limitFields().paginate()
+    const docs = await Feature.query
+
+    //SEND RESPOSE
+    res.status(200).json({
+        status: 'success',
+        // result:Tour.countDocuments(),
+        result: docs.length,
+        data: {
+           data: docs
+        }
+    })
 })
