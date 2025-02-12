@@ -1,6 +1,4 @@
 const Tour = require('../models/tourModel')
-const AppError = require('../utiles/appError')
-const APIFeatures = require('./../utiles/apiFeatures')
 const catchAsync = require('./../utiles/catchAsync')
 const factory = require('./factoryController.js')
 

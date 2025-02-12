@@ -5,10 +5,9 @@ const {getAllReview,createReview, deleteReview,updateReview,setTourUserIds,getRe
 //merge params true means that the crreateRevewu can use the params comming from tourRouter 
 const router = express.Router({mergeParams: true})
 
-//Post: tour/:kdfkde3/reviews
-//get: tour/:kdfkde3/reviews
+router.use(protect)
 
-router.route('/').get(getAllReview).post(protect,restrictTo('user'),setTourUserIds,createReview)
-router.route('/:id').get(getReview).patch(updateReview).delete(deleteReview)
+router.route('/').get(getAllReview).post(restrictTo('user'),setTourUserIds,createReview)
+router.route('/:id').get(getReview).patch(restrictTo('user','admin'),updateReview).delete(restrictTo('user','admin'),deleteReview)
 
 module.exports = router
