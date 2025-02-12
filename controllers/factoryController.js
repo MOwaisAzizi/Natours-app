@@ -62,12 +62,12 @@ exports.getOne = (Model, populateOptions) => catchAsync (async (req, res,next) =
         })
 })
 
-exports.getAll = Model =>  catchAsync (async(req, res,next) => {
+exports.getAll = Model => catchAsync (async(req, res,next) => {
     //to allow nested get review on tour
     let filter = {}
     if(req.params.tourId) filter = {tour:req.params.tourId}
 
-    const Feature = new APIFeatures(Model.find(filter), req.query).filter().sort().limitFields().paginate()
+    const Feature = new APIFeatures(Model.find(filter), req.query).filter().sort().limitFields().paginate().explain()
     const docs = await Feature.query
 
     //SEND RESPOSE
