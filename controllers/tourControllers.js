@@ -27,29 +27,10 @@ exports.getAllTours = catchAsync (async(req, res,next) => {
 })
 
 
-exports.getTour = catchAsync (async (req, res,next) => {
-    // reviews:for vitual property in tour modal to bring of formation 
-        const tour = await Tour.findById(req.params.id).populate('reviews')
-        // const tour = await Tour.findOne({_id:req.parmas.id})
-         
-        //this is an extra error from catch in catchAsycn that we write the controlble error handling
-        //when next has argument it goes to error handlng middlware
-        if(!tour){
-            return next(new AppError('could not found data in that id',404))
-        }
-
-        //tour.save 
-        res.status(200).json({
-            status: 'success',
-            data: {
-                tour
-            }
-        })
-})
-
+exports.getTour = factory.getOne(Tour)
 exports.updateTour = factory.updateOne(Tour)
 exports.deleteTour = factory.deleteOne(Tour)
-exports.createTour = factory.createTour(Tour)
+exports.createTour = factory.createOne(Tour)
 
 exports.getTourStats = catchAsync (async (req, res) => {
         const stats = await Tour.aggregate([

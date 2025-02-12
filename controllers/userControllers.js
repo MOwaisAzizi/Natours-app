@@ -63,13 +63,8 @@ exports.createUser = ((req, res) => {
     })
 })
 
-exports.getUser = ((req, res) => {
-    res.status(500).json({
-        message: 'Error',
-        status: 'Not created yet',
-    })
-})
 
 //do not update password with this
 exports.updateUser = factory.updateOne(User)
 exports.deleteUser = factory.deleteOne(User)
+exports.getUser = factory.getOne(User)

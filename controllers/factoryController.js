@@ -1,3 +1,4 @@
+const { populate } = require("../models/reviewModel");
 const AppError = require("../utiles/appError");
 const catchAsync = require("../utiles/catchAsync");
 
@@ -41,4 +42,22 @@ exports.createOne = Model => catchAsync (async(req, res) => {
             tour:doc
         }
     })
+})
+
+exports.getOne = (Model, populateOptions) => catchAsync (async (req, res,next) => {
+    //populate came from tour getTour
+      let query = Model.findById(req.params.id)
+      if(populateOptions) query = query.populate(populateOptions)
+      const doc = await query
+        
+      if(!doc){
+            return next(new AppError('could not found document in that id',404))
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                doc
+            }
+        })
 })
