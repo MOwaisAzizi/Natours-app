@@ -125,8 +125,9 @@ const tourSchema = new mongoose.Schema(
     }
   );
 
-  //difining idnexes for performance
-  //  tourSchema.index({price:1, ratingsAverage:-1})   
+  //difining idnexes for performance(not search all document to find our query like price=1000)
+   tourSchema.index({price:1, ratingsAverage:-1})   
+   tourSchema.index({slug:1})   
   
   tourSchema.virtual('durationWeeks').get(function() {
     return this.duration / 7;

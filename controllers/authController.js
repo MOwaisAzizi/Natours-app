@@ -107,7 +107,7 @@ exports.restrictTo = (...roles)=>{
    return (req,res,next)=>{
       //user created in protect middlware 
       if(!roles.includes(req.user.role)){
-         return next(new AppError('You do not permision to delete a tour!',403))
+         return next(new AppError('You do not permision to to perform an operation on a tour!',403))
       }
       next()
    }
