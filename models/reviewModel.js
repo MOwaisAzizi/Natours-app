@@ -83,6 +83,7 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
  reviewSchema.post('save', function(){
     //this.constructor points to Review(we do not have access to Review here)
      this.constructor.calAverageRatings(this.tour)
+     
  })
 
  //findOneAndUpdate()
@@ -93,8 +94,11 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
     next()
  })
 
- reviewSchema.pre(/findOneAnd/,async function(){
-    await this.r.constructor.calAverageRatings(this.r.tour)
+ reviewSchema.post(/findOneAnd/,async function(){
+    console.log(this.r);
+    if(this.r){
+        await this.r.constructor.calAverageRatings(this.r.tour)
+    }
  })
 
 const Review = mongoose.model('Review', reviewSchema);
