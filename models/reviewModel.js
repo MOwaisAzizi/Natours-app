@@ -51,36 +51,38 @@ reviewSchema.pre(/^find/,function(next){
 })
 
 reviewSchema.statics.calAverageRatings = async function(tourId){
+    console.log(tourId);
+    
     //this point to reviewSchem
-    const stats = this.aggregate([
+    const stats = await this.aggregate([
         {
-            $match:{tour:tourId}
+          $match: { tour: tourId }
         },
         {
-            $group:{
-            _id:'$tour',
-            nRating:{$some:1},
-            aveRating:{$ave:'rating'}
-            }
+          $group: {
+            _id: '$tour',
+            nRating: { $sum: 1 },
+            avgRating: { $avg: '$rating' }
+          }
         }
     ])
-    if(stats){
-        await Tour.findByIdAndUpdate(tourId,{
-            ratingsAverage : stats[0].aveRating,
-            ratingsQuantity : stats[0].nRating
-        })
-    }else{
-        await Tour.findByIdAndUpdate(tourId,{
-            ratingsAverage :4.5,
-            ratingsQuantity : 0
-        })
-    }
+    console.log(stats);
+    if (stats.length > 0) {
+        await Tour.findByIdAndUpdate(tourId, {
+         ratingsQuantity: stats[0].nRating,
+          ratingsAverage: stats[0].avgRating
+        });
+      } else {
+        await Tour.findByIdAndUpdate(tourId, {
+          ratingsQuantity: 0,
+          ratingsAverage: 4.5
+        });
+      }
+    };
 
-
-}
- reviewSchema.post('save',function(){
+ reviewSchema.post('save', function(){
     //this.constructor points to Review(we do not have access to Review here)
-    this.constructor.calAverageRatings(this.tour)
+     this.constructor.calAverageRatings(this.tour)
  })
 
  //findOneAndUpdate()
