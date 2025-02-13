@@ -64,15 +64,35 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
             }
         }
     ])
-    await Tour.findByIdAndUpdate(tourId,{
-    ratingsAverage : stats[0].aveRating,
-    ratingsQuantity : stats[0].nRating
-})
+    if(stats){
+        await Tour.findByIdAndUpdate(tourId,{
+            ratingsAverage : stats[0].aveRating,
+            ratingsQuantity : stats[0].nRating
+        })
+    }else{
+        await Tour.findByIdAndUpdate(tourId,{
+            ratingsAverage :4.5,
+            ratingsQuantity : 0
+        })
+    }
+
 
 }
  reviewSchema.post('save',function(){
     //this.constructor points to Review(we do not have access to Review here)
     this.constructor.calAverageRatings(this.tour)
+ })
+
+ //findOneAndUpdate()
+ //findOneAndDelete()
+ //this is query middlware and do not access to document directly(for Updaing and delelting)
+ reviewSchema.pre(/findOneAnd/,async function(next){
+    this.r = await this.findOne()
+    next()
+ })
+
+ reviewSchema.pre(/findOneAnd/,async function(){
+    await this.r.constructor.calAverageRatings(this.r.tour)
  })
 
 const Review = mongoose.model('Review', reviewSchema);
