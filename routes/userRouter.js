@@ -18,7 +18,7 @@ router.patch('/updateMe',updateMe)
 router.delete('/deleteMe',deleteMe)
 router.get('/me',getMe,getUser)
 
-//user shioud be an admin and protected
+//user shoud be an admin and protected
 router.use(restrictTo('admin'))
 
 router.route('').get(getAllUsers).post(createUser)

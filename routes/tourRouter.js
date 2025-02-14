@@ -1,9 +1,8 @@
 const express = require('express')
 const { getAllTours, createTour, getTour, updateTour, deleteTour,aliesTopTours,getTourStats,getMonthlyPlan } = require('../controllers/tourControllers')
 const {protect,restrictTo} = require('../controllers/authController')
-// const {createReview} = require('../controllers/reviewController')
 const reviewRouter = require('../routes/reviewRouter')
-const { createReview } = require('../controllers/reviewController')
+// const { createReview } = require('../controllers/reviewController')
 
 const router = express.Router()
 // router.param('id', checkID)
