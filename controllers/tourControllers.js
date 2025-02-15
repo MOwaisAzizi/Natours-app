@@ -94,19 +94,26 @@ exports.getMonthlyPlan = catchAsync (async (req, res) => {
         });
 })
 
-exports.getToursWithin = (req,res,next)=>{
+exports.getToursWithin = async (req,res,next)=>{
     //tour-within/:distance/center/:lat,lng/unit/:unit
     // ///tours-within/:distance/center/:latlng/:unit/:unit
     //tour-within/234/center/34,45/unit/mi
     const {distance, latlng, unit} = req.params
     const[lat,lng] = latlng.split(',')
+    
+  //we should change the unit to radience
+   const radius = unit === 'mi' ? distance/3963.2 : distance/6378.1
 
     if(!lat || !lng) return next(new AppError('please provide latitute and longitude in the format lat,lng'),404)
 
-    const tours = Tour.find()
+    const tours = await Tour.find({startLocation:{$geoWithin:{$centerSphere: [[lng,lat],radius] }}} )
     
     res.status(200).json({
-        status:'sucess'
+        result:tours.length,
+        status:'sucess',
+        data:{
+            tours
+        }
     })
     
     }  
