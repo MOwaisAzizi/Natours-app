@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel')
+const AppError = require('../utiles/appError.js')
 const catchAsync = require('./../utiles/catchAsync')
 const factory = require('./factoryController.js')
 
@@ -8,7 +9,6 @@ exports.aliesTopTours = (req, res, next) => {
     req.query.fields = 'price,name,difficulty,ratingAverage,summary'
     next()
 }
-
 
 // for populateing send to factory
 exports.getTour = factory.getOne(Tour,{path:'reviews'})
@@ -93,3 +93,20 @@ exports.getMonthlyPlan = catchAsync (async (req, res) => {
             }
         });
 })
+
+exports.getToursWithin = (req,res,next)=>{
+    //tour-within/:distance/center/:lat,lng/unit/:unit
+    // ///tours-within/:distance/center/:latlng/:unit/:unit
+    //tour-within/234/center/34,45/unit/mi
+    const {distance, latlng, unit} = req.params
+    const[lat,lng] = latlng.split(',')
+
+    if(!lat || !lng) return next(new AppError('please provide latitute and longitude in the format lat,lng'),404)
+
+    const tours = Tour.find()
+    
+    res.status(200).json({
+        status:'sucess'
+    })
+    
+    }  
