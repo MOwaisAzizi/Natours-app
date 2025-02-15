@@ -33,6 +33,9 @@ const reviewSchema = new mongoose.Schema({
   }
 )
 
+//use indexes to prevent duplicatate reveiw from single user
+reviewSchema.index({user:1, tour:1},{unique:true})
+
 //in database just store the id but here we got the id informaiton and show it user
 reviewSchema.pre(/^find/,function(next){
     // this.populate({
@@ -51,7 +54,7 @@ reviewSchema.pre(/^find/,function(next){
 })
 
 reviewSchema.statics.calAverageRatings = async function(tourId){
-    console.log(tourId);
+    console.log('🤑🙏🙂');
     
     //this point to reviewSchem
     const stats = await this.aggregate([
@@ -60,13 +63,13 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
         },
         {
           $group: {
+            //all reveiws with tour id
             _id: '$tour',
             nRating: { $sum: 1 },
             avgRating: { $avg: '$rating' }
           }
         }
     ])
-    console.log(stats);
     if (stats.length > 0) {
         await Tour.findByIdAndUpdate(tourId, {
          ratingsQuantity: stats[0].nRating,
@@ -95,7 +98,6 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
  })
 
  reviewSchema.post(/findOneAnd/,async function(){
-    console.log(this.r);
     if(this.r){
         await this.r.constructor.calAverageRatings(this.r.tour)
     }
