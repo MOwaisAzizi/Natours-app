@@ -73,8 +73,7 @@ exports.login = catchAsycn(async(req,res,next)=>{
 })
 
 exports.protect = catchAsycn(async(req,res,next)=>{
-   //Geting token and check if its there
-   
+    //Geting token and check if its there
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
       token = req.headers.authorization.split(' ')[1]

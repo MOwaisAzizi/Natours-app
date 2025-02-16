@@ -77,7 +77,7 @@ exports.getMonthlyPlan = catchAsync (async (req, res) => {
                 $addFields: { month: '$_id' }
             },
             {
-                //for deleting field
+                //for deleting 0 bringing 1
                 $project: {
                     _id: 0
                 }
@@ -136,6 +136,7 @@ exports.getToursWithin = catchAsync(async (req,res,next)=>{
                         type:'Point',
                          coordinates:[lng * 1,lat * 1]
                     },
+                    //mongoose filds for Geo
                     distanceField:'distance',
                     distanceMultiplier:multiplier,
                 }

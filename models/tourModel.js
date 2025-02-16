@@ -93,7 +93,7 @@ const tourSchema = new mongoose.Schema(
         address:String,
         description:String
       },
- //in order to create documents and embed them into another document we need an array
+      //in order to create documents and embed them into another document we need an array
       Locations:[
         {
           type:{
