@@ -160,11 +160,11 @@ const tourSchema = new mongoose.Schema(
     })
   })
 
-tourSchema.pre('aggregate', function (next) {
-    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-    this.start = Date.now();
-    next()
-});
+// tourSchema.pre('aggregate', function (next) {
+//     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+//     this.start = Date.now();
+//     next()
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour
