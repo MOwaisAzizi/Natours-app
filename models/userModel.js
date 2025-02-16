@@ -48,7 +48,6 @@ const userSchema = new mongoose.Schema({
     },
 })
 
-
 userSchema.pre('save',async function(next){
     //if the password not changed 
     if(!this.isModified('password')) return next()
@@ -82,7 +81,9 @@ userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
 
 userSchema.methods.createPasswordResetToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');
-    this.passwordResetToken = crypto
+    
+    this.passwordResetToken = 
+       crypto
       .createHash('sha256')
       .update(resetToken)
       .digest('hex');

@@ -10,10 +10,10 @@ router.post('/login',login)
 router.post('/forgotPassword',forgotPassword)
 router.patch('/resetPassword/:token',resetPassword)
 
-//after thid middleware all routs will protect
+//after thid middleware all routupdateMyPasswords will protect
 router.use(protect)
 
-router.patch('/updateMyPassword',updatePassword)
+router.patch('/',updatePassword)
 router.patch('/updateMe',updateMe)
 router.delete('/deleteMe',deleteMe)
 router.get('/me',getMe,getUser)
