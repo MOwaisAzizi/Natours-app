@@ -117,8 +117,6 @@ const tourSchema = new mongoose.Schema(
           ref:'User'
          }
        ],
-   
-       
     },
     //whin ever we have a filds got from another fields show them in result but not store in database
     {
@@ -151,7 +149,7 @@ const tourSchema = new mongoose.Schema(
   //   next()
   // })
 
-  //fill the references ids to actual data in that tour
+  //fill the references ids to actual data in that tour(get one)
   tourSchema.pre(/^find/,function(){
     //populate(bring the data of data) the the users in the quides of tours
     this.populate({

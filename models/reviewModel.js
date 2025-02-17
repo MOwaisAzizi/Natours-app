@@ -71,7 +71,7 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
     ])
     if (stats.length > 0) {
         await Tour.findByIdAndUpdate(tourId, {
-         ratingsQuantity: stats[0].nRating,
+          ratingsQuantity: stats[0].nRating,
           ratingsAverage: stats[0].avgRating
         });
       } else {
@@ -85,7 +85,6 @@ reviewSchema.statics.calAverageRatings = async function(tourId){
  reviewSchema.post('save', function(){
     //this.constructor points to Review(we do not have access to Review here)
      this.constructor.calAverageRatings(this.tour)
-     
  })
 
  //findOneAndUpdate()
