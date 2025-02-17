@@ -41,8 +41,6 @@ process.on('unhandledRejection',err =>{
 })
 
 
-
-
 //     const testTour = new Tour({
 //     name:'Forest in the mountin',
 //     price:500

@@ -1,6 +1,5 @@
 const express = require('express')
-
-const app = express()
+const path = require('path')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
@@ -13,7 +12,17 @@ const reviewRouter = require('./routes/reviewRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
 
+const app = express()
+
+//templet engin to send out templete to cient
+app.set('veiw engine', 'pug')
+//path.join is for providing a dinamic path(adding or deleting / before routes)
+app.set(path.join(__dirname,'views'))
+
 //our global Middlwares
+
+  //reading static files
+  app.use(express.static(`${__dirname}/public`))
 
 //////SECURITY MIDDLWARES(pakages)
 //set security http header
@@ -48,8 +57,6 @@ app.use(hpp({
   whitelist : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
 }))
 
-  //reading static files
- app.use(express.static(`${__dirname}/public`))
 
   //route middlware
 //after execution this middleware end the responing to client
