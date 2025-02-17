@@ -14,15 +14,16 @@ const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 
-//templet engin to send out templete to cient
-app.set('veiw engine', 'pug')
+// pug engin to send out templete to cient
+app.set('view engine', 'pug')
 //path.join is for providing a dinamic path(adding or deleting / before routes)
-app.set(path.join(__dirname,'views'))
+app.set('views',path.join(__dirname,'views'))
 
 //our global Middlwares
 
   //reading static files
-  app.use(express.static(`${__dirname}/public`))
+  app.use(express.static(path.join(__dirname,'publice')))
+  // app.use(express.static(`${__dirname}/public`))
 
 //////SECURITY MIDDLWARES(pakages)
 //set security http header
@@ -58,7 +59,15 @@ app.use(hpp({
 }))
 
 
-  //route middlware
+//route
+app.get('/',(req,res)=>{
+  //render for showing html (looking for base in views)
+  res.status(200).render('base',{
+    //local vars in base file
+    tour:'Forest Hiker',
+    user:'Owais'
+  })
+})
 //after execution this middleware end the responing to client
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)

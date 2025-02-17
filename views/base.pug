@@ -1,0 +1,17 @@
+doctype html
+html
+ head
+  title Natours | #{user}
+  link(rel="stylesheet", href="css/style.css")
+  link(rel="shortcut icon", type="img/png" href = 'img/favicon.png')
+ 
+ body
+  h1 Hello from server
+  h1= tour
+  h2= user.toUpperCase()
+  //- not buffered conde(not add something to the output). but buffered code add to output
+  - const x = 10
+   h3= 3*x
+  p this is a text
+
+  // tour and user is variables .tap for child.() is for properties. we access to static files by express.static middlware in app
