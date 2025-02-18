@@ -9,6 +9,7 @@ const hpp = require('hpp')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const reviewRouter = require('./routes/reviewRouter')
+const viewRouter = require('./routes/viewRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
 
@@ -60,28 +61,8 @@ app.use(hpp({
 
 
 //route
-app.get('/',(req,res)=>{
-  //render for showing html (looking for base in views)
-  res.status(200).render('base',{
-    //local vars in base file
-    tour:'Forest Hiker',
-    user:'Owais'
-  })
-})
-
-app.get('/overview',(req,res)=>{
-  res.status(200).render('overview',{
-    title : 'Overview'
-  })
-})
-
-app.get('/tour',(req,res)=>{
-  res.status(200).render('tour',{
-    title : 'Tour'
-  })
-})
-
 //after execution this middleware end the responing to client
+app.use('/', viewRouter)
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
