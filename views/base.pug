@@ -1,17 +1,39 @@
-doctype html
-html
- head
-  title Natours | #{user}
-  link(rel="stylesheet", href="css/style.css")
-  link(rel="shortcut icon", type="img/png" href = 'img/favicon.png')
+//- doctype html
+//- html
+//-  head
+//-   title Natours | #{user}
+//-   link(rel="stylesheet", href="css/style.css")
+//-   link(rel="shortcut icon", type="img/png" href = 'img/favicon.png')
  
- body
-  h1 Hello from server
-  h1= tour
-  h2= user.toUpperCase()
-  //- not buffered conde(not add something to the output). but buffered code add to output
-  - const x = 10
-   h3= 3*x
-  p this is a text
+//-  body
+//-   h1 Hello from server
+//-   h1= tour
+//-   h2= user.toUpperCase()
+//-   //- not buffered conde(not add something to the output). but buffered code add to output
+//-   - const x = 10
+//-    h3= 3*x
+//-   p this is a text
 
   // tour and user is variables .tap for child.() is for properties. we access to static files by express.static middlware in app
+
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='/css/style.css')
+    link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
+    link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+    title Natours | #{title}
+  
+  body
+    // HEADER : this is the child that come by include
+    include _header
+
+    // CONTENT: we exclude thes to childs to render it
+    block content
+      h1 this is base placeholder heading
+    
+
+    // FOOTER
+    include _footer

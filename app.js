@@ -22,7 +22,7 @@ app.set('views',path.join(__dirname,'views'))
 //our global Middlwares
 
   //reading static files
-  app.use(express.static(path.join(__dirname,'publice')))
+  app.use(express.static(path.join(__dirname,'public')))
   // app.use(express.static(`${__dirname}/public`))
 
 //////SECURITY MIDDLWARES(pakages)
@@ -68,6 +68,19 @@ app.get('/',(req,res)=>{
     user:'Owais'
   })
 })
+
+app.get('/overview',(req,res)=>{
+  res.status(200).render('overview',{
+    title : 'Overview'
+  })
+})
+
+app.get('/tour',(req,res)=>{
+  res.status(200).render('tour',{
+    title : 'Tour'
+  })
+})
+
 //after execution this middleware end the responing to client
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
