@@ -5,6 +5,6 @@ const router = express.Router()
 
 //we do not use rout property because all out rout here is get 
 router.get('/',getOverview)
-router.get('/tour',getTour)
+router.get('/tour/:slug',getTour)
 
 module.exports = router
