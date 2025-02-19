@@ -134,6 +134,13 @@ const tourSchema = new mongoose.Schema(
   tourSchema.virtual('durationWeeks').get(function() {
     return this.duration / 7;
   });
+
+  //DOCUMENT middeware: run before or after sava() and create() methods
+tourSchema.pre('save', function (next) {
+  // this,'Point to current working document
+  this.slug = slugify(this.name,{lower:true})
+  next()
+})
   
   //for virtual population and referencing the review(for magage to access the childs like review that took information of spacific tour)
   tourSchema.virtual('reviews',{
