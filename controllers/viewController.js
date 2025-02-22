@@ -22,7 +22,7 @@ exports.getOverview = catchAsync(async (req,res)=>{
     //2-build templete
     //2-render ti
     res.status(200).render('tour',{
-      title : 'tour',
+      title : `${tour.name} tour`,
       tour
     })
   })
