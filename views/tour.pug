@@ -15,7 +15,7 @@ block content
 
     .heading-box
       h1.heading-primary
-        span= tour.name
+        span= `${tour.name} tour`
     .heading-box__group
       .heading-box__detail
         svg.heading-box__icon
@@ -36,40 +36,36 @@ block content
           +overviewBox('participants', tour.maxGroupSize, 'user')
           +overviewBox('Rating', tour.ratingsAverage + ' / 5', 'star')
 
+        .overview-box__group
+          h2.heading-secondary.ma-bt-lg Your tour guides
+          each guid in tour.guides
+            .overview-box__detail
+              img.overview-box__img(src=`/img/users/${guide.photo}`, alt=`${guide.name}`)
+              - if(guide.role === 'lead-guide')
+                span.overview-box__label Lead guide
+              - if(guide.role === 'guide') 
+                span.overview-box__label Tour guide
+              span.overview-box__text= guide.name
+
     .description-box
-      h2.heading-secondary.ma-bt-lg About the park camper tour
-      p.description__text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      p.description__text Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      h2.heading-secondary.ma-bt-lg= `${tour.name} tour`
+      - const paragraphs = tour.description.split('\n')
+      each p in paragraphs
+        p.description__text= p
 
   section.section-pictures
-    .picture-box
-      img.picture-boximg.picture-boximg--1(src='/img/tour-5-1.jpg', alt='The Park Camper Tour 1')
-    .picture-box
-      img.picture-boximg.picture-boximg--2(src='/img/tour-5-2.jpg', alt='The Park Camper Tour 1')
-    .picture-box
-      img.picture-boximg.picture-boximg--3(src='/img/tour-5-3.jpg', alt='The Park Camper Tour 1')
+    each img,i in tour.images 
+      .picture-box
+        img.picture-boximg(src=`/img/${img}`, alt=`The Park Camper Tour ${i+1}`),
+        class =`.picture-boximg--${i+1}`
 
   section.section-map
     #map
 
   section.section-reviews
     .reviews
-      .reviews__card
-        .reviews__avatar
-          img.reviews__avatar-img(src='/img/users/user-7.jpg', alt='Jim Brown')
-          h6.reviews__user Jim Brown
-        p.reviews__text Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque dignissimos sint quo commodi corrupti accusantium veniam saepe numquam.
-        .reviews__rating
-          svg.reviewsstar.reviewsstar--active
-            use(xlink:href='/img/icons.svg#icon-star')
-          svg.reviewsstar.reviewsstar--active
-            use(xlink:href='/img/icons.svg#icon-star')
-          svg.reviewsstar.reviewsstar--active
-            use(xlink:href='/img/icons.svg#icon-star')
-          svg.reviewsstar.reviewsstar--active
-            use(xlink:href='/img/icons.svg#icon-star')
-          svg.reviewsstar.reviewsstar--active
-            use(xlink:href='/img/icons.svg#icon-star')
+      each review in tour.reviews
+        +reviewCard(reviewCard)
 
   section.section-cta
     .cta
