@@ -1,4 +1,5 @@
 extends base
+include _reviewCard
 //- Mixin for overview box
 mixin overviewBox(label, text, icon)
   .overview-box__detail
@@ -71,9 +72,9 @@ block content
     .cta
       .ctaimg.ctaimg--logo
         img(src='/img/logo-white.png', alt='Natours logo')
-      img.ctaimg.ctaimg--1(src='/img/tour-5-2.jpg', alt='')
-      img.ctaimg.ctaimg--2(src='/img/tour-5-1.jpg', alt='')
+      img.ctaimg.ctaimg--1(src=`/img/tours/${tour.images[1]}`, alt='Tout image')
+      img.ctaimg.ctaimg--2(src=`/img/tours/${tour.images[2]}`, alt='Tour image')
       .cta__content
         h2.heading-secondary What are you waiting for?
-        p.cta__text 10 days. 1 adventure. Infinite memories. Make it yours today!
+        p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
         button.btn.btn--green.span-all-rows Book tour now!
