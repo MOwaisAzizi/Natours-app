@@ -18,7 +18,9 @@
 
 doctype html
 html
+  // we use this block to appent the content to it not to replace it
   head
+    block head 
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet' href='/css/style.css')
@@ -32,7 +34,10 @@ html
 
     // CONTENT: we exclude thes to childs to render it
     block content
+      h2 this line will be agnored because of replacing tour and reveiw
     
 
     // FOOTER
     include _footer
+
+    script(src='/js/mapbox.js')

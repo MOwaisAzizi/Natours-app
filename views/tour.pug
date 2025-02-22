@@ -1,6 +1,9 @@
 extends base
 include _reviewCard
 
+//-append the head from base to here
+block append head
+  //- script(src='/js/mapbox.js')
 //- block append head
 //-   script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
 //-   link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
@@ -68,8 +71,9 @@ block content
         img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i + 1}`, class=`picture-box__img--${i + 1}`)
 
   section.section-map
+  
     #map(data-locations=`${JSON.stringify(tour.locations)}`)
-
+    //- data set is javaScript property to set javaScript in element and read it by javaScript
   section.section-reviews
     .reviews
       each review in tour.reviews
