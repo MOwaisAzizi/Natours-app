@@ -79,8 +79,8 @@ exports.protect = catchAsycn(async(req,res,next)=>{
       token = req.headers.authorization.split(' ')[1]
     }
     //reset the token by the cookie comming from front end after login(jwt json web token)
-    else if(req.cookies.jwt){
-      token = req.cookie.jwt
+      else if(req.cookies.jwt){
+      token = req.cookies.jwt
     }
     
      if(!token){

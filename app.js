@@ -76,7 +76,7 @@ app.use(hpp({
 app.use((req,res,next)=>{
   console.log('💝💘');
   
-  console.log(req.cookies);
+  console.log(req.cookies.jwt);
   next()
 })
 
