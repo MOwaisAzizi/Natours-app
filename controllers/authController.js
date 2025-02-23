@@ -78,6 +78,11 @@ exports.protect = catchAsycn(async(req,res,next)=>{
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
       token = req.headers.authorization.split(' ')[1]
     }
+    //reset the token by the cookie comming from front end after login(jwt json web token)
+    else if(req.cookies.jwt){
+      token = req.cookie.jwt
+    }
+    
      if(!token){
       return next(new AppError('You are not logged in! please login to access!',401))
      }

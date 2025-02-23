@@ -28,7 +28,19 @@ app.set('views',path.join(__dirname,'views'))
 
 //////SECURITY MIDDLWARES(pakages)
 //set security http header
-app.use(helmet())
+// app.use(helmet())
+
+//for working with cdn of login to app
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "cdnjs.cloudflare.com"], // اجازه لود اسکریپت از CDN
+      },
+    },
+  })
+);
 
 //development logging 
 //this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing

@@ -1,19 +1,18 @@
 /* eslint-disable */
-// import axios from "axios";
+// import axios from 'axios'
 
 const login = async (email,password) =>{
-    console.log('Running......');
-    
  try{
     const res = await axios({
-        method:'POST',
-        url:'http://127.0.0.1:3000/api/v1/users/login',
+        method: 'POST',
+        url: 'http://127.0.0.1:3000/api/v1/users/login',
         data: {
-            email:email,
-            password: password
+          email,
+          password
         }
-      })
-      console.log(res.data);
+      });
+      console.log(res);
+      
       
  }catch(err){
     console.log(err);
