@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit')
 const mongoSantization = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
+const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const reviewRouter = require('./routes/reviewRouter')
@@ -45,6 +46,8 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
   //body parser, reading data from body into req.body
   //10kb means not allwod data form body more then 10kb
   app.use(express.json({limit:'10kb'}))
+  //for geting access to cookie comming from request
+  app.use(cookieParser())
 
  // data sanitiazation against nosql query injection.(email:$gt:'': it is working to provide email to true)
   app.use(mongoSantization())
@@ -58,6 +61,12 @@ app.use(hpp({
   whitelist : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
 }))
 
+app.use((req,res,next)=>{
+  console.log('💝💘');
+  
+  console.log(req.cookies);
+  next()
+})
 
 //route
 //after execution this middleware end the responing to client

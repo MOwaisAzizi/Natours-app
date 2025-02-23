@@ -21,7 +21,6 @@ exports.getOverview = catchAsync(async (req,res)=>{
     const tour = await Tour.findOne({slug:req.params.slug}).populate({path:'reviews',fields:'review user rating'})
     //2-build templete
     //2-render ti
-    console.log(tour);
     
     res.status(200).render('tour',{
       title : `${tour.name} tour`,
