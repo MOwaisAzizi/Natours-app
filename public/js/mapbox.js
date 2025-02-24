@@ -1,8 +1,8 @@
 
 /* eslint-disable */
 const data = JSON.parse(document.getElementById('map').dataset.locations)
-console.log(data);
-console.log(L);
+// console.log(data);
+// console.log(L);
 
 (function(){
     document.addEventListener("DOMContentLoaded", function () {

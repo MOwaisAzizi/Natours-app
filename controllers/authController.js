@@ -109,9 +109,8 @@ exports.protect = catchAsycn(async(req,res,next)=>{
 
 //only for render page, not protect any route
 exports.isLoggedIn = catchAsycn(async(req,res,next)=>{
-  //reset the token by the cookie comming from front end after login(jwt json web token)
+//reset the token by the cookie comming from front end after login(jwt json web token)
 if(req.cookies.jwt){
-
 // Verification token
 const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET)
 
@@ -127,9 +126,10 @@ const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECR
  }
  //thare is a login user
  //this will put a variable in pug file name user
- req.locals.user = currentUser
+ res.locals.user = currentUser
  next()
 }
+next()
 })
 
 //for passing inputs in middleware we use this trick:wrap it into a fucntion
