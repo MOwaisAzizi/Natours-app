@@ -12,11 +12,16 @@ const login = async (email,password) =>{
           password
         }
       });
-      console.log(res);
-      
+
+      if(res.data.status === 'success'){
+       alert('Logged In Successfully!')
+       window.setTimeout(() => {
+       location.assign('/')
+       }, 1500);
+      }
       
  }catch(err){
-    console.log(err);
+    alert('Incorrect Email or Password!')
  }
 }
 

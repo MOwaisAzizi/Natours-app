@@ -38,6 +38,8 @@ const signToken = id =>{
   }
 
 exports.signup = catchAsycn (async (req,res,next)=>{
+  console.log('💛💛💛💛💛');
+  
    const newUser = await User.create(
     // {
   //     name: req.body.name,
@@ -127,7 +129,7 @@ const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECR
  //thare is a login user
  //this will put a variable in pug file name user
  res.locals.user = currentUser
- next()
+ return next()
 }
 next()
 })
