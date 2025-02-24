@@ -91,7 +91,8 @@ exports.protect = catchAsycn(async(req,res,next)=>{
   const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
   
    //Check if the user exists
-   const currentUser = await User.findOne({_id:decoded.id})
+   const currentUser = await User.findById(decoded.id)
+  //  const currentUser = await User.findOne(_id:decoded.id)
    if(!currentUser){
       return next(new AppError('the user belong to this token does not exist anymore',401))
    }
@@ -104,6 +105,31 @@ exports.protect = catchAsycn(async(req,res,next)=>{
    //access to protected rout
    req.user = currentUser
    next()
+})
+
+//only for render page, not protect any route
+exports.isLoggedIn = catchAsycn(async(req,res,next)=>{
+  //reset the token by the cookie comming from front end after login(jwt json web token)
+if(req.cookies.jwt){
+
+// Verification token
+const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET)
+
+ //Check if the user exists
+ const currentUser = await User.findById(decoded.id)
+ if(!currentUser){
+    return next()
+ }
+
+ // Check if user changed password
+ if(currentUser.changePasswordAfter(decoded.iat)){
+    return next()
+ }
+ //thare is a login user
+ //this will put a variable in pug file name user
+ req.locals.user = currentUser
+ next()
+}
 })
 
 //for passing inputs in middleware we use this trick:wrap it into a fucntion

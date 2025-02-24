@@ -4,11 +4,12 @@ header.header
   .header__logo
     img(src='/img/logo-white.png' alt='Natours logo')
   nav.nav.nav--user
-    //- a.nav_el(href='#') My bookings
-    //- a.nav_el(href='#')
-    //- img.nav__user-img(src='img/user.jpg' alt='User photo')
-    //- span Owais
-
-    a.nav__el(href='/login') Log in
-    button.nav__el--cta(href='#') Sign up
+    if user
+      a.nav_el.nav__el--logout Log out
+      a.nav_el(href='#')
+        img.nav__user-img(src=`img/users/${user.phote}` alt=`photo of ${user.phote}`)
+        span= user.name.split(' ')[0]
+    else 
+      a.nav__el(href='/login') Log in
+      button.nav__el--cta(href='#') Sign up
 
