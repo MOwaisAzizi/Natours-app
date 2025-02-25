@@ -38,8 +38,6 @@ const signToken = id =>{
   }
 
 exports.signup = catchAsycn (async (req,res,next)=>{
-  console.log('💛💛💛💛💛');
-  
    const newUser = await User.create(
     // {
   //     name: req.body.name,
@@ -73,6 +71,7 @@ exports.login = catchAsycn(async(req,res,next)=>{
  //if every thing is ok do this
  createSendToken(user,200,res)
 })
+
 
 exports.protect = catchAsycn(async(req,res,next)=>{
     //Geting token and check if its there
@@ -109,30 +108,44 @@ exports.protect = catchAsycn(async(req,res,next)=>{
    next()
 })
 
-//only for render page, not protect any route
-exports.isLoggedIn = catchAsycn(async(req,res,next)=>{
+exports.logout = (req,res,next)=>{
+  console.log('log out in authController');
+  
+  res.cookie('jwt' , 'loggedout', {
+    expires:new Date(Date.now() + 10 * 1000),
+    httpOnly:true
+  })
+  res.status(200).json({status:'success'})
+}
+
+//only for render page, not protect any route(for showing or not showing button in header)
+exports.isLoggedIn = async(req,res,next)=>{
+try{
 //reset the token by the cookie comming from front end after login(jwt json web token)
 if(req.cookies.jwt){
-// Verification token
-const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET)
-
- //Check if the user exists
- const currentUser = await User.findById(decoded.id)
- if(!currentUser){
-    return next()
- }
-
- // Check if user changed password
- if(currentUser.changePasswordAfter(decoded.iat)){
-    return next()
- }
- //thare is a login user
- //this will put a variable in pug file name user
- res.locals.user = currentUser
- return next()
+  // Verification token
+  const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET)
+  
+   //Check if the user exists
+   const currentUser = await User.findById(decoded.id)
+   if(!currentUser){
+      return next()
+   }
+  
+   // Check if user changed password
+   if(currentUser.changePasswordAfter(decoded.iat)){
+      return next()
+   }
+   //thare is a login user
+   //this will put a variable in pug file name user
+   res.locals.user = currentUser
+   return next()
+  }
+  next()
+}catch(err){
+  return next()
 }
-next()
-})
+}
 
 //for passing inputs in middleware we use this trick:wrap it into a fucntion
 exports.restrictTo = (...roles)=>{
