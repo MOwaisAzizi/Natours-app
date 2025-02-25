@@ -1,26 +1,28 @@
- /* eslint-disable */
+/* eslint-disable */
+//for supporting in older browser
 import '@babel/polyfill'
 import { login } from "../js/login";
-import { displayMap } from './mapBox';
+// import { displayMap } from './mapBox';
 
 //DOM element
 const mapBox = document.getElementById('map')
 const form = document.querySelector('.form')
 
-//Values
-const password = document.getElementById('password').value;
-const email = document.getElementById('email').value;
-
-if(mapBox){
+if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations)
-    displayMap(locations)
+    // displayMap(locations)
 }
 
-    if(form){
-        form.addEventListener('submit', function(e) {
+if (form) {
+    window.addEventListener('DOMContentLoaded',function(){
+        form.addEventListener('submit', function (e) {
+            e.preventDefault()
             console.log('submitting1');
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
             login(email, password);
         });
-    }
+    })
+}
 
 
