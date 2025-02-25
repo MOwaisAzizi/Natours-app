@@ -108,17 +108,17 @@ exports.protect = catchAsycn(async(req,res,next)=>{
    next()
 })
 
-exports.logout = (req,res,next)=>{
-  console.log('log out in authController');
-  
+exports.logout = (req,res,next)=>{  
   res.cookie('jwt' , 'loggedout', {
     expires:new Date(Date.now() + 10 * 1000),
     httpOnly:true
   })
+
   res.status(200).json({status:'success'})
 }
 
 //only for render page, not protect any route(for showing or not showing button in header)
+//this middleware called in viewRouter
 exports.isLoggedIn = async(req,res,next)=>{
 try{
 //reset the token by the cookie comming from front end after login(jwt json web token)
