@@ -1,4 +1,5 @@
 const Tour = require("../models/tourModel")
+const AppError = require("../utiles/appError")
 const catchAsync = require("../utiles/catchAsync")
 
 exports.getOverview = catchAsync(async (req,res)=>{
@@ -16,9 +17,13 @@ exports.getOverview = catchAsync(async (req,res)=>{
 
   })
 
-  exports.getTour = catchAsync(async(req,res)=>{
+  exports.getTour = catchAsync(async(req,res,next)=>{
     //get data from requested tour including(guides and reveiws)
     const tour = await Tour.findOne({slug:req.params.slug}).populate({path:'reviews',fields:'review user rating'})
+    if(!tour) {
+      return next(new AppError('Thare is no tour with that error', 404))
+    }
+    
     //2-build templete
     //2-render ti
     
