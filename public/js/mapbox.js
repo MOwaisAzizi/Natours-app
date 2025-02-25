@@ -1,10 +1,11 @@
 
 /* eslint-disable */
-const data = JSON.parse(document.getElementById('map').dataset.locations)
+// const data = JSON.parse(document.getElementById('map').dataset.locations)
 // console.log(data);
 // console.log(L);
 
-(function(){
+ export const displayMap = ()=>{
+    
     document.addEventListener("DOMContentLoaded", function () {
         let map = L.map('map').setView([51.505, -0.09], 13);
     
@@ -16,4 +17,4 @@ const data = JSON.parse(document.getElementById('map').dataset.locations)
             .bindPopup('نقشه ساده Leaflet')
             .openPopup();
     });
-}())
+ }
