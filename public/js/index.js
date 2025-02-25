@@ -20,7 +20,6 @@ if (form) {
     window.addEventListener('DOMContentLoaded',function(){
         form.addEventListener('submit', function (e) {
             e.preventDefault()
-            console.log('submitting1');
             const password = document.getElementById('password').value;
             const email = document.getElementById('email').value;
             login(email, password);

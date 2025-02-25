@@ -12575,19 +12575,21 @@ exports.Axios = Axios;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.showAlert = showAlert;
+exports.showAlert = exports.hideAlert = void 0;
 /* eslint-disable */
 
-function hideAlert() {
+var hideAlert = exports.hideAlert = function hideAlert() {
   var el = document.querySelector('.alert');
   if (el) el.parentElement.removeChild(el);
-}
-function showAlert(msg, type) {
+};
+
+// type is 'success' or 'error'
+var showAlert = exports.showAlert = function showAlert(type, msg) {
   hideAlert();
-  var markup = "<div class = \"alert alert--".concat(type, "\">").concat(msg, "</div>");
+  var markup = "<div class=\"alert alert--".concat(type, "\">").concat(msg, "</div>");
   document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
-  window.setTimeout(hideAlert(), 5000);
-}
+  window.setTimeout(hideAlert, 5000);
+};
 },{}],"login.js":[function(require,module,exports) {
 "use strict";
 
@@ -12620,22 +12622,24 @@ var login = exports.login = /*#__PURE__*/function () {
           });
         case 3:
           res = _context.sent;
+          console.log(res.data);
           if (res.data.status === 'success') {
-            // showAlert('success', 'Logged In Successfully!2' )
+            (0, _alerts.showAlert)('success', 'Logged In Successfully!');
             window.setTimeout(function () {
               location.assign('/');
             }, 1500);
           }
-          _context.next = 9;
+          _context.next = 11;
           break;
-        case 7:
-          _context.prev = 7;
+        case 8:
+          _context.prev = 8;
           _context.t0 = _context["catch"](0);
-        case 9:
+          (0, _alerts.showAlert)('error', _context.t0.response.data.message);
+        case 11:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 8]]);
   }));
   return function login(_x, _x2) {
     return _ref.apply(this, arguments);
@@ -12647,30 +12651,28 @@ var logout = exports.logout = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          console.log('Loging out-----');
-          _context2.prev = 1;
-          _context2.next = 4;
+          _context2.prev = 0;
+          _context2.next = 3;
           return (0, _axios.default)({
             method: 'GET',
             url: 'http://127.0.0.1:3000/api/v1/users/logout'
           });
-        case 4:
+        case 3:
           res = _context2.sent;
           console.log(res);
           if (res.data.status === 'success') location.reload(true);
           _context2.next = 12;
           break;
-        case 9:
-          _context2.prev = 9;
-          _context2.t0 = _context2["catch"](1);
+        case 8:
+          _context2.prev = 8;
+          _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
-
-          // showAlert('error','Fail to Logout. please try again!' )
+          (0, _alerts.showAlert)('error', 'Fail to Logout. please try again!');
         case 12:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[1, 9]]);
+    }, _callee2, null, [[0, 8]]);
   }));
   return function logout() {
     return _ref2.apply(this, arguments);
@@ -12828,7 +12830,6 @@ if (form) {
   window.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      console.log('submitting1');
       var password = document.getElementById('password').value;
       var email = document.getElementById('email').value;
       (0, _login.login)(email, password);
