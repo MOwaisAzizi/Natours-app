@@ -6,7 +6,7 @@ import { login, logout } from "../js/login";
 
 //DOM element
 const mapBox = document.getElementById('map')
-const form = document.querySelector('.form')
+const form = document.querySelector('.form--login')
 const logOutBtn = document.querySelector('.nav__el--logout')
 console.log(logOutBtn);
 

@@ -44,3 +44,9 @@ exports.getOverview = catchAsync(async (req,res)=>{
        title:'Your Account'
     })
   })
+
+  exports.updateUserData = catchAsync(async(req,res)=>{
+   console.log(req.body);
+   
+  })
+  

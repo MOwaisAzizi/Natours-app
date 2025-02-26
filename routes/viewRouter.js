@@ -1,5 +1,5 @@
 const express = require('express')
-const {getTour, getOverview,getLoginForm,getAccount} = require('../controllers/viewController')
+const {getTour, getOverview,getLoginForm,getAccount, updateUserData} = require('../controllers/viewController')
 const { isLoggedIn, protect } = require('../controllers/authController')
 
 const router = express.Router()
@@ -10,6 +10,7 @@ const router = express.Router()
 router.get('/',isLoggedIn, getOverview)
 router.get('/tour/:slug', isLoggedIn,getTour)
 router.get('/login',isLoggedIn, getLoginForm)
+router.get('/submit-user-data', updateUserData)
 //protecting users from seeing page of users
 router.get('/me',protect ,getAccount)
 
