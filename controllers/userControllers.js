@@ -15,7 +15,7 @@ const fitlerObj = (obj,...allowedFields)=>{
 }
 
 
-    exports.updateMe = catchAsync( async(req,res,next)=>{
+    exports.updateMe = catchAsync(async(req,res,next)=>{
         //1-prevent user from updating password and confirmPassword
         if(req.body.password || req.body.passwordConfirm){
             next(new AppError('This route is not for password update. please use /updateMyPassword route',400))

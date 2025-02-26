@@ -56,7 +56,7 @@ exports.login = catchAsycn(async(req,res,next)=>{
     const {email,password} = req.body
 
  if(!email || !password){
-    return next(new AppError('please provide email and password!',400) )
+    return next(new AppError('please provide email and password to login!',400) )
  }
 
  //check if email and password correct

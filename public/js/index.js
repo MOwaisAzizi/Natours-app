@@ -6,10 +6,14 @@ import { login, logout } from "../js/login";
 
 //DOM element
 const mapBox = document.getElementById('map')
-const form = document.querySelector('.form--login')
-const logOutBtn = document.querySelector('.nav__el--logout')
-console.log(logOutBtn);
+const form = document.querySelector('.login--form')
+console.log(form);
+console.log('loging form😎😋😊');
 
+
+const logOutBtn = document.querySelector('.nav__el--logout')
+
+console.log(form);
 
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations)
@@ -18,10 +22,12 @@ if (mapBox) {
 
 if (form) {
     window.addEventListener('DOMContentLoaded',function(){
+        console.log('Hello from Login');
+        
         form.addEventListener('submit', function (e) {
             e.preventDefault()
-            const password = document.getElementById('password').value;
-            const email = document.getElementById('email').value;
+            const password = form.getElementById('password').value;
+            const email = form.getElementById('email').value;
             login(email, password);
         });
     })

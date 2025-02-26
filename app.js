@@ -59,7 +59,7 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
   //10kb means not allwod data form body more then 10kb
   app.use(express.json({limit:'10kb'}))
   //for sending data from html for to server direcly using action
-  app.use(express.urlencoded({limit:'10kb'}))
+  app.use(express.urlencoded({extended: true ,limit:'10kb'}))
   //for geting access to cookie comming from request
   app.use(cookieParser())
 

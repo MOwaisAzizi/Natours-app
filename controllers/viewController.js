@@ -1,4 +1,5 @@
 const Tour = require("../models/tourModel")
+const User = require("../models/userModel")
 const AppError = require("../utiles/appError")
 const catchAsync = require("../utiles/catchAsync")
 
@@ -45,8 +46,22 @@ exports.getOverview = catchAsync(async (req,res)=>{
     })
   })
 
-  exports.updateUserData = catchAsync(async(req,res)=>{
-   console.log(req.body);
-   
-  })
+  exports.updateUserData = catchAsync( async (req,res,next)=>{
+   console.log('😎😎😋',req.body);
+   const updatedUser = await User.findByIdAndUpdate(req.user.id,{
+    name:req.body.name,
+    email:req.body.email
+   },
+   {
+     new:true,
+     runValidators:true
+  }
+)
+  
+// sending updated user to pug file and rerender the account to update value in inputs of form 
+res.status(200).render('account',{
+  title:'Your Account',
+  user: updatedUser
+})
+})
   
