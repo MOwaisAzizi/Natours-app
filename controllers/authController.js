@@ -73,42 +73,7 @@ exports.login = catchAsycn(async(req,res,next)=>{
 })
 
 
-exports.protect = catchAsycn(async(req,res,next)=>{
-    //Geting token and check if its there
-    let token;
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-      token = req.headers.authorization.split(' ')[1]
-    }
-    //reset the token by the cookie comming from front end after login(jwt json web token)
-      else if(req.cookies.jwt){
-      token = req.cookies.jwt
-    }
-    
-     if(!token){
-      return next(new AppError('You are not logged in! please login to access!',401))
-     }
-  // Verification token
-  //becuse it return a promise we use build in promisify node funciton
-  const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
-  
-   //Check if the user exists
-   const currentUser = await User.findById(decoded.id)
-  //  const currentUser = await User.findOne(_id:decoded.id)
-   if(!currentUser){
-      return next(new AppError('the user belong to this token does not exist anymore',401))
-   }
-
-   // Check if user changed password
-   if(currentUser.changePasswordAfter(decoded.iat)){
-      return next(new AppError('user recently changed password! please login!'))
-   }
-   
-   //access to protected rout
-   req.user = currentUser
-   next()
-})
-
-exports.logout = (req,res,next)=>{  
+exports.logout = (req,res)=>{  
   res.cookie('jwt' , 'loggedout', {
     expires:new Date(Date.now() + 10 * 1000),
     httpOnly:true
@@ -146,6 +111,44 @@ if(req.cookies.jwt){
   return next()
 }
 }
+
+exports.protect = catchAsycn(async(req,res,next)=>{
+    //Geting token and check if its there
+    let token;
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+      token = req.headers.authorization.split(' ')[1]
+    }
+    //reset the token by the cookie comming from front end after login(jwt json web token)
+      else if(req.cookies.jwt){
+      token = req.cookies.jwt
+    }
+    
+     if(!token){
+      return next(new AppError('You are not logged in! please login to access!',401))
+     }
+  // Verification token
+  //becuse it return a promise we use build in promisify node funciton
+  const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
+  
+   //Check if the user exists
+   const currentUser = await User.findById(decoded.id)
+  //  const currentUser = await User.findOne(_id:decoded.id)
+   if(!currentUser){
+      return next(new AppError('the user belong to this token does not exist anymore',401))
+   }
+
+   // Check if user changed password
+   if(currentUser.changePasswordAfter(decoded.iat)){
+      return next(new AppError('user recently changed password! please login!'))
+   }
+   
+   //access to protected rout
+   req.user = currentUser
+   //for veiw
+   res.locals.user = currentUser
+   next()
+})
+
 
 //for passing inputs in middleware we use this trick:wrap it into a fucntion
 exports.restrictTo = (...roles)=>{

@@ -21,7 +21,7 @@ const handleJwtError = () => new AppError('Your are not logged in! please login!
 const handleJwtExpiredError = () => new AppError('your token has expired! please login again!',401)
 
 const sendErrorDev = (err,req, res,next) => {
-   //A)geting some thing from API
+   //A)geting some erro thing from API
    if(req.originalUrl.startsWith('/api')){
       //return for doing the if else jon
      return res.status(err.statusCode).json({
@@ -59,14 +59,14 @@ const sendErrorProd = (err,req, res,) => {
  }
 
  //render website
-
+ //A) operational by AppError
  if(err.isOperational){
    return res.status(err.statusCode).render('error', {
       title: 'Something went wrong!',
       msg:err.message
     })
    }
-
+// B) none operational
   return res.status(err.statusCode).render('error', {
       title: 'Something went wrong!',
       msg: 'Please try again later'
