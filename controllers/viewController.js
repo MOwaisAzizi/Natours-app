@@ -1,7 +1,5 @@
-import axios from "axios"
 const Tour = require("../models/tourModel")
 const User = require("../models/userModel")
-const { showAlert } = require("../public/js/alerts")
 const AppError = require("../utiles/appError")
 const catchAsync = require("../utiles/catchAsync")
 
