@@ -12,6 +12,7 @@ router.get('/tour/:slug', isLoggedIn,getTour)
 router.get('/login',isLoggedIn, getLoginForm)
 //protecting users from seeing page of users
 router.get('/me',protect ,getAccount)
+//first way of sending data to update settings by html form
 router.post('/submit-user-data',protect, updateUserData)
 
 module.exports = router

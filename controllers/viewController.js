@@ -1,7 +1,10 @@
+import axios from "axios"
 const Tour = require("../models/tourModel")
 const User = require("../models/userModel")
+const { showAlert } = require("../public/js/alerts")
 const AppError = require("../utiles/appError")
 const catchAsync = require("../utiles/catchAsync")
+
 
 exports.getOverview = catchAsync(async (req,res)=>{
   //1 get data from collection
@@ -46,8 +49,8 @@ exports.getOverview = catchAsync(async (req,res)=>{
     })
   })
 
+  //first way of sending data to check(directly by Html form)
   exports.updateUserData = catchAsync( async (req,res,next)=>{
-   console.log('😎😎😋',req.body);
    const updatedUser = await User.findByIdAndUpdate(req.user.id,{
     name:req.body.name,
     email:req.body.email
@@ -57,7 +60,6 @@ exports.getOverview = catchAsync(async (req,res)=>{
      runValidators:true
   }
 )
-  
 // sending updated user to pug file and rerender the account to update value in inputs of form 
 res.status(200).render('account',{
   title:'Your Account',
