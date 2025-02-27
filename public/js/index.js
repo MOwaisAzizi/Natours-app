@@ -7,8 +7,8 @@ import { updateData } from './updateSettings';
 
 //DOM element
 const mapBox = document.getElementById('map')
-const form = document.querySelector('.login--form')
-const updateSettingsForm = document.querySelector('.form-user-data')
+const loginForm = document.querySelector('.login--form')
+const userDataForm = document.querySelector('.form-user-data')
 const logOutBtn = document.querySelector('.nav__el--logout')
 
 if (mapBox) {
@@ -17,14 +17,13 @@ if (mapBox) {
 }
 
 //for login
-if (form) {
-    window.addEventListener('DOMContentLoaded',function(){
-        console.log('Hello from Login');
+if (loginForm) {
+    loginForm.addEventListener('DOMContentLoaded',function(){
         
         form.addEventListener('submit', function (e) {
             e.preventDefault()
-            const password = form.getElementById('password').value;
-            const email = form.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
             login(email, password);
         });
     })
@@ -37,12 +36,12 @@ if(logOutBtn){
 
 //update user settings
 if (updateSettingsForm) {
-    window.addEventListener('DOMContentLoaded',function(){
+    userDataForm.addEventListener('DOMContentLoaded',function(){
         updateSettingsForm.addEventListener('submit', function (e) {
             e.preventDefault()
-            const name = updateSettingsForm.getElementById('name').value;
-            const email = updateSettingsForm.getElementById('email').value;
-            updateData(email, password);
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            updateData(name, email);
         });
     })
 }

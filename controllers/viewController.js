@@ -50,7 +50,7 @@ exports.getOverview = catchAsync(async (req,res)=>{
   })
 
   //first way of sending data to check(directly by Html form)
-  exports.updateUserData = catchAsync( async (req,res,next)=>{
+  exports.updateData = catchAsync( async (req,res,next)=>{
    const updatedUser = await User.findByIdAndUpdate(req.user.id,{
     name:req.body.name,
     email:req.body.email

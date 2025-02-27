@@ -1,5 +1,5 @@
 const express = require('express')
-const {getTour, getOverview,getLoginForm,getAccount, updateUserData} = require('../controllers/viewController')
+const {getTour, getOverview,getLoginForm,getAccount} = require('../controllers/viewController')
 const { isLoggedIn, protect } = require('../controllers/authController')
 
 const router = express.Router()
@@ -13,6 +13,6 @@ router.get('/login',isLoggedIn, getLoginForm)
 //protecting users from seeing page of users
 router.get('/me',protect ,getAccount)
 //first way of sending data to update settings by html form
-router.post('/submit-user-data',protect, updateUserData)
+// router.post('/submit-user-data',protect, updateData)
 
 module.exports = router
