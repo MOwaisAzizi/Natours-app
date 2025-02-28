@@ -23,7 +23,7 @@ const handleJwtExpiredError = () => new AppError('your token has expired! please
 const sendErrorDev = (err,req, res,next) => {
    //A)geting some erro thing from API
    if(req.originalUrl.startsWith('/api')){
-      //return for doing the if else jon
+     //return for doing the if else jon
      return res.status(err.statusCode).json({
          status: err.status,
          message: err.message,

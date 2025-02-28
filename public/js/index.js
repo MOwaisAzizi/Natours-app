@@ -13,7 +13,6 @@ const userpasswordForm = document.querySelector('.form-user-password')
 const logOutBtn = document.querySelector('.nav__el--logout')
 
 
-
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations)
     // displayMap(locations)

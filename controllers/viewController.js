@@ -27,13 +27,13 @@ exports.getOverview = catchAsync(async (req,res)=>{
     }
     
     //2-build templete
-    //2-render ti
-    
+    //2-render it
     res.status(200).render('tour',{
       title : `${tour.name} tour`,
       tour
     })
   })
+
 
   exports.getLoginForm = catchAsync( async(req,res,next)=>{
     res.status(200).render('login',{
@@ -48,7 +48,7 @@ exports.getOverview = catchAsync(async (req,res)=>{
   })
 
   //first way of sending data to check(directly by Html form)
-  exports.updateData = catchAsync( async (req,res,next)=>{
+  exports.updateData = catchAsync(async (req,res,next)=>{
    const updatedUser = await User.findByIdAndUpdate(req.user.id,{
     name:req.body.name,
     email:req.body.email
