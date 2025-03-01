@@ -7,6 +7,20 @@ const factory = require('./factoryController.js')
 //it shows the destination of saving the image by the form and we perform this my a middlware
 const upload = multer({dest:'public/img/users'})
 
+//controling of saving file
+const multerStorage = multer.diskStorage({
+    //cd:callback:like next
+    destination : (req,file,cb)=>{
+        cb(null,'public/img/users')
+    },
+
+    filename:function(req,file,cb){
+        //extention
+        const ext = req.mimetype.split('/')[2]
+        cb(null, `user-${req.user.id}-${Date.now()}.${ext}`)
+    }
+})
+
 //middlware :phote is the name of field to store its link in data base
 exports.uploadUserPhoto =  upload.single('photo')
 
