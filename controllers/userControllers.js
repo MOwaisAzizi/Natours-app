@@ -4,8 +4,6 @@ const AppError = require('../utiles/appError')
 const catchAsync = require('../utiles/catchAsync')
 const factory = require('./factoryController.js')
 
-//it shows the destination of saving the image by the form and we perform this my a middlware
-const upload = multer({dest:'public/img/users'})
 
 //controling of saving file
 const multerStorage = multer.diskStorage({
@@ -16,11 +14,20 @@ const multerStorage = multer.diskStorage({
 
     filename:function(req,file,cb){
         //extention
-        const ext = req.mimetype.split('/')[2]
+        const ext = file.mimetype.split('/')[1]
         cb(null, `user-${req.user.id}-${Date.now()}.${ext}`)
     }
 })
 
+const multerFilter = (req, file, cb)=>{
+    console.log(file);
+    
+    if(file.mimetype.startsWith('image')) cb(null, true)
+        else cb(new AppError('The file should be an image! please select an image.',400),false)
+}
+
+//it shows the destination of saving the image by the form and we perform this my a middlware
+const upload = multer({storage: multerStorage, fileFilter : multerFilter})
 //middlware :phote is the name of field to store its link in data base
 exports.uploadUserPhoto =  upload.single('photo')
 
