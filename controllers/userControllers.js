@@ -1,8 +1,14 @@
+const multer = require('multer')
 const User = require('../models/userModel')
 const AppError = require('../utiles/appError')
 const catchAsync = require('../utiles/catchAsync')
 const factory = require('./factoryController.js')
 
+//it shows the destination of saving the image by the form and we perform this my a middlware
+const upload = multer({dest:'public/img/users'})
+
+//middlware :phote is the name of field to store its link in data base
+exports.uploadUserPhoto =  upload.single('photo')
 
 const fitlerObj = (obj,...allowedFields)=>{
     const newObj = {}
@@ -16,6 +22,9 @@ const fitlerObj = (obj,...allowedFields)=>{
 
 
     exports.updateMe = catchAsync(async(req,res,next)=>{
+        console.log(req.body);
+        console.log(req.file);
+        
         //1-prevent user from updating password and confirmPassword
         if(req.body.password || req.body.passwordConfirm){
             next(new AppError('This route is not for password update. please use /updateMyPassword route',400))
