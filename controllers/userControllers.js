@@ -1,6 +1,5 @@
 const multer = require('multer')
 const sharp = require('sharp')
-
 const User = require('../models/userModel')
 const AppError = require('../utiles/appError')
 const catchAsync = require('../utiles/catchAsync')
@@ -34,7 +33,7 @@ const upload = multer({storage: multerStorage, fileFilter : multerFilter})
 //middlware :phote is the name of field to store its link in data base
 exports.uploadUserPhoto =  upload.single('photo')
 
-//for squaring the image
+//for squaring the image by sharp pakage
  exports.resizeUserPhoto = (req,res,next)=>{
     if(!req.file) return next()
 

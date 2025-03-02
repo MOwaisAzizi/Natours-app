@@ -1,7 +1,35 @@
+const multer = require('multer')
+const sharp = require('sharp')
 const Tour = require('../models/tourModel')
 const AppError = require('../utiles/appError.js')
 const catchAsync = require('./../utiles/catchAsync')
 const factory = require('./factoryController.js')
+
+
+const multerStorage = multer.memoryStorage()
+
+const multerFilter = (req, file, cb)=>{
+    if(file.mimetype.startsWith('image')) cb(null, true)
+        else cb(new AppError('The file should be an image! please select an image.',400),false)
+}
+
+// 1)
+//it shows the destination of saving the image by the form and we perform this my a middlware
+//stored in buffer first
+const upload = multer({storage: multerStorage, fileFilter : multerFilter})
+//middlware : phote is the name of field to store its link in data base
+// 2)
+exports.uploadTourImages =  upload.fields(
+    {name:'imageCover', maxCount:1},
+    {name:'images', maxCount:3},
+)
+//upload.single() . req.file
+//uplad.array({'images',5}). req.files
+
+exports.resizeTourImages = (req,res,next)=>{
+    console.log((req.files));
+    next()
+}
 
 exports.aliesTopTours = (req, res, next) => {
     req.query.limit = '5'

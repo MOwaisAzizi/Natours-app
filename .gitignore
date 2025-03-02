@@ -13,11 +13,6 @@ dist
 dist-ssr
 *.local
 
-# Ignore all bundle.js files
-*.bundle.js
-bundle.js
-/build/
-dist/
 
 # Editor directories and files
 .vscode/*
