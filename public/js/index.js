@@ -40,9 +40,15 @@ if (userDataForm) {
     window.addEventListener('DOMContentLoaded',function(){
         userDataForm.addEventListener('submit', function (e) {
             e.preventDefault()
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            updateSettings({name, email}, 'data');
+            //we need formData for sending file to server
+            const form = new FormData()
+            form.append('name',document.getElementById('name').value)
+            form.append('email',document.getElementById('email').value)
+            form.append('photo',document.getElementById('photo').files[0])
+            // const name = document.getElementById('name').value;
+            // const email = document.getElementById('email').value;
+            // updateSettings({name, email}, 'data');
+            updateSettings(form, 'data');
         });
     })
 }

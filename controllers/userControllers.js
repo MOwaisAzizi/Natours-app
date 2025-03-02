@@ -1,27 +1,30 @@
 const multer = require('multer')
+const sharp = require('sharp')
+
 const User = require('../models/userModel')
 const AppError = require('../utiles/appError')
 const catchAsync = require('../utiles/catchAsync')
 const factory = require('./factoryController.js')
 
-
+//1-first way
 //controling of saving file
-const multerStorage = multer.diskStorage({
-    //cd:callback:like next
-    destination : (req,file,cb)=>{
-        cb(null,'public/img/users')
-    },
+// const multerStorage = multer.diskStorage({
+//     //cd:callback:like next
+//     destination : (req,file,cb)=>{
+//         cb(null,'public/img/users')
+//     },
 
-    filename:function(req,file,cb){
-        //extention
-        const ext = file.mimetype.split('/')[1]
-        cb(null, `user-${req.user.id}-${Date.now()}.${ext}`)
-    }
-})
+//     filename:function(req,file,cb){
+//         //extention
+//         const ext = file.mimetype.split('/')[1] //jpeg
+//         cb(null, `user-${req.user.id}-${Date.now()}.${ext}`)
+//     }
+// })
+
+//secodn way 
+const multerStorage = multer.memoryStorage()
 
 const multerFilter = (req, file, cb)=>{
-    console.log(file);
-    
     if(file.mimetype.startsWith('image')) cb(null, true)
         else cb(new AppError('The file should be an image! please select an image.',400),false)
 }
@@ -30,6 +33,17 @@ const multerFilter = (req, file, cb)=>{
 const upload = multer({storage: multerStorage, fileFilter : multerFilter})
 //middlware :phote is the name of field to store its link in data base
 exports.uploadUserPhoto =  upload.single('photo')
+
+//for squaring the image
+ exports.resizeUserPhoto = (req,res,next)=>{
+    if(!req.file) return next()
+
+    req.file.filename = `user-${req.user.id}-${Date.now()}`
+    //first store in buffer and after it comes to out disk
+    sharp(req.file.buffer).resize(500,500).toFormat('jpeg').jpeg({quality:90})
+    .toFile(`public/img/users/${req.file.filename}`)
+    next()
+ }
 
 const fitlerObj = (obj,...allowedFields)=>{
     const newObj = {}
@@ -43,20 +57,20 @@ const fitlerObj = (obj,...allowedFields)=>{
 
 
     exports.updateMe = catchAsync(async(req,res,next)=>{
-        console.log(req.body);
-        console.log(req.file);
-        
         //1-prevent user from updating password and confirmPassword
         if(req.body.password || req.body.passwordConfirm){
             next(new AppError('This route is not for password update. please use /updateMyPassword route',400))
         }
-        
+
       //filter fields to update
       const filterBody = fitlerObj(req.body,'name','email')
+      //for updating image
+        if(req.file) filterBody.photo = req.file.filename
         //update user data
         const updatedUser = await User.findByIdAndUpdate(req.user.id,filterBody,{
             runValidators:true,new:true
         })
+
         res.status(200).json({
             status:'success',
             data:{

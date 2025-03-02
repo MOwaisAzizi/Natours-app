@@ -903,7 +903,7 @@ body {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
+  -webkit-box-align: centyer;
   -ms-flex-align: center;
   align-items: center;
   -webkit-transition: all 0.2s;
