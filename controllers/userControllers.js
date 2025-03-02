@@ -29,20 +29,22 @@ const multerFilter = (req, file, cb)=>{
 }
 
 //it shows the destination of saving the image by the form and we perform this my a middlware
+// it will put it in buffer(memory but not saved yet)
 const upload = multer({storage: multerStorage, fileFilter : multerFilter})
 //middlware :phote is the name of field to store its link in data base
 exports.uploadUserPhoto =  upload.single('photo')
 
 //for squaring the image by sharp pakage
- exports.resizeUserPhoto = (req,res,next)=>{
+ exports.resizeUserPhoto = catchAsync(async(req,res,next)=>{
     if(!req.file) return next()
-
+    //put it in req in order to use it in another middlware
     req.file.filename = `user-${req.user.id}-${Date.now()}`
     //first store in buffer and after it comes to out disk
-    sharp(req.file.buffer).resize(500,500).toFormat('jpeg').jpeg({quality:90})
+    await sharp(req.file.buffer).resize(500,500).toFormat('jpeg').jpeg({quality:90})
     .toFile(`public/img/users/${req.file.filename}`)
     next()
  }
+)
 
 const fitlerObj = (obj,...allowedFields)=>{
     const newObj = {}

@@ -26,11 +26,20 @@ exports.uploadTourImages =  upload.fields(
 //upload.single() . req.file
 //uplad.array({'images',5}). req.files
 
-exports.resizeTourImages = (req,res,next)=>{
-    console.log((req.files));
-    next()
-}
+exports.resizeTourImages = catchAsync(async (req,res,next)=>{
+    // for images fields(more then one image)
+       if(!req.files.images || !req.files.imageCover) return next()
+        
+     //1) imageCover   
+    //put it in req in order to use it in another middlware
+      req.body.imageCover = `${req.params.id}-${Date.now()}-cover.jpeg`
 
+       //first store in buffer and after it comes to out disk
+       await sharp(req.files.imageCover[0].buffer).resize(2000,2000).toFormat('jpeg').jpeg({quality:90})
+       .toFile(`public/img/tours/${req.body.imageCover}`)
+       next()
+}
+)
 exports.aliesTopTours = (req, res, next) => {
     req.query.limit = '5'
     req.query.sort = '-ratingAverage,price'
