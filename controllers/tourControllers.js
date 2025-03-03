@@ -29,14 +29,20 @@ exports.uploadTourImages =  upload.fields(
 exports.resizeTourImages = catchAsync(async (req,res,next)=>{
     // for images fields(more then one image)
        if(!req.files.images || !req.files.imageCover) return next()
-        
-     //1) imageCover   
+    
+    //1) imageCover   
     //put it in req in order to use it in another middlware
       req.body.imageCover = `${req.params.id}-${Date.now()}-cover.jpeg`
 
        //first store in buffer and after it comes to out disk
        await sharp(req.files.imageCover[0].buffer).resize(2000,2000).toFormat('jpeg').jpeg({quality:90})
        .toFile(`public/img/tours/${req.body.imageCover}`)
+
+    // 2) images
+    
+     
+
+
        next()
 }
 )
