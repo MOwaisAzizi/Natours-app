@@ -28,24 +28,33 @@ exports.uploadTourImages =  upload.fields(
 
 exports.resizeTourImages = catchAsync(async (req,res,next)=>{
     // for images fields(more then one image)
-       if(!req.files.images || !req.files.imageCover) return next()
+    if(!req.files.images || !req.files.imageCover) return next()
     
     //1) imageCover   
-    //put it in req in order to use it in another middlware
+    //put it in req in order to use it in another middlware(UpdateOne)
       req.body.imageCover = `${req.params.id}-${Date.now()}-cover.jpeg`
 
-       //first store in buffer and after it comes to out disk
-       await sharp(req.files.imageCover[0].buffer).resize(2000,2000).toFormat('jpeg').jpeg({quality:90})
-       .toFile(`public/img/tours/${req.body.imageCover}`)
+    //first store in buffer and after it comes to out disk
+    await sharp(req.files.imageCover[0].buffer).resize(2000,2000).toFormat('jpeg').jpeg({quality:90})
+    .toFile(`public/img/tours/${req.body.imageCover}`)
 
     // 2) images
+    req.body.images = []
+    await Promise.all(
+        req.files.images.map(async(file, i)=>{
+            const filename = `tour-${req.params.id}-${Date.now()}-${i+1}.jpeg`
+        
+            await sharp(file.buffer).resize(2000,2000).toFormat('jpeg').jpeg({quality:90})
+            .toFile(`public/img/tours/${filename}`)
     
-     
-
-
+            req.body.images.push(filename)
+        })
+    )
        next()
 }
 )
+
+
 exports.aliesTopTours = (req, res, next) => {
     req.query.limit = '5'
     req.query.sort = '-ratingAverage,price'
