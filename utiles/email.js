@@ -27,8 +27,9 @@ module.exports = class Email {
   //send actual email
   async send(templete, subject) {
     //1) render HTML base on a pug Templet
-    //take a file and change it an html
+    //take a file and change it to html
     const html = pug.renderFile(`${__dirname}/../veiws/email/${templete}.pug`, {
+      //sending local variable
       firstname: this.firstName,
       url: this.url,
       subject
@@ -51,7 +52,13 @@ module.exports = class Email {
   async sendwelcome() {
     await this.send('welcome', 'welcome to Natours family!')
   }
+
+  async sendPasswordReset() {
+    await this.send('passowrdReset', 'Your Password Reset Token is only Valid for 10 min!')
+  }
 }
+
+
 
 //was for development
 // const sendEmail = async options => {
