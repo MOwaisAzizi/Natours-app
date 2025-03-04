@@ -25,6 +25,16 @@
 //pakage to send email bu node.js
 const nodemailer = require('nodemailer');
 
+//new Emial(user,url).wellcome
+module.exports = class Email {
+  constructor(user, url){
+  this.url = url
+  this.to = user.email
+  this.firstName = this.user.name.split(' ')[0]
+  this.from = `jonus schenman ${process.env.EMAIL_FROM}`
+  }
+}
+
 const sendEmail = async options => {
 try{
       // 1) Create a transporter
@@ -35,12 +45,6 @@ try{
       user: process.env.EMAIL_USERNAME,
       pass: process.env.EMAIL_PASSWORD
     }
-        // host: "sandbox.smtp.mailtrap.io",
-        // port: 2525,
-        // auth: {
-        //   user: "ad20aa88f9d8d0",
-        //   pass: "********8455"
-        // }
   });
 
   // 2) Define the email options
@@ -55,7 +59,6 @@ try{
   await transporter.sendMail(mailOptions);
 }catch(err){
  console.log(err);
- 
 }
 };
 
