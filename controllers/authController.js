@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const User = require('../models/userModel')
 const catchAsycn = require('../utiles/catchAsync')
 const AppError = require('../utiles/appError')
-const sendEmail = require('../utiles/email')
+const Email = require('../utiles/email')
 
 const signToken = id =>{ 
    return jwt.sign({id:id}, process.env.JWT_SECRET,{
@@ -38,15 +38,9 @@ const signToken = id =>{
   }
 
 exports.signup = catchAsycn (async (req,res,next)=>{
-   const newUser = await User.create(
-    // {
-  //     name: req.body.name,
-  //     email: req.body.email,
-  //     password: req.body.password,
-  //     passwordConfirm: req.body.passwordConfirm,
-    // }
-    req.body
-  );
+   const newUser = await User.create(req.body);
+   const url = `${req.protocol}://${req.get('host')}/me`
+   await new Email(newUser,url).sendwelcome
     createSendToken(newUser,201,res)
 })
 
@@ -178,11 +172,11 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
    ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Your password reset token (valid for 10 min)',
-      message
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: 'Your password reset token (valid for 10 min)',
+    //   message
+    // });
 
     res.status(200).json({
       status: 'success',

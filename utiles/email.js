@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug')
 
-//new Emial(user,url).wellcome
+//new Emial(user,url).sendwelcome in sighnup function
 module.exports = class Email {
   constructor(user, url) {
     this.url = url
@@ -28,7 +28,7 @@ module.exports = class Email {
   async send(templete, subject) {
     //1) render HTML base on a pug Templet
     //take a file and change it an html
-    const html = pug.renderFile(`${__dirname}veiws/email/${templete}.pug`, {
+    const html = pug.renderFile(`${__dirname}/../veiws/email/${templete}.pug`, {
       firstname: this.firstName,
       url: this.url,
       subject
@@ -48,8 +48,8 @@ module.exports = class Email {
     await this.newTransporter().sendMail(mailOptions);
   }
 
-  async wellcome() {
-    await this.send('wellcome', 'Wellcome to Natours family!')
+  async sendwelcome() {
+    await this.send('welcome', 'welcome to Natours family!')
   }
 }
 
