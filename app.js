@@ -11,6 +11,8 @@ const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
 const reviewRouter = require('./routes/reviewRouter')
 const viewRouter = require('./routes/viewRouter')
+const bookingRouter = require('./routes/bookingRouter')
+
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
 
@@ -88,6 +90,7 @@ app.use('/', viewRouter)
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
+app.use('/api/v1/bookings', bookingRouter)
 
 //whin we write a middleware that has four arguments that means that is an error handling middlwware not regular one
 app.all('*',(req,res,next)=>{
