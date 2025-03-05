@@ -165,10 +165,10 @@ exports.forgotPassword = catchAsycn(async(req,res,next)=>{
   // 2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-
   
   try {
     // 3) Send it to user's email
+    //this a route is to click user to go to upload Photo page on applicatin
     const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
    
    await new Email(user, resetURL).sendPasswordReset()
