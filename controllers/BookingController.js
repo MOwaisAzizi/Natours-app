@@ -3,7 +3,8 @@
 const Tour = require("../models/tourModel")
 const catchAsync = require("../utiles/catchAsync")
 
-exports.getCheckoutSession = catchAsync( async(req,res,next)=>{
+//this function is for checkout functionality useing stripe library
+exports.getCheckoutSession = catchAsync( async(req,res)=>{
 //Get the Currently booked tour
 const tour = await Tour.findById(req.params.tourid)
 

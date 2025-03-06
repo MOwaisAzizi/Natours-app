@@ -100,6 +100,7 @@ if(req.cookies.jwt){
    res.locals.user = currentUser
    return next()
   }
+
   next()
 }catch(err){
   return next()

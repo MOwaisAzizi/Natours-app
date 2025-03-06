@@ -16,7 +16,6 @@ exports.getOverview = catchAsync(async (req,res)=>{
         title:'All Tours',
          tours
     })
-
   })
 
   exports.getTour = catchAsync(async(req,res,next)=>{
