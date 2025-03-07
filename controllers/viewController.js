@@ -47,20 +47,20 @@ exports.getOverview = catchAsync(async (req,res)=>{
   })
 
   //first way of sending data to check(directly by Html form)
-  exports.updateData = catchAsync(async (req,res,next)=>{
-   const updatedUser = await User.findByIdAndUpdate(req.user.id,{
-    name:req.body.name,
-    email:req.body.email
-   },
-   {
-     new:true,
-     runValidators:true
-  }
-)
-// sending updated user to pug file and rerender the account to update value in inputs of form 
-res.status(200).render('account',{
-  title:'Your Account',
-  user: updatedUser
-})
-})
+//   exports.updateData = catchAsync(async (req,res,next)=>{
+//    const updatedUser = await User.findByIdAndUpdate(req.user.id,{
+//     name:req.body.name,
+//     email:req.body.email
+//    },
+//    {
+//      new:true,
+//      runValidators:true
+//   }
+// )
+// // sending updated user to pug file and rerender the account to update value in inputs of form 
+// res.status(200).render('account',{
+//   title:'Your Account',
+//   user: updatedUser
+// })
+// })
   

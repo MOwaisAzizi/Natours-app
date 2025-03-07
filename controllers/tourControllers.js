@@ -19,9 +19,10 @@ const multerFilter = (req, file, cb)=>{
 const upload = multer({storage: multerStorage, fileFilter : multerFilter})
 //middlware : phote is the name of field to store its link in data base
 // 2)
-exports.uploadTourImages =  upload.fields(
+exports.uploadTourImages = upload.fields([
     {name:'imageCover', maxCount:1},
     {name:'images', maxCount:3},
+]
 )
 //upload.single() . req.file
 //uplad.array({'images',5}). req.files

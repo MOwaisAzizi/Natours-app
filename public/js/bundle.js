@@ -12890,6 +12890,8 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; } /* eslint-disable */ //for supporting in older browser
 // import { displayMap } from './mapBox';
 
+console.log('Login index--------');
+
 //DOM element
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.login--form');
@@ -12923,12 +12925,18 @@ if (userDataForm) {
   window.addEventListener('DOMContentLoaded', function () {
     userDataForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var name = document.getElementById('name').value;
-      var email = document.getElementById('email').value;
-      (0, _updateSettings.updateSettings)({
-        name: name,
-        email: email
-      }, 'data');
+      console.log('😎😋😋');
+      console.log(document.getElementById('photo'));
+      //we need formData for sending file to server
+      var form = new FormData();
+      form.append('name', document.getElementById('name').value);
+      form.append('email', document.getElementById('email').value);
+      form.append('photo', document.getElementById('photo').files[0]);
+
+      // const name = document.getElementById('name').value;
+      // const email = document.getElementById('email').value;
+      // updateSettings({name, email}, 'data');
+      (0, _updateSettings.updateSettings)(form, 'data');
     });
   });
 }
@@ -12995,7 +13003,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57979" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52377" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

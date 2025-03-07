@@ -20,29 +20,42 @@ const factory = require('./factoryController.js')
 //     }
 // })
 
-//secodn way 
-const multerStorage = multer.memoryStorage()
+//second way 
+const multerStorage = multer.memoryStorage();
 
-const multerFilter = (req, file, cb)=>{
-    if(file.mimetype.startsWith('image')) cb(null, true)
-        else cb(new AppError('The file should be an image! please select an image.',400),false)
-}
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
+};
 
 //it shows the destination of saving the image by the form and we perform this my a middlware
 // it will put it in buffer(memory but not saved yet)
-const upload = multer({storage: multerStorage, fileFilter : multerFilter})
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+  });
 //middlware :phote is the name of field to store its link in data base
-exports.uploadUserPhoto =  upload.single('photo')
+  
+  exports.uploadUserPhoto = upload.single('photo');
 
 //for squaring the image by sharp pakage
- exports.resizeUserPhoto = catchAsync(async(req,res,next)=>{
-    if(!req.file) return next()
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+    
+    if (!req.file) return next();
     //put it in req in order to use it in another middlware
-    req.file.filename = `user-${req.user.id}-${Date.now()}`
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
     //first store in buffer and after it comes to out disk
-    await sharp(req.file.buffer).resize(500,500).toFormat('jpeg').jpeg({quality:90})
-    .toFile(`public/img/users/${req.file.filename}`)
-    next()
+    
+    await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/users/${req.file.filename}`);
+
+  next();
  }
 )
 

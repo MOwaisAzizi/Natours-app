@@ -5,6 +5,9 @@ import { login, logout } from "../js/login";
 import { updateSettings } from './updateSettings';
 // import { displayMap } from './mapBox';
 
+console.log('Login index--------');
+
+
 //DOM element
 const mapBox = document.getElementById('map')
 const loginForm = document.querySelector('.login--form')
