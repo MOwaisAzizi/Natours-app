@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit')
 const mongoSantization = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
+const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
@@ -39,11 +40,14 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "cdnjs.cloudflare.com","https://js.stripe.com"],
-          frameSrc: ["'self'", "https://js.stripe.com"], // این خط را اضافه کنید
+          frameSrc: ["'self'", "https://js.stripe.com"], 
       },
     },
   })
 );
+
+// کمپرس کردن پاسخ‌ها باعث می‌شود که حجم داده‌های ارسالی از سرور به کلاینت کاهش یابد
+app.use(compression)
 
 //development logging 
 //this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing

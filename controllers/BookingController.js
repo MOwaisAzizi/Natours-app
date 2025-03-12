@@ -75,3 +75,4 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   exports.getBooking = getOne(Booking)
   exports.updateBooking = updateOne(Booking)
   exports.deleteBooking = deleteOne(Booking)
+  
