@@ -28,3 +28,6 @@ dist-ssr
 .cache/
 config/
 config.env
+
+/public/js/bundle.js
+/public/js/bundle.js.map
