@@ -40,9 +40,13 @@ html
 
     // FOOTER
     include _footer
+    //-//// before using bundl.js
     //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js' )
     //- script(src='/js/mapbox.js' defer)
     //- script( src='/js/login.js')
     //-firstly perform index.js
+    //- script(src='https://js.stripe.com/v3/')
+    script(type="text/javascript"  src="https://js.stripe.com/v3/")
+    //- <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
     script(src='/js/bundle.js') 
   

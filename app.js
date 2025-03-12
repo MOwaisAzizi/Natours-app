@@ -32,13 +32,14 @@ app.set('views',path.join(__dirname,'views'))
 //set security http header
 // app.use(helmet())
 
-//for working with cdn of login to app
+// for working with cdn of login to app
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "cdnjs.cloudflare.com"], // اجازه لود اسکریپت از CDN
+        scriptSrc: ["'self'", "cdnjs.cloudflare.com","https://js.stripe.com"],
+          frameSrc: ["'self'", "https://js.stripe.com"], // این خط را اضافه کنید
       },
     },
   })
@@ -76,13 +77,6 @@ if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 app.use(hpp({
   whitelist : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
 }))
-
-app.use((req,res,next)=>{
-  console.log('💝💘');
-  
-  console.log(req.cookies.jwt);
-  next()
-})
 
 //route
 //after execution this middleware end the responing to client

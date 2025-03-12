@@ -3,7 +3,12 @@
 import '@babel/polyfill'
 import { login, logout } from "../js/login";
 import { updateSettings } from './updateSettings';
+import { bookTour } from './stripe';
 // import { displayMap } from './mapBox';
+console.log('deleted');
+
+console.log('Login index--------');
+
 
 console.log('Login index--------');
 
@@ -14,7 +19,7 @@ const loginForm = document.querySelector('.login--form')
 const userDataForm = document.querySelector('.form-user-data')
 const userpasswordForm = document.querySelector('.form-user-password')
 const logOutBtn = document.querySelector('.nav__el--logout')
-
+const bookBtn = document.getElementById('book-tour')
 
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations)
@@ -23,7 +28,7 @@ if (mapBox) {
 
 //for login
 if (loginForm) {
-    window.addEventListener('DOMContentLoaded',function(){
+    window.addEventListener('DOMContentLoaded', function () {
         loginForm.addEventListener('submit', function (e) {
             e.preventDefault()
             const password = document.getElementById('password').value;
@@ -34,23 +39,23 @@ if (loginForm) {
 }
 
 //logout
-if(logOutBtn){
+if (logOutBtn) {
     logOutBtn.addEventListener('click', logout)
 }
 
 //update user data
 if (userDataForm) {
-    window.addEventListener('DOMContentLoaded',function(){
+    window.addEventListener('DOMContentLoaded', function () {
         userDataForm.addEventListener('submit', function (e) {
             e.preventDefault()
             console.log('😎😋😋');
             console.log(document.getElementById('photo'));
             //we need formData for sending file to server
             const form = new FormData()
-            form.append('name',document.getElementById('name').value)
-            form.append('email',document.getElementById('email').value)
-            form.append('photo',document.getElementById('photo').files[0])
-            
+            form.append('name', document.getElementById('name').value)
+            form.append('email', document.getElementById('email').value)
+            form.append('photo', document.getElementById('photo').files[0])
+
             // const name = document.getElementById('name').value;
             // const email = document.getElementById('email').value;
             // updateSettings({name, email}, 'data');
@@ -61,7 +66,7 @@ if (userDataForm) {
 
 //update user passowrd
 if (userpasswordForm) {
-    window.addEventListener('DOMContentLoaded',function(){
+    window.addEventListener('DOMContentLoaded', function () {
         userpasswordForm.addEventListener('submit', async function (e) {
             e.preventDefault()
 
@@ -71,13 +76,24 @@ if (userpasswordForm) {
             const password = document.getElementById('password').value;
             const passwordConfirm = document.getElementById('password-confirm').value;
             //it will take some time so we await it (promise return)
-            await updateSettings({passwordCurrent, password, passwordConfirm }, 'password');
+            await updateSettings({ passwordCurrent, password, passwordConfirm }, 'password');
 
             document.querySelector('.btn-save-password').textContent = 'Save Password'
             document.getElementById('password-current').value = '';
             document.getElementById('password').value = '';
             document.getElementById('password-confirm').value = '';
-            
+
         });
+    })
+}
+
+if (bookBtn) {
+    window.addEventListener('DOMContentLoaded', function () {
+        bookBtn.addEventListener('click', async e => {
+            e.target.textContent = 'Processing...'
+            //in account page its called tour-id(but dataset change it to camelCase)
+            const { tourId } = e.target.dataset
+             bookTour(tourId)
+        })
     })
 }
