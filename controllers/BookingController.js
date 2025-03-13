@@ -5,7 +5,7 @@ const Tour = require("../models/tourModel")
 const catchAsync = require("../utiles/catchAsync")
 const { getAll, getOne, createOne, deleteOne, updateOne } = require('./factoryController')
 
-exports.getCheckoutSession = catchAsync(async (req, res, next) => {
+exports.getCheckoutSession = catchAsync(async (req, res) => {
   // 1) Get the currently booked tour
   const tour = await Tour.findById(req.params.tourId);
 
