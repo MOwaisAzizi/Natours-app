@@ -17,13 +17,11 @@ const createSendToken = (user, statusCode, res) => {
 
   const cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-    //can not be accessed and modified by browser(resived it store it and send it back)
     httpOnly: true
   }
-  //cookie will send only in encripted connection(https)
+
   if (process.env.NODE_ENV === 'production') res.cookie.secure = true
 
-  //name of cookie is uniq var
   res.cookie('jwt', token, cookieOptions)
 
   //to prevent showing password in res but not save it in database
@@ -42,33 +40,29 @@ exports.signup = catchAsycn(async (req, res, next) => {
   const newUser = await User.create(req.body);
   const url = `${req.protocol}://${req.get('host')}/me`
   await new Email(newUser, url).sendWelcome()
+  createSendToken(newUser, 201, res);
 })
 
-
 exports.login = catchAsycn(async (req, res, next) => {
-  //check if email or password exist
   const { email, password } = req.body
 
   if (!email || !password) {
     return next(new AppError('please provide email and password to login!', 400))
   }
 
-  //check if email and password correct
-  //+passord to bring also the paword that we denide to bring it before , email:email=email
+  // +passord: to bring also the paword that we denide to bring it before
   const user = await User.findOne({ email }).select('+password')
 
-  //correct password is a User Schema Method that we made
+  // correct password is a User Schema Method that we made
   if (!user || !await user.correctPassword(password, user.password)) {
     return next(new AppError('incorrect email or password', 401))
   }
 
-  //if every thing is ok do this
   createSendToken(user, 200, res)
 })
 
-
 exports.logout = (req, res) => {
-  res.cookie('jwt', 'loggedout', {
+  res.cookie('jwt', 'logged out', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
   })
@@ -76,11 +70,8 @@ exports.logout = (req, res) => {
   res.status(200).json({ status: 'success' })
 }
 
-//only for render page, not protect any route(for showing or not showing button in header)
-//this middleware called in viewRouter
 exports.isLoggedIn = async (req, res, next) => {
   try {
-    //reset the token by the cookie comming from front end after login(jwt json web token)
     if (req.cookies.jwt) {
       // Verification token
       const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET)
@@ -95,13 +86,14 @@ exports.isLoggedIn = async (req, res, next) => {
       if (currentUser.changePasswordAfter(decoded.iat)) {
         return next()
       }
-      //thare is a login user
+
       //this will put a variable in pug file name user
       res.locals.user = currentUser
       return next()
     }
 
     next()
+
   } catch (err) {
     return next()
   }
@@ -113,7 +105,7 @@ exports.protect = catchAsycn(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
   }
-  //reset the token by the cookie comming from front end after login(jwt json web token)
+
   else if (req.cookies.jwt) {
     token = req.cookies.jwt
   }
@@ -121,13 +113,13 @@ exports.protect = catchAsycn(async (req, res, next) => {
   if (!token) {
     return next(new AppError('You are not logged in! please login to access!', 401))
   }
+
   // Verification token
-  //becuse it return a promise we use build in promisify node funciton
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
   //Check if the user exists
   const currentUser = await User.findById(decoded.id)
-  //  const currentUser = await User.findOne(_id:decoded.id)
+
   if (!currentUser) {
     return next(new AppError('the user belong to this token does not exist anymore', 401))
   }
@@ -139,36 +131,37 @@ exports.protect = catchAsycn(async (req, res, next) => {
 
   //access to protected rout
   req.user = currentUser
+
   //for veiw
   res.locals.user = currentUser
   next()
 })
 
 
-//for passing inputs in middleware we use this trick:wrap it into a fucntion
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    //user created in protect middlware 
     if (!roles.includes(req.user.role)) {
       return next(new AppError('You do not permision to to perform an operation on a tour!', 403))
     }
+
     next()
   }
 }
 
 exports.forgotPassword = catchAsycn(async (req, res, next) => {
-  // 1) Get user based on POSTed email
+  // 1) Get user based on email
   const user = await User.findOne({ email: req.body.email });
+
   if (!user) {
-    return next(new AppError('There is no user with email address.', 404));
+    return next(new AppError('There is no user with this email address.', 404));
   }
 
   // 2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
+
   try {
     // 3) Send it to user's email
-    //this a route is to click user to go to upload Photo page on applicatin
     const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
     await new Email(user, resetURL).sendPasswordReset()
@@ -178,6 +171,7 @@ exports.forgotPassword = catchAsycn(async (req, res, next) => {
       message: 'Token sent to email!',
       resetURL
     });
+
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
@@ -188,7 +182,6 @@ exports.forgotPassword = catchAsycn(async (req, res, next) => {
       500
     );
   }
-
 })
 
 exports.resetPassword = catchAsycn(async (req, res, next) => {
@@ -210,6 +203,7 @@ exports.resetPassword = catchAsycn(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
+
   //3-update changePasswordAt property for the user
 
   //4- log the user in, send jwt
@@ -220,10 +214,9 @@ exports.resetPassword = catchAsycn(async (req, res, next) => {
 //someone who already loged in!
 exports.updatePassword = catchAsycn(async (req, res, next) => {
   // 1) Get user from collection
-
   const user = await User.findById(req.user.id).select('+password');
 
-  // 2) Check if POSTed current password is correct
+  // 2) Check if posted current password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
     return next(new AppError('Your current password is wrong.', 401));
   }

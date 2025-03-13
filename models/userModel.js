@@ -68,15 +68,12 @@ userSchema.pre('save', function(next) {
     return await bcrypt.compare(candidatePassword, userPassword);
   };
 
-//in every document we access this methods
 userSchema.methods.changePasswordAfter = function(JWTTimesTemp){
-    //change milisedond the second
     if(this.passwordChangedAt){
         const changeTimestemp = parseInt(this.passwordChangedAt.getTime()/1000,10)
-        //this means time of password changed in the future date
         return JWTTimesTemp < changeTimestemp
     }
-    //this means password not changed
+
     return false
 }
 
