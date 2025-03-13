@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
     },
     photo:{
     type:String,
-    //default image in img folder
     default:'default.jpg'
     },
     role:{
@@ -29,13 +28,11 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:[true,'Please provide a valid password'],
         minLength:8,
-        //do not send the password to cliend
         select : false
     },
     passwordConfirm:{
         type:String,
         required:[true,'please confirm your password(not confirm feild yet)'],
-        //works on create and save
         validate:{
             validator:function(val){
                 return this.password === val
@@ -68,11 +65,6 @@ userSchema.pre('save', function(next) {
   });
 
   userSchema.methods.correctPassword = async function(candidatePassword,userPassword) {
-    console.log(await bcrypt.compare(candidatePassword, userPassword));
-    console.log(candidatePassword, userPassword);
-    
-    console.log('checking-------------------');
-    
     return await bcrypt.compare(candidatePassword, userPassword);
   };
 
