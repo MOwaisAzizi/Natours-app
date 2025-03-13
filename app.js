@@ -13,7 +13,6 @@ const tourRouter = require('./routes/tourRouter')
 const reviewRouter = require('./routes/reviewRouter')
 const viewRouter = require('./routes/viewRouter')
 const bookingRouter = require('./routes/bookingRouter')
-
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
 
@@ -21,106 +20,65 @@ const app = express()
 
 // pug engin to send out templete to cient
 app.set('view engine', 'pug')
-//path.join is for providing a dinamic path(adding or deleting / before routes)
-app.set('views',path.join(__dirname,'views'))
+app.set('views', path.join(__dirname, 'views'))
 
-//our global Middlwares
-  //reading static files
-  app.use(express.static(path.join(__dirname,'public')))
-  // app.use(express.static(`${__dirname}/public`))
+// Global Middlwares
 
-//////SECURITY MIDDLWARES(pakages)
-//set security http header
-// app.use(helmet())
+app.use(express.static(path.join(__dirname, 'public')))
 
-// for working with cdn of login to app
+//////SECURITY MIDDLWARES
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "cdnjs.cloudflare.com","https://js.stripe.com"],
-          frameSrc: ["'self'", "https://js.stripe.com"], 
+        scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com"],
+        frameSrc: ["'self'", "https://js.stripe.com"],
       },
     },
   })
 );
 
-// کمپرس کردن پاسخ‌ها باعث می‌شود که حجم داده‌های ارسالی از سرور به کلاینت کاهش یابد
-//whin we make final bundle we use npm run build:js
 app.use(compression)
 
 //development logging 
-//this is for just shoing the morgan(to show some states of requst like request or success.....) whin the app is runing
-if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
-  
-  //limit requests form same api
-  const limitRater = rateLimit({
-    max:100,
-    windowMs:60 * 60 * 1000,
-    message:'To many request of this IP. please try agin in an hour!'
-  })
-  //api means every links that starts with api run this middlware
-  app.use('/api',limitRater)
-  
-  //body parser, reading data from body into req.body
-  //10kb means not allwod data form body more then 10kb
-  app.use(express.json({limit:'10kb'}))
-  //for sending data from html for to server direcly using action
-  app.use(express.urlencoded({extended: true ,limit:'10kb'}))
-  //for geting access to cookie comming from request
-  app.use(cookieParser())
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
- // data sanitiazation against nosql query injection.(email:$gt:'': it is working to provide email to true)
-  app.use(mongoSantization())
+const limitRater = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'To many request of this IP. please try agin in an hour!'
+})
 
- //data sinitaion against ssl(prevent to name a stirng a bad html code and store bad data in database)
- app.use(xss())
+app.use('/api', limitRater)
 
-//preventing parmamters polution(whin we writing mult parms value like sort=price&sort=age)
-//in some cases it needs to be muiltivalue(like defeculty=easy&defeculty=miduim)
+app.use(express.json({ limit: '10kb' }))
+
+app.use(express.urlencoded({ extended: true, limit: '10kb' }))
+
+app.use(cookieParser())
+
+app.use(mongoSantization())
+
+app.use(xss())
+
 app.use(hpp({
-  whitelist : ['duration','difficulty','maxGroupSize','ratingsAverage','ratingsQuantity']
+  whitelist: ['duration', 'difficulty', 'maxGroupSize', 'ratingsAverage', 'ratingsQuantity']
 }))
 
-//route
-//after execution this middleware end the responing to client
+//Routes
 app.use('/', viewRouter)
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
 app.use('/api/v1/bookings', bookingRouter)
 
-//whin we write a middleware that has four arguments that means that is an error handling middlwware not regular one
-app.all('*',(req,res,next)=>{
-   next(new AppError(`not fount ${req.originalUrl} path in this sever!`,404))
-  })
+app.all('*', (req, res, next) => {
+  next(new AppError(`not fount ${req.originalUrl} path in this sever!`, 404))
+})
 
 app.use(globalErrorHandler)
-
-
-// whin no url match to top routes this middlware will run and send back a message for all wrong urls
-// app.all('*',(req,res,next)=>{
-//     res.status(404).json({
-//         status:'fail',
-//         message:`not fount ${req.originalUrl} in this sever!`
-//     }) 
-// })
-// app.all('*',(req,res,next)=>{
-//   const err = new Error(`not fount ${req.originalUrl} in this sever!`)
-//   err.status = 'fail'
-//   err.statusCode = 404
-//   //whin we pass err in next express will know that the input is an error so it ignore all the middlwares and go to error handling middlware
-//   next(err)
-// })
-// app.use((err,req,res,next)=>{
-//      err.statusCode = err.statusCode || 500
-//     err.status = err.status || 'error'
-//     res.status(err.statusCode).json({
-//        status:err.status,
-//        message:err.message,
-//     })
-//  })
 
 module.exports = app
 
