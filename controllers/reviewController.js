@@ -1,7 +1,7 @@
 const Review = require('../models/reviewModel')
 const factory = require('./factoryController.js')
 
-//middleware that run befor createReview😍
+//middleware that run befor createReview
 exports.setTourUserIds = (req,res,next) =>{
     //using our nested routes, user.id come from protect 
     if(!req.body.tour) req.body.tour = req.params.tourId
