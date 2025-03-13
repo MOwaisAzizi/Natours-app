@@ -47,6 +47,7 @@ app.use(
 );
 
 // کمپرس کردن پاسخ‌ها باعث می‌شود که حجم داده‌های ارسالی از سرور به کلاینت کاهش یابد
+//whin we make final bundle we use npm run build:js
 app.use(compression)
 
 //development logging 
