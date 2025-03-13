@@ -56,7 +56,7 @@ if (userpasswordForm) {
             const passwordCurrent = document.getElementById('password-current').value;
             const password = document.getElementById('password').value;
             const passwordConfirm = document.getElementById('password-confirm').value;
-            //it will take some time so we await it (promise return)
+
             await updateSettings({ passwordCurrent, password, passwordConfirm }, 'password');
 
             document.querySelector('.btn-save-password').textContent = 'Save Password'
@@ -72,9 +72,8 @@ if (bookBtn) {
     window.addEventListener('DOMContentLoaded', function () {
         bookBtn.addEventListener('click', async e => {
             e.target.textContent = 'Processing...'
-            //in account page its called tour-id(but dataset change it to camelCase)
             const { tourId } = e.target.dataset
-             bookTour(tourId)
+            bookTour(tourId)
         })
     })
 }

@@ -6,7 +6,6 @@ const { getAllReview, createReview, deleteReview, updateReview, setTourUserIds, 
 const router = express.Router({ mergeParams: true })
 
 router.use(protect)
-console.log('routing');
 
 router.route('/').get(getAllReview).post(restrictTo('user'), setTourUserIds, createReview)
 router.route('/:id').get(getReview).patch(restrictTo('user', 'admin'), updateReview).delete(restrictTo('user', 'admin'), deleteReview)
