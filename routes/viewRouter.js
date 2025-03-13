@@ -12,7 +12,4 @@ router.get('/login', isLoggedIn, getLoginForm)
 router.get('/me', protect, getAccount)
 router.get('/my-tours', protect, getMyTour)
 
-// way of sending data to update settings by html form
-// router.post('/submit-user-data',protect, updateData)
-
 module.exports = router

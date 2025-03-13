@@ -40,7 +40,7 @@ app.use(
   })
 );
 
-app.use(compression)
+// app.use(compression)
 
 //development logging 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))

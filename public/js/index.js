@@ -1,17 +1,9 @@
 /* eslint-disable */
-//for supporting in older browser
 import '@babel/polyfill'
 import { login, logout } from "../js/login";
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 // import { displayMap } from './mapBox';
-console.log('deleted');
-
-console.log('Login index--------');
-
-
-console.log('Login index--------');
-
 
 //DOM element
 const mapBox = document.getElementById('map')
@@ -26,7 +18,6 @@ if (mapBox) {
     // displayMap(locations)
 }
 
-//for login
 if (loginForm) {
     window.addEventListener('DOMContentLoaded', function () {
         loginForm.addEventListener('submit', function (e) {
@@ -38,33 +29,23 @@ if (loginForm) {
     })
 }
 
-//logout
 if (logOutBtn) {
     logOutBtn.addEventListener('click', logout)
 }
 
-//update user data
 if (userDataForm) {
     window.addEventListener('DOMContentLoaded', function () {
         userDataForm.addEventListener('submit', function (e) {
             e.preventDefault()
-            console.log('😎😋😋');
-            console.log(document.getElementById('photo'));
-            //we need formData for sending file to server
             const form = new FormData()
             form.append('name', document.getElementById('name').value)
             form.append('email', document.getElementById('email').value)
             form.append('photo', document.getElementById('photo').files[0])
-
-            // const name = document.getElementById('name').value;
-            // const email = document.getElementById('email').value;
-            // updateSettings({name, email}, 'data');
             updateSettings(form, 'data');
         });
     })
 }
 
-//update user passowrd
 if (userpasswordForm) {
     window.addEventListener('DOMContentLoaded', function () {
         userpasswordForm.addEventListener('submit', async function (e) {
