@@ -1,6 +1,6 @@
 const express = require('express')
 const { protect, restrictTo } = require('../controllers/authController')
-const { getCheckoutSession, getAllBookings, createBooking, getBooking, updateBooking, deleteBooking } = require('../controllers/bookingController')
+const { getCheckoutSession, getAllBookings, createBooking, getBooking, updateBooking, deleteBooking } = require('../controllers/BookingController')
 
 const router = express.Router()
 

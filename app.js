@@ -28,17 +28,17 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //////SECURITY MIDDLWARES
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com"],
-        frameSrc: ["'self'", "https://js.stripe.com"],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com"],
+//         frameSrc: ["'self'", "https://js.stripe.com"],
+//       },
+//     },
+//   })
+// );
 
 // app.use(compression)
 

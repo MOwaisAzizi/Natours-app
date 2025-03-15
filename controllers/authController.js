@@ -105,33 +105,33 @@ exports.protect = catchAsycn(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
   }
-
+  
   else if (req.cookies.jwt) {
     token = req.cookies.jwt
   }
-
+  
   if (!token) {
     return next(new AppError('You are not logged in! please login to access!', 401))
   }
-
+  ;
   // Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-
+  
   //Check if the user exists
   const currentUser = await User.findById(decoded.id)
-
+  
   if (!currentUser) {
     return next(new AppError('the user belong to this token does not exist anymore', 401))
   }
-
+  
   // Check if user changed password
   if (currentUser.changePasswordAfter(decoded.iat)) {
     return next(new AppError('user recently changed password! please login!'))
   }
-
+  
   //access to protected rout
-  req.user = currentUser
-
+  req.user = currentUser;
+  
   //for veiw
   res.locals.user = currentUser
   next()
