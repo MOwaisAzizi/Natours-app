@@ -28,17 +28,28 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //////SECURITY MIDDLWARES
 
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com"],
-//         frameSrc: ["'self'", "https://js.stripe.com"],
-//       },
-//     },
-//   })
-// );
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com", "https://unpkg.com"],
+        frameSrc: ["'self'", "https://js.stripe.com"],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "https://example.com",
+          "https://images.example.com",
+          "https://unpkg.com",
+          "https://tile.openstreetmap.org" // Allow OpenStreetMap tiles
+        ],
+        connectSrc: ["'self'", "ws://127.0.0.1:51844"],
+      },
+    },
+  })
+);
+
+
 
 // app.use(compression)
 

@@ -3,7 +3,7 @@ import '@babel/polyfill'
 import { login, logout } from "../js/login";
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
-// import { displayMap } from './mapBox';
+import { displayMap } from './mapBox';
 
 //DOM element
 const mapBox = document.getElementById('map')
@@ -15,7 +15,7 @@ const bookBtn = document.getElementById('book-tour')
 
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations)
-    // displayMap(locations)
+    displayMap(locations)
 }
 
 if (loginForm) {
