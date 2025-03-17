@@ -28,28 +28,25 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //////SECURITY MIDDLWARES
 
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com", "https://unpkg.com"],
-//         frameSrc: ["'self'", "https://js.stripe.com"],
-//         imgSrc: [
-//           "'self'",
-//           "data:",
-//           "https://example.com",
-//           "https://images.example.com",
-//           "https://unpkg.com",
-//           "https://tile.openstreetmap.org" 
-//         ],
-//         connectSrc: ["'self'", "ws://127.0.0.1:51844"],
-//       },
-//     },
-//   })
-// );
-
-
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"], // Default to 'self' for most resources
+        scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com", "https://unpkg.com", "https://api.mapbox.com"], // Allow scripts from these sources
+        workerSrc: ["'self'", "blob:"], // Allow Web Workers from Blob URLs
+        frameSrc: ["'self'", "https://js.stripe.com"], // Allow frames from 'self' and Stripe
+        connectSrc: [
+          "'self'",
+          "https://api.mapbox.com", // Allow Mapbox API
+          "https://events.mapbox.com", // Allow Mapbox events
+          "ws://127.0.0.1:51844", 
+          "ws://127.0.0.1:59378" // Allow WebSocket connections to these local addresses
+        ], 
+      },
+    },
+  })
+);
 
 // app.use(compression)
 

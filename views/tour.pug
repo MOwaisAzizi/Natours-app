@@ -3,10 +3,8 @@ include _reviewCard
 
 //-append the head from base to here
 block append head
-    //- link(rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="")
-    //- script(src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="")
-    link(href="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css" rel="stylesheet")
-    script(src="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js")
+  //- link(href="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css" rel="stylesheet")
+  //- script(src="https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js")
 
 mixin overviewBox(label, text, icon)
   .overview-box__detail
