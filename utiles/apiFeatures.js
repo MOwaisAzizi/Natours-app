@@ -1,11 +1,11 @@
 class APIFeatures {
-    constructor(query,queryObject){
+    constructor(query, queryObject) {
         this.query = query
         this.queryObject = queryObject
     }
 
-    filter(){
-        const queryObj = {...this.queryObject}
+    filter() {
+        const queryObj = { ...this.queryObject }
         const excludedField = ['sort', 'page', 'fields', 'limit']
         excludedField.forEach(el => delete queryObj[el])
         let queryStr = JSON.stringify(queryObj)
@@ -17,7 +17,7 @@ class APIFeatures {
         return this
     }
 
-    sort(){
+    sort() {
         if (this.queryObject.sort) {
             const sortBy = this.queryObject.sort.split(',').join(' ')
             this.query = this.query.sort(sortBy)
@@ -27,20 +27,20 @@ class APIFeatures {
         return this
     }
 
-    limitFields(){
+    limitFields() {
         if (this.queryObject.fields) {
-            const fields =this.queryObject.fields.split(',').join(' ')
+            const fields = this.queryObject.fields.split(',').join(' ')
             this.query = this.query.select(fields)
         }
         return this
     }
 
-    paginate(){
+    paginate() {
         const page = (this.queryObject.page * 1) || 1;
         const limit = (this.queryObject.limit * 1) || 100;
         const skip = (page - 1) * limit;
         this.query = this.query.skip(skip).limit(limit);
-       return this
+        return this
     }
 }
 module.exports = APIFeatures

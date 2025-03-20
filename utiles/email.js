@@ -70,7 +70,7 @@ module.exports = class Email {
   }
 };
 
-//was for development
+//this was for development
 // const sendEmail = async options => {
 // try{
 // 1) Create a transporter
