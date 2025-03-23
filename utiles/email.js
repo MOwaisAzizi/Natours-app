@@ -7,7 +7,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `azizi${process.env.EMAIL_FROM}`;
+    this.from = `${process.env.EMAIL_FROM}`;
   }
 
   newTransport() {
@@ -55,7 +55,12 @@ module.exports = class Email {
     };
 
     // 3) Create a transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    await this.newTransport().sendMail(mailOptions,(err, info) => {
+      if (err) {
+        console.error('Error sending email:', err);
+      } else {
+        console.log('Email sent:', info);
+      }} );
   }
 
   async sendWelcome() {
