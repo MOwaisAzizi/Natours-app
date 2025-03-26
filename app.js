@@ -18,7 +18,6 @@ const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 
-// pug engin to send out templete to cient
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
 
