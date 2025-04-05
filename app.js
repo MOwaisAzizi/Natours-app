@@ -21,11 +21,7 @@ const app = express()
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
 
-// Global Middlwares
-
 app.use(express.static(path.join(__dirname, 'public')))
-
-//SECURITY MIDDLWARES
 
 app.use(
   helmet({
