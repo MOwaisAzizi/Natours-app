@@ -69,7 +69,6 @@ app.use(hpp({
   whitelist: ['duration', 'difficulty', 'maxGroupSize', 'ratingsAverage', 'ratingsQuantity']
 }))
 
-//Routes
 app.use('/', viewRouter)
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
