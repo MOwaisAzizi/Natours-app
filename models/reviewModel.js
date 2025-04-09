@@ -73,13 +73,9 @@ reviewSchema.statics.calAverageRatings = async function (tourId) {
 };
 
 reviewSchema.post('save', function () {
-  //this.constructor points to Review(we do not have access to Review here)
   this.constructor.calAverageRatings(this.tour)
 })
 
-//findOneAndUpdate()
-//findOneAndDelete()
-//this is query middlware and do not access to document directly(for Updaing and delelting)
 reviewSchema.pre(/findOneAnd/, async function (next) {
   this.r = await this.findOne()
   next()
