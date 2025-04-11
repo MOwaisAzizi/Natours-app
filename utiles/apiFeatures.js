@@ -9,11 +9,8 @@ class APIFeatures {
         const excludedField = ['sort', 'page', 'fields', 'limit']
         excludedField.forEach(el => delete queryObj[el])
         let queryStr = JSON.stringify(queryObj)
-        //to add a doller sighn to our query in order to use it in mongoose right we use epressions
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
         this.query = this.query.find(JSON.parse(queryStr))
-        //we return this from it becouse of chaining of object(without return it is not return any thing)
-        //this return intire object
         return this
     }
 
