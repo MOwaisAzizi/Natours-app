@@ -75,7 +75,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 })
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
-  //in deleteMe we just inactive the user but its data is still in the database
   await User.findByIdAndUpdate(req.user.id, { active: false })
 
   res.status(204).json({
