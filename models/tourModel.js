@@ -93,7 +93,7 @@ const tourSchema = new mongoose.Schema(
         address:String,
         description:String
       },
-      //in order to create documents and embed them into another document we need an array
+  
       locations:[
         {
           type:{
@@ -107,8 +107,6 @@ const tourSchema = new mongoose.Schema(
           day:Number
         }
       ],
-      //for the way of embeding users in tour
-      // guides:Array
 
       //child referencing way of referencing to users
        guides:[
