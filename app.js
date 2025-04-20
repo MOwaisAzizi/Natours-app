@@ -27,16 +27,16 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"], // Default to 'self' for most resources
+        defaultSrc: ["'self'"], 
         scriptSrc: ["'self'", "cdnjs.cloudflare.com", "https://js.stripe.com", "https://unpkg.com", "https://api.mapbox.com"], // Allow scripts from these sources
-        workerSrc: ["'self'", "blob:"], // Allow Web Workers from Blob URLs
-        frameSrc: ["'self'", "https://js.stripe.com"], // Allow frames from 'self' and Stripe
+        workerSrc: ["'self'", "blob:"],
+        frameSrc: ["'self'", "https://js.stripe.com"], 
         connectSrc: [
           "'self'",
-          "https://api.mapbox.com", // Allow Mapbox API
-          "https://events.mapbox.com", // Allow Mapbox events
+          "https://api.mapbox.com",
+          "https://events.mapbox.com", 
           "ws://127.0.0.1:51844", 
-          "ws://127.0.0.1:59378" // Allow WebSocket connections to these local addresses
+          "ws://127.0.0.1:59378" 
         ], 
       },
     },
