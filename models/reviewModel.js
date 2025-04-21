@@ -44,7 +44,6 @@ reviewSchema.pre(/^find/, function (next) {
 })
 
 reviewSchema.statics.calAverageRatings = async function (tourId) {
-
   //this point to reviewSchem
   const stats = await this.aggregate([
     {
@@ -52,7 +51,6 @@ reviewSchema.statics.calAverageRatings = async function (tourId) {
     },
     {
       $group: {
-        //all reveiws with tour id
         _id: '$tour',
         nRating: { $sum: 1 },
         avgRating: { $avg: '$rating' }
