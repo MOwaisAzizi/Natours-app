@@ -26,6 +26,12 @@ const server = app.listen(port, () => {
 process.on('unhandledRejection', err => {
     console.log('unhandledRejection: server is shoting down...');
     console.log(err.name, err.message);
-
     server.close(() => process.exit(1))
+})
+
+process.on('SIGABRT', ()=>{
+    console.log('SIGABRT received. shut down the application');
+    server.close(()=>{
+        console.log('process terminated!');
+    })
 })

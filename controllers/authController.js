@@ -12,15 +12,14 @@ const signToken = id => {
   })
 }
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id)
 
   const cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-    httpOnly: true
+    httpOnly: true,
+    secure: req.secure === 'https'
   }
-
-  if (process.env.NODE_ENV === 'production') res.cookie.secure = true
 
   res.cookie('jwt', token, cookieOptions)
 
@@ -40,7 +39,7 @@ exports.signup = catchAsycn(async (req, res, next) => {
   const newUser = await User.create(req.body);
   const url = `${req.protocol}://${req.get('host')}/me`
   await new Email(newUser, url).sendWelcome()
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 })
 
 exports.login = catchAsycn(async (req, res, next) => {
@@ -58,7 +57,7 @@ exports.login = catchAsycn(async (req, res, next) => {
     return next(new AppError('incorrect email or password', 401))
   }
 
-  createSendToken(user, 200, res)
+  createSendToken(user, 200, req, res)
 })
 
 exports.logout = (req, res) => {
@@ -105,33 +104,33 @@ exports.protect = catchAsycn(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
   }
-  
+
   else if (req.cookies.jwt) {
     token = req.cookies.jwt
   }
-  
+
   if (!token) {
     return next(new AppError('You are not logged in! please login to access!', 401))
   }
   ;
   // Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-  
+
   //Check if the user exists
   const currentUser = await User.findById(decoded.id)
-  
+
   if (!currentUser) {
     return next(new AppError('the user belong to this token does not exist anymore', 401))
   }
-  
+
   // Check if user changed password
   if (currentUser.changePasswordAfter(decoded.iat)) {
     return next(new AppError('user recently changed password! please login!'))
   }
-  
+
   //access to protected rout
   req.user = currentUser;
-  
+
   //for veiw
   res.locals.user = currentUser
   next()
@@ -207,7 +206,7 @@ exports.resetPassword = catchAsycn(async (req, res, next) => {
   //3-update changePasswordAt property for the user
 
   //4- log the user in, send jwt
-  createSendToken(user, 200, res)
+  createSendToken(user, 200, req, res)
 })
 
 
@@ -228,5 +227,5 @@ exports.updatePassword = catchAsycn(async (req, res, next) => {
   // User.findByIdAndUpdate will NOT work as intended!
 
   // 4) Log user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });

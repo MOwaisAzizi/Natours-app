@@ -18,6 +18,8 @@ const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 
+app.enable('trust proxy')
+
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
 
@@ -43,7 +45,7 @@ app.use(
   })
 );
 
-// app.use(compression)
+app.use(compression)
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
