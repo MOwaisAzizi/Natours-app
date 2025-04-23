@@ -15,6 +15,7 @@ const viewRouter = require('./routes/viewRouter')
 const bookingRouter = require('./routes/bookingRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
+const cors = require('cors')
 
 const app = express()
 
@@ -46,6 +47,9 @@ app.use(
 );
 
 app.use(compression)
+
+app.use(cors())
+app.options('*', cors())
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
