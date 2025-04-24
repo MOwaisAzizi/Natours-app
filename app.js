@@ -7,6 +7,7 @@ const mongoSantization = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
 const compression = require('compression')
+const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/userRouter')
 const tourRouter = require('./routes/tourRouter')
@@ -15,7 +16,6 @@ const viewRouter = require('./routes/viewRouter')
 const bookingRouter = require('./routes/bookingRouter')
 const AppError = require('./utiles/appError')
 const globalErrorHandler = require('./controllers/errorController')
-const cors = require('cors')
 
 const app = express()
 
@@ -46,7 +46,7 @@ app.use(
   })
 );
 
-app.use(compression)
+app.use(compression())
 
 app.use(cors())
 app.options('*', cors())

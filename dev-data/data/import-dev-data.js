@@ -7,6 +7,9 @@ const Tour = require('../../models/tourModel')
 const User = require('../../models/userModel')
 const Review = require('../../models/reviewModel')
 
+console.log(process.env.DAtABASE);
+
+
 const DB = process.env.DAtABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
 mongoose.connect(DB,{
     useNewUrlParser:true,
@@ -17,6 +20,7 @@ mongoose.connect(DB,{
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`,'utf-8'))
 const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`,'utf-8'))
 const reviews = JSON.parse(fs.readFileSync(`${__dirname}/reviews.json`,'utf-8'))
+
 
 //import the data to Database
 const importData = async()=>{
@@ -40,13 +44,14 @@ const deleteData = async()=>{
         await User.deleteMany()
         await Review.deleteMany()
         console.log('succefully Deleted data');
-
+        
     }catch(err){
         console.log(err);
     }
     process.exit()
 }
 
+console.log('😎🤑');
 console.log(process.argv);
 if(process.argv[2] === '--import'){
     importData()
