@@ -22,8 +22,6 @@ const createSendToken = (user, statusCode, req, res) => {
   }
 
   res.cookie('jwt', token, cookieOptions)
-
-  //to prevent showing password in res but not save it in database
   user.password = undefined
 
   res.status(statusCode).json({
