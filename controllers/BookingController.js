@@ -40,7 +40,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-
 //this two function are routed in veiwRouter
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   const { tour, user, price } = req.query;

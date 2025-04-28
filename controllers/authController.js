@@ -110,8 +110,7 @@ exports.protect = catchAsycn(async (req, res, next) => {
   if (!token) {
     return next(new AppError('You are not logged in! please login to access!', 401))
   }
-  ;
-  // Verification token
+  
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
   //Check if the user exists
@@ -129,7 +128,7 @@ exports.protect = catchAsycn(async (req, res, next) => {
   //access to protected rout
   req.user = currentUser;
 
-  //for veiw
+  //for veiw in pug templete
   res.locals.user = currentUser
   next()
 })
