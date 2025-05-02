@@ -82,7 +82,6 @@ exports.getTourStats = catchAsync(async (req, res) => {
             }
         },
         {
-            //assending sort
             $sort: { avePrice: 1 }
         },
     ]);
@@ -178,7 +177,7 @@ exports.getDistances = catchAsync(async (req, res, next) => {
                 distanceMultiplier: multiplier,
             }
         },
-        //to bring just these fields
+        // to bring just these fields
         {
             $project: {
                 distance: 1,
